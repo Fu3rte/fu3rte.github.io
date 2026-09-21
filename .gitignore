@@ -1,48 +1,6 @@
-# Logs
-logs
-*.log
-npm-debug.log*
-yarn-debug.log*
-yarn-error.log*
-pnpm-debug.log*
-lerna-debug.log*
-
-node_modules
-dist
-dist-ssr
+node_modules/
+dist/
+.shots/
 *.local
-
-# Editor directories and files
-.vscode/*
-!.vscode/extensions.json
-.idea
+*.log
 .DS_Store
-*.suo
-*.ntvs*
-*.njsproj
-*.sln
-*.sw?
-
-# Claude Code
-.claude/
-CLAUDE.md
-
-docs/
-
-src/assets/Photos/*.avif
-src/assets/Photos/*.jpeg
-src/assets/Photos/*.jpg
-src/assets/Photos/*.png
-src/assets/Photos/*.tif
-src/assets/Photos/*.tiff
-src/assets/Photos/source/
-
-# API configuration files
-*.env
-*.env.local
-*.env.*.local
-.envrc
-api-config*
-apikey*
-
-简历项目经历.md

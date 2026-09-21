@@ -1,0 +1,100 @@
+{
+  "meta": {
+    "title": "Finnian（陈祺宏）— AI 应用开发工程师",
+    "description": "Finnian（陈祺宏）的个人主页：前端出身、现专注 AI 应用开发的工程师，坐标中国东莞。智能体、RAG，以及一只守在工位上的猫。"
+  },
+  "brand": "陈祺宏 · FINNIAN",
+  "status": {
+    "open": "开放 AI 岗位机会",
+    "location": "· 中国 东莞"
+  },
+  "lang": {
+    "label": "语言"
+  },
+  "hero": {
+    "title1": "AI 应用",
+    "title2": "开发工程师",
+    "aria": "AI 应用开发工程师",
+    "kicker": "你好 —— 我是 Finnian（陈祺宏），一个爱上智能体的前端工程师。这是我的工位，那只猫就是我。",
+    "scroll": "向下阅读 ↓"
+  },
+  "scene": {
+    "aria": "一只插画风格的猫坐在书桌前用笔记本电脑，手边有咖啡，旁边是洒进阳光的窗户和一个信箱",
+    "cat": "这是那只猫，点一下可以摸它。",
+    "lamp": "切换灯光",
+    "cup": "咖啡",
+    "mailbox": "前往联系方式",
+    "instagram": "Instagram —— 摄影作品",
+    "github": "GitHub",
+    "meow": "喵"
+  },
+  "about": {
+    "title": "关于",
+    "p1": "我是 <em>Finnian</em>（陈祺宏，Qihong Chen），一名坐标东莞的开发者。这个名字在古爱尔兰语里意为光、精神与澄澈 —— 留着它，是因为它比一串谁都拼不对的拼音更好念。",
+    "p2": "我花了很多年驯服像素 —— 界面、动效，那些让页面活过来的细微之处。后来遇见大语言模型，就再没回头。现在我做的是 <em>AI 应用</em>：会规划、会检索、会行动的智能体 —— 外面依然包着一层用心的界面。",
+    "p3": "离开屏幕之后，我练<em>街头健身</em>、泡在<em>音乐</em>里，也赶在事物移动之前<em>按下快门</em>。",
+    "aside": "近期：研究智能体编排 · 咖啡摄入超标 · 活在当下 · 摸猫"
+  },
+  "work": {
+    "title": "作品",
+    "dsh": {
+      "title": "dsh-sight",
+      "desc": "给纯文本的 DeepSeek 智能体框架外挂上视觉：内置免费与低价 VLM 预设，支持多图批量分析。",
+      "tag1": "JavaScript",
+      "tag2": "VLM",
+      "tag3": "智能体工具链"
+    },
+    "researcher": {
+      "title": "Mini Deep Researcher",
+      "desc": "基于 LangChain LCEL 的调研流水线：把一句模糊的主题，变成一份带引用溯源的长篇报告 —— 大纲规划、多源检索、事实提炼、研报合成。",
+      "tag1": "TypeScript",
+      "tag2": "LangChain",
+      "tag3": "Tavily",
+      "tag4": "RAG"
+    },
+    "bid": {
+      "title": "标书智能审核系统",
+      "desc": "投标文件的智能审核 —— 自动化合规校验与风险评估。我为一段原本没有界面的推理过程，做出了它的全部交互。",
+      "tag1": "React",
+      "tag2": "TypeScript",
+      "tag3": "Ant Design"
+    },
+    "more": "更多：",
+    "moreRepos": "全部仓库",
+    "moreOld": "旧版网站与摄影集"
+  },
+  "skills": {
+    "title": "技能",
+    "typescript": "TypeScript",
+    "javascript": "JavaScript",
+    "python": "Python",
+    "react": "React",
+    "zustand": "Zustand",
+    "gsap": "GSAP",
+    "tailwind": "Tailwind",
+    "vite": "Vite",
+    "antd": "Ant Design",
+    "llmApi": "大模型 API",
+    "langchain": "LangChain",
+    "langgraph": "LangGraph",
+    "rag": "RAG",
+    "agentOrchestration": "智能体编排",
+    "aside": "提示词设计、工具 / 函数调用与效果评测 —— 这些没有官方 logo 的活儿。"
+  },
+  "contact": {
+    "title": "联系",
+    "p": "猫每天检查两次信箱，我也是。想聊智能体、聊界面、内推合适的岗位，或者只是打个招呼，都欢迎写信给我。",
+    "github": "GitHub / Fu3rte",
+    "instagram": "Instagram / cq777h",
+    "old": "旧版网站",
+    "wechat": "微信 / F1nnian_"
+  },
+  "dock": {
+    "aria": "主导航",
+    "home": "首页",
+    "about": "关于",
+    "work": "作品",
+    "skills": "技能",
+    "contact": "联系"
+  }
+}

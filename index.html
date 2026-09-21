@@ -1,39 +1,336 @@
 <!doctype html>
 <html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Finnian (陈祺宏) — AI Application Developer</title>
+    <meta name="author" content="Finnian / 陈祺宏 (Qihong Chen)" />
+    <meta name="description" content="Portfolio of Finnian (陈祺宏) — frontend developer turned AI application engineer, based in Dongguan, China. Agents, RAG, and a cat at a desk." />
+    <meta property="og:title" content="Finnian (陈祺宏) — AI Application Developer" />
+    <meta property="og:description" content="Frontend turned AI. Agents, RAG, and a cat with opinions." />
+    <meta property="og:type" content="website" />
+    <script>
+      // 首屏前定语言：只决定 <html lang> 与其中文字体族，文案由 src/i18n.ts 接管
+      (function () {
+        var saved = localStorage.getItem('lang');
+        var zh = saved ? saved === 'zh' : /^zh/i.test(navigator.language);
+        document.documentElement.lang = zh ? 'zh-CN' : 'en';
+      })();
+    </script>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,300..900&family=Space+Grotesk:wght@300..700&family=Space+Mono:wght@400;700&family=Noto+Serif+SC:wght@300..900&family=Noto+Sans+SC:wght@300..700&display=swap"
+      rel="stylesheet"
+    />
+  </head>
+  <body>
 
-<head>
-  <meta charset="UTF-8" />
-  <link rel="icon" type="image/svg+xml" href="/Fu3rte/src/assets/sarff.jpg" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <link rel="preconnect" href="https://fonts.googleapis.com" />
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&display=swap" rel="stylesheet" />
-  <title>Fu3rte</title>
-</head>
+    <header class="topbar">
+      <span class="mono" data-i18n="brand">FINNIAN · 陈祺宏</span>
+      <div class="topbar-tools">
+        <span class="mono topbar-right">
+          <span class="dot"></span>
+          <span class="topbar-status" data-i18n="status.open">open to AI roles</span>
+          <span class="topbar-loc" data-i18n="status.location">· dongguan, cn</span>
+        </span>
+        <div class="lang-switch" role="group" data-i18n-aria="lang.label" aria-label="Language">
+          <button type="button" class="lang-btn" lang="zh-Hans" data-lang="zh" aria-pressed="false">ZH</button>
+          <button type="button" class="lang-btn" lang="en" data-lang="en" aria-pressed="true">EN</button>
+        </div>
+      </div>
+    </header>
 
-<body>
-  <div id="root"></div>
-  <script>
-    // Restore the real route after the 404.html redirect (see public/404.html).
-    // Converts ?p=/route&q=query back into a clean pathname before React mounts.
-    (function () {
-      var search = window.location.search;
-      if (!search) return;
-      var params = {};
-      search.slice(1).split('&').forEach(function (pair) {
-        var parts = pair.split('=');
-        params[parts[0]] = decodeURIComponent(parts.slice(1).join('=').replace(/~and~/g, '&'));
-      });
-      if (params.p !== undefined) {
-        var restored =
-          window.location.pathname.slice(0, -1) + params.p +
-          (params.q ? '?' + params.q : '') +
-          window.location.hash;
-        window.history.replaceState(null, null, restored);
-      }
-    })();
-  </script>
-  <script type="module" src="/src/main.tsx"></script>
-</body>
+    <main>
+      <!-- ============ HERO : the cat's desk ============ -->
+      <section id="home" class="hero">
+        <div class="hero-stage">
+          <h1 class="hero-type" data-i18n-aria="hero.aria" aria-label="AI application developer">
+            <span data-i18n="hero.title1">AI APPLICATION</span>
+            <span data-i18n="hero.title2">DEVELOPER</span>
+          </h1>
 
+          <svg id="scene" viewBox="0 0 1176 700" role="img" data-i18n-aria="scene.aria" aria-label="An illustrated cat working at a desk with a laptop, coffee, a sunny window and a mailbox">
+            <!-- hanging lamp -->
+            <g id="lamp" class="clickable" tabindex="0" role="button" data-i18n-aria="scene.lamp" aria-label="Toggle light">
+              <line x1="590" y1="0" x2="590" y2="30" class="s" />
+              <rect x="543" y="28" width="94" height="24" rx="10" class="s f-surface" />
+              <path d="M568 52 a22 22 0 0 0 44 0" class="s f-bulb" id="bulb" />
+            </g>
+
+            <!-- window -->
+            <g id="window">
+              <rect x="130" y="110" width="182" height="250" class="s f-sky" />
+              <g id="sun">
+                <circle cx="252" cy="182" r="26" class="f-sun" />
+                <g class="s-thin sun-rays">
+                  <line x1="252" y1="140" x2="252" y2="128" />
+                  <line x1="252" y1="224" x2="252" y2="236" />
+                  <line x1="210" y1="182" x2="198" y2="182" />
+                  <line x1="294" y1="182" x2="306" y2="182" />
+                  <line x1="222" y1="152" x2="214" y2="144" />
+                  <line x1="282" y1="212" x2="290" y2="220" />
+                  <line x1="222" y1="212" x2="214" y2="220" />
+                  <line x1="282" y1="152" x2="290" y2="144" />
+                </g>
+              </g>
+              <g id="night">
+                <circle cx="252" cy="182" r="24" class="f-sun" />
+                <circle cx="264" cy="174" r="20" class="f-sky" />
+                <circle cx="180" cy="150" r="3.5" class="f-sun" />
+                <circle cx="292" cy="240" r="3" class="f-sun" />
+                <circle cx="166" cy="236" r="2.5" class="f-sun" />
+              </g>
+              <line x1="142" y1="330" x2="182" y2="290" class="s-thin" />
+              <line x1="142" y1="352" x2="196" y2="298" class="s-thin" />
+            </g>
+
+            <!-- light switch -->
+            <g id="switch" class="clickable" tabindex="0" role="button" data-i18n-aria="scene.lamp" aria-label="Toggle light">
+              <rect x="190" y="448" width="56" height="72" rx="12" class="s f-surface" />
+              <rect x="206" y="466" width="24" height="36" rx="6" class="s-thin f-switch" />
+            </g>
+
+            <!-- shelf with socials -->
+            <g id="shelf">
+              <a id="shelf-ig" class="clickable" href="https://www.instagram.com/cq777h/" target="_blank" rel="noreferrer" data-i18n-aria="scene.instagram" aria-label="Instagram — photography">
+                <rect x="905" y="286" width="50" height="54" rx="6" class="s f-dark" />
+                <rect x="918" y="299" width="24" height="28" rx="9" class="glyph" />
+                <circle cx="930" cy="313" r="6" class="glyph" />
+                <circle cx="938" cy="305" r="1.6" class="f-glyph" />
+              </a>
+              <a id="shelf-gh" class="clickable" href="https://github.com/Fu3rte" target="_blank" rel="noreferrer" data-i18n-aria="scene.github" aria-label="GitHub">
+                <rect x="980" y="286" width="50" height="54" rx="6" class="s f-dark" />
+                <circle cx="1005" cy="316" r="12" class="f-glyph" />
+                <path d="M996 306 l-3 -8 M1014 306 l3 -8" class="glyph" />
+              </a>
+              <rect x="868" y="340" width="206" height="30" rx="8" class="s f-shelf" />
+            </g>
+
+            <!-- mailbox -->
+            <g id="mailbox" class="clickable" tabindex="0" role="button" data-i18n-aria="scene.mailbox" aria-label="Go to contact">
+              <rect x="798" y="512" width="104" height="66" rx="16" class="s f-surface" />
+              <path d="M824 512 v66" class="s-thin" />
+              <rect x="806" y="520" width="18" height="50" rx="8" class="f-shade" />
+              <rect x="872" y="524" width="10" height="18" rx="3" class="f-flag" />
+              <line x1="830" y1="578" x2="830" y2="648" class="s" />
+              <line x1="866" y1="578" x2="866" y2="648" class="s" />
+              <line x1="806" y1="648" x2="890" y2="648" class="s" />
+            </g>
+
+            <!-- desk -->
+            <line x1="292" y1="648" x2="770" y2="648" class="s" />
+
+            <!-- coffee -->
+            <g id="cup" class="clickable" tabindex="0" role="button" data-i18n-aria="scene.cup" aria-label="Coffee">
+              <g id="steam" class="s-thin steam">
+                <path d="M368 578 q6 -8 0 -16 q-6 -8 0 -16" />
+                <path d="M384 582 q6 -8 0 -16 q-6 -8 0 -16" />
+              </g>
+              <path d="M348 600 h52 v26 a18 18 0 0 1 -18 18 h-16 a18 18 0 0 1 -18 -18 z" class="s f-surface" />
+              <path d="M400 606 a12 12 0 0 1 0 26" class="s" />
+            </g>
+
+            <!-- cat: an original rigged character. layering is tail -> body -> head,
+                 then the laptop, then the front paws hooked over its top edge. -->
+            <g id="cat" class="clickable" tabindex="0" role="button" data-i18n-aria="scene.cat" aria-label="The cat. Click to pet it.">
+              <!-- tail (behind the body, curls up to the right) -->
+              <path id="tail" d="M652 618 C706 620 744 588 748 540 C750 512 738 492 716 486 C730 500 734 520 726 540 C716 566 690 584 654 588 Z" class="s f-surface" />
+
+              <!-- body: a chunky loaf planted on the desk -->
+              <g id="cat-body">
+                <path d="M534 514 C512 542 508 598 512 648 L672 648 C676 598 672 542 650 514 C620 500 564 500 534 514 Z" class="s f-surface" />
+              </g>
+
+              <!-- head: ears behind, then skull, then face -->
+              <g id="cat-head">
+                <g id="ear-l">
+                  <path d="M556 430 L548 364 L590 412 Z" class="s f-surface" />
+                  <path d="M560 422 L555 380 L582 410 Z" class="f-accent" />
+                </g>
+                <g id="ear-r">
+                  <path d="M594 412 L636 364 L628 430 Z" class="s f-surface" />
+                  <path d="M602 410 L629 380 L624 422 Z" class="f-accent" />
+                </g>
+                <circle cx="592" cy="466" r="54" class="s f-surface" />
+                <!-- tabby forehead -->
+                <g class="s-thin">
+                  <path d="M580 436 q3 -12 7 -16" />
+                  <path d="M592 434 q0 -14 0 -18" />
+                  <path d="M604 436 q-3 -12 -7 -16" />
+                </g>
+                <ellipse cx="550" cy="486" rx="10" ry="6" class="f-accent soft" />
+                <ellipse cx="634" cy="486" rx="10" ry="6" class="f-accent soft" />
+                <g id="cat-eyes">
+                  <ellipse cx="572" cy="464" rx="8.5" ry="10" class="f-ink" />
+                  <ellipse cx="612" cy="464" rx="8.5" ry="10" class="f-ink" />
+                  <circle cx="575" cy="460" r="3" class="f-surface" />
+                  <circle cx="615" cy="460" r="3" class="f-surface" />
+                </g>
+                <path d="M585 482 h14 l-7 9 z" class="f-accent" />
+                <path d="M592 491 v4 M592 495 q-8 7 -15 0 M592 495 q8 7 15 0" class="s-thin" />
+                <g class="s-thin whiskers">
+                  <line x1="556" y1="484" x2="518" y2="476" />
+                  <line x1="556" y1="492" x2="514" y2="492" />
+                  <line x1="556" y1="500" x2="518" y2="508" />
+                  <line x1="628" y1="484" x2="666" y2="476" />
+                  <line x1="628" y1="492" x2="670" y2="492" />
+                  <line x1="628" y1="500" x2="666" y2="508" />
+                </g>
+              </g>
+            </g>
+
+            <!-- laptop (in front of the cat's body) -->
+            <g id="laptop">
+              <rect x="502" y="546" width="180" height="98" rx="8" class="s f-laptop" />
+              <path id="apple" d="M592 584 c-8 -6 -18 0 -18 10 c0 12 10 20 18 16 c8 4 18 -4 18 -16 c0 -10 -10 -16 -18 -10 z" class="f-ink" />
+              <line x1="486" y1="646" x2="698" y2="646" class="s" />
+            </g>
+
+            <!-- front paws hooked over the laptop's top edge (in front of it) -->
+            <g id="cat-paws" class="clickable" aria-hidden="true">
+              <g id="paw-l">
+                <path d="M530 540 q0 -15 17 -15 q17 0 17 15 v8 q0 13 -17 13 q-17 0 -17 -13 z" class="s f-surface" />
+                <path d="M540 552 v7 M554 552 v7" class="s-thin" />
+              </g>
+              <g id="paw-r">
+                <path d="M618 540 q0 -15 17 -15 q17 0 17 15 v8 q0 13 -17 13 q-17 0 -17 -13 z" class="s f-surface" />
+                <path d="M628 552 v7 M642 552 v7" class="s-thin" />
+              </g>
+            </g>
+          </svg>
+        </div>
+
+        <p class="hero-kicker mono" data-i18n="hero.kicker">hi — i'm Finnian (陈祺宏). a frontend dev who fell in love with agents. this is my desk. the cat is me.</p>
+        <a href="#about" class="scroll-hint mono" data-i18n="hero.scroll" aria-label="Scroll to about">scroll ↓</a>
+      </section>
+
+      <!-- ============ ABOUT ============ -->
+      <section id="about" class="section">
+        <span class="mono section-index">01</span>
+        <h2 class="section-title" data-i18n="about.title">About</h2>
+        <div class="prose reveal">
+          <p data-i18n-html="about.p1">
+            I'm <em>Finnian</em> — 陈祺宏, Qihong Chen — a developer in Dongguan, China. The name is Old Irish for
+            light, spirit and clarity; I keep it because it reads easier than a pinyin nobody spells right.
+          </p>
+          <p data-i18n-html="about.p2">
+            I spent years making pixels behave — interfaces, motion, the small delights that make a page feel alive.
+            Then I met large language models and never looked back. Now I build <em>AI applications</em>: agents that
+            plan, retrieve and act — still wrapped in interfaces that feel considered.
+          </p>
+          <p data-i18n-html="about.p3">
+            Away from the screen I train <em>calisthenics</em>, live in <em>music</em>, and take <em>photographs</em>
+            of things before they move.
+          </p>
+          <p class="mono aside" data-i18n="about.aside">currently: learning agent orchestration · drinking too much coffee · live in the moment · petting the cat</p>
+        </div>
+      </section>
+
+      <!-- ============ WORK ============ -->
+      <section id="work" class="section">
+        <span class="mono section-index">02</span>
+        <h2 class="section-title" data-i18n="work.title">Work</h2>
+        <div class="cards">
+          <article class="card reveal">
+            <span class="tape" aria-hidden="true"></span>
+            <h3><a href="https://github.com/Fu3rte/dsh-sight" target="_blank" rel="noreferrer" data-i18n="work.dsh.title">dsh-sight</a></h3>
+            <p data-i18n="work.dsh.desc">Plug-in vision for a text-only DeepSeek agent harness: built-in free and low-cost VLM presets, plus multi-image batch analysis.</p>
+            <ul class="tags mono">
+              <li data-i18n="work.dsh.tag1">JavaScript</li>
+              <li data-i18n="work.dsh.tag2">VLM</li>
+              <li data-i18n="work.dsh.tag3">Agent tooling</li>
+            </ul>
+          </article>
+          <article class="card reveal">
+            <span class="tape tape-alt" aria-hidden="true"></span>
+            <h3><a href="https://github.com/Fu3rte/mini-deep-researcher" target="_blank" rel="noreferrer" data-i18n="work.researcher.title">Mini Deep Researcher</a></h3>
+            <p data-i18n="work.researcher.desc">A LangChain LCEL pipeline that turns one vague topic into a cited long-form report: outline planning, multi-source search, fact extraction, synthesis.</p>
+            <ul class="tags mono">
+              <li data-i18n="work.researcher.tag1">TypeScript</li>
+              <li data-i18n="work.researcher.tag2">LangChain</li>
+              <li data-i18n="work.researcher.tag3">Tavily</li>
+              <li data-i18n="work.researcher.tag4">RAG</li>
+            </ul>
+          </article>
+          <article class="card reveal">
+            <span class="tape" aria-hidden="true"></span>
+            <h3 data-i18n="work.bid.title">Bid Review System</h3>
+            <p data-i18n="work.bid.desc">Intelligent review of bid documents — automated compliance checking and risk assessment. I built the interface for a piece of reasoning that had none.</p>
+            <ul class="tags mono">
+              <li data-i18n="work.bid.tag1">React</li>
+              <li data-i18n="work.bid.tag2">TypeScript</li>
+              <li data-i18n="work.bid.tag3">Ant Design</li>
+            </ul>
+          </article>
+        </div>
+        <p class="mono aside more-work">
+          <span data-i18n="work.more">more:</span>
+          <a href="https://github.com/Fu3rte" target="_blank" rel="noreferrer" data-i18n="work.moreRepos">all repos</a>
+          ·
+          <a href="https://fu3rte.github.io" target="_blank" rel="noreferrer" data-i18n="work.moreOld">the old site &amp; photos</a>
+        </p>
+      </section>
+
+      <!-- ============ SKILLS ============ -->
+      <section id="skills" class="section">
+        <span class="mono section-index">03</span>
+        <h2 class="section-title" data-i18n="skills.title">Skills</h2>
+        <ul class="tags big reveal">
+          <li data-i18n="skills.typescript">TypeScript</li>
+          <li data-i18n="skills.javascript">JavaScript</li>
+          <li data-i18n="skills.python">Python</li>
+          <li data-i18n="skills.react">React</li>
+          <li data-i18n="skills.zustand">Zustand</li>
+          <li data-i18n="skills.gsap">GSAP</li>
+          <li data-i18n="skills.tailwind">Tailwind</li>
+          <li data-i18n="skills.vite">Vite</li>
+          <li data-i18n="skills.antd">Ant Design</li>
+          <li data-i18n="skills.llmApi">LLM APIs</li>
+          <li data-i18n="skills.langchain">LangChain</li>
+          <li data-i18n="skills.langgraph">LangGraph</li>
+          <li data-i18n="skills.rag">RAG</li>
+          <li data-i18n="skills.agentOrchestration">Agent orchestration</li>
+        </ul>
+        <p class="mono aside" data-i18n="skills.aside">prompt design, tool / function calling and evals — the parts nobody put on a logo.</p>
+      </section>
+
+      <!-- ============ CONTACT ============ -->
+      <section id="contact" class="section">
+        <span class="mono section-index">04</span>
+        <h2 class="section-title" data-i18n="contact.title">Contact</h2>
+        <p class="prose reveal" data-i18n="contact.p">The cat checks the mailbox twice a day. So do I. Write to me about agents, interfaces, a role you think fits — or just to say hi.</p>
+        <ul class="contact-list reveal">
+          <li><a class="contact-big" href="mailto:2575716528cqh@gmail.com">2575716528cqh@gmail.com</a></li>
+        </ul>
+        <ul class="contact-list row reveal">
+          <li><a class="mono" href="https://github.com/Fu3rte" target="_blank" rel="noreferrer" data-i18n="contact.github">github / Fu3rte</a></li>
+          <li><a class="mono" href="https://www.instagram.com/cq777h/" target="_blank" rel="noreferrer" data-i18n="contact.instagram">instagram / cq777h</a></li>
+          <li><a class="mono" href="https://fu3rte.github.io" target="_blank" rel="noreferrer" data-i18n="contact.old">the old site</a></li>
+          <li><span class="mono keepcase" data-i18n="contact.wechat">wechat / F1nnian_</span></li>
+        </ul>
+      </section>
+    </main>
+
+    <!-- dock nav -->
+    <nav class="dock" data-i18n-aria="dock.aria" aria-label="Primary">
+      <a href="#home" data-target="home" class="dock-btn is-active" data-i18n-aria="dock.home" aria-label="Home">
+        <svg viewBox="0 0 24 24"><path d="M4 11 L12 4 L20 11 M6 10 V20 H18 V10" /></svg>
+      </a>
+      <a href="#about" data-target="about" class="dock-btn" data-i18n-aria="dock.about" aria-label="About">
+        <svg viewBox="0 0 24 24"><circle cx="12" cy="8" r="4" /><path d="M4 20 c0 -5 4 -7 8 -7 c4 0 8 2 8 7" /></svg>
+      </a>
+      <a href="#work" data-target="work" class="dock-btn" data-i18n-aria="dock.work" aria-label="Work">
+        <svg viewBox="0 0 24 24"><path d="M3 7 h7 l2 3 h9 v10 H3 z" /></svg>
+      </a>
+      <a href="#skills" data-target="skills" class="dock-btn" data-i18n-aria="dock.skills" aria-label="Skills">
+        <svg viewBox="0 0 24 24"><path d="M12 3 l2 6 l6 2 l-6 2 l-2 6 l-2 -6 l-6 -2 l6 -2 z" /></svg>
+      </a>
+      <a href="#contact" data-target="contact" class="dock-btn" data-i18n-aria="dock.contact" aria-label="Contact">
+        <svg viewBox="0 0 24 24"><rect x="3" y="6" width="18" height="12" rx="2" /><path d="M4 7 l8 6 l8 -6" /></svg>
+      </a>
+    </nav>
+
+    <script type="module" src="/src/main.ts"></script>
+  </body>
 </html>

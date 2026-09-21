@@ -1,0 +1,912 @@
+@import "tailwindcss";
+
+/* ============================================================
+   THE CAT'S DESK DIARY — analog editorial design system
+   ============================================================ */
+
+@theme {
+  --font-display: "Fraunces", Georgia, serif;
+  --font-body: "Space Grotesk", system-ui, sans-serif;
+  --font-mono: "Space Mono", ui-monospace, monospace;
+  --color-paper: #fafaf9;
+  --color-ink: #141414;
+  --color-accent: #141414;
+}
+
+/* ---------- palettes: strict monochrome on graph paper ---------- */
+:root {
+  --paper: #fafaf9;
+  --ink: #141414;
+  --surface: #ffffff;
+  --sky: #efefed;
+  --sun: #141414;
+  --shelf: #dcdcd8;
+  --accent: #141414;
+  --shade: #e6e6e3;
+  --flag: #141414;
+  --darkblock: #191919;
+  --muted: color-mix(in srgb, var(--ink) 55%, var(--paper));
+  --shadow-hard: color-mix(in srgb, var(--ink) 12%, transparent);
+  --grid: rgba(20, 20, 20, 0.07);
+}
+
+html[data-theme="dark"] {
+  --paper: #0e0e0e;
+  --ink: #f2f2f0;
+  --surface: #1b1b1b;
+  --sky: #161616;
+  --sun: #f2f2f0;
+  --shelf: #2b2b2b;
+  --accent: #f2f2f0;
+  --shade: #262626;
+  --flag: #f2f2f0;
+  --darkblock: #191919;
+  --shadow-hard: color-mix(in srgb, #000 50%, transparent);
+  --grid: rgba(242, 242, 240, 0.08);
+}
+
+/* ---------- type tokens ----------
+   英文用 Fraunces/Grotesk 的编辑感衬线；中文没有拉丁字形可借，
+   整站字体族随 <html lang> 切到思源系列，避免落回系统黑体。 */
+:root {
+  --type-display: "Fraunces", Georgia, serif;
+  --type-body: "Space Grotesk", system-ui, sans-serif;
+  --type-mono: "Space Mono", ui-monospace, monospace;
+}
+
+html[lang="zh-CN"] {
+  --type-display: "Noto Serif SC", "Fraunces", Georgia, serif;
+  --type-body: "Noto Sans SC", "Space Grotesk", system-ui, sans-serif;
+  --type-mono: "Space Mono", "Noto Sans SC", ui-monospace, monospace;
+}
+
+/* 中文排版：拉丁字形的紧字距与斜体在方块字上会糊成一团，逐项放宽。
+   思源无 italic 轴，浏览器合成的斜体在汉字上很难看，改用下划线强调。 */
+html[lang="zh-CN"] .hero-type {
+  letter-spacing: 0.01em;
+  line-height: 0.96;
+}
+
+html[lang="zh-CN"] .section-title {
+  letter-spacing: 0.01em;
+}
+
+html[lang="zh-CN"] .prose p {
+  line-height: 1.95;
+}
+
+html[lang="zh-CN"] .card p {
+  line-height: 1.9;
+}
+
+html[lang="zh-CN"] .prose em {
+  font-style: normal;
+  border-bottom: 2px solid color-mix(in srgb, var(--accent) 40%, transparent);
+  padding-bottom: 1px;
+}
+
+html[lang="zh-CN"] .contact-list a.contact-big {
+  letter-spacing: 0;
+}
+
+/* ---------- base ---------- */
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  background-color: var(--paper);
+  /* graph-paper grid: two hairline gradients tiled into squares */
+  background-image: linear-gradient(to right, var(--grid) 1px, transparent 1px),
+    linear-gradient(to bottom, var(--grid) 1px, transparent 1px);
+  background-size: 28px 28px;
+  color: var(--ink);
+  font-family: var(--type-body);
+  font-size: 1rem;
+  line-height: 1.6;
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+  overflow-x: hidden;
+  transition: background-color 0.5s ease, color 0.5s ease;
+}
+
+::selection {
+  background: var(--accent);
+  color: var(--paper);
+}
+
+:focus-visible {
+  outline: 3px solid var(--accent);
+  outline-offset: 3px;
+  border-radius: 2px;
+}
+
+.mono {
+  font-family: var(--type-mono);
+  font-size: 0.75rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.section-title,
+.hero-type {
+  font-family: var(--type-display);
+  font-weight: 700;
+}
+
+/* ---------- topbar ---------- */
+.topbar {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1rem 1.5rem;
+  z-index: 50;
+  pointer-events: none;
+  mix-blend-mode: normal;
+}
+
+.topbar > * {
+  pointer-events: auto;
+}
+
+.topbar-tools {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+.topbar-right {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+/* ---------- language switch ---------- */
+.lang-switch {
+  display: inline-flex;
+  align-items: center;
+  background: var(--surface);
+  border: 2px solid var(--ink);
+  border-radius: 999px;
+  box-shadow: 3px 3px 0 var(--shadow-hard);
+  overflow: hidden;
+}
+
+.lang-btn {
+  appearance: none;
+  border: 0;
+  background: transparent;
+  color: var(--muted);
+  font-family: var(--type-mono);
+  font-size: 0.68rem;
+  letter-spacing: 0.08em;
+  padding: 0.34rem 0.62rem;
+  cursor: pointer;
+  transition: background-color 0.2s ease, color 0.2s ease;
+}
+
+.lang-btn + .lang-btn {
+  border-left: 2px solid color-mix(in srgb, var(--ink) 18%, transparent);
+}
+
+.lang-btn:hover {
+  color: var(--ink);
+}
+
+.lang-btn.is-active {
+  background: var(--ink);
+  color: var(--paper);
+}
+
+/* 窄屏下顶栏一行放不下三段，先舍弃地点，再舍弃状态文案 */
+@media (max-width: 640px) {
+  .topbar-loc {
+    display: none;
+  }
+}
+
+@media (max-width: 430px) {
+  .topbar-status {
+    display: none;
+  }
+}
+
+.dot {
+  width: 9px;
+  height: 9px;
+  border-radius: 999px;
+  background: var(--accent);
+  display: inline-block;
+  animation: pulse 2.4s ease-in-out infinite;
+}
+
+@keyframes pulse {
+  0%,
+  100% {
+    box-shadow: 0 0 0 0 color-mix(in srgb, var(--accent) 55%, transparent);
+    opacity: 1;
+  }
+  55% {
+    box-shadow: 0 0 0 7px transparent;
+    opacity: 0.75;
+  }
+}
+
+/* ---------- hero ---------- */
+.hero {
+  min-height: 100svh;
+  position: relative;
+  overflow: hidden;
+  display: grid;
+  place-items: center;
+  padding: 5rem 1rem 6rem;
+}
+
+/* stage wraps headline + scene so the headline centers on the
+   illustration instead of the full-viewport hero box */
+.hero-stage {
+  position: relative;
+  z-index: 1;
+  width: min(92vw, 980px);
+}
+
+/* desktop keeps the pre-stage composition: headline stays anchored to
+   .hero so >=641px renders exactly as before */
+@media (min-width: 641px) {
+  .hero-stage {
+    position: static;
+  }
+}
+
+.hero-type {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  z-index: 0;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0;
+  font-family: var(--type-display);
+  font-weight: 900;
+  text-transform: uppercase;
+  font-size: clamp(2.4rem, 13vw, 11rem);
+  line-height: 0.85;
+  letter-spacing: -0.02em;
+  color: color-mix(in srgb, var(--accent) 16%, transparent);
+  user-select: none;
+  pointer-events: none;
+  white-space: nowrap;
+  text-align: center;
+}
+
+.hero-type span {
+  display: block;
+}
+
+/* narrow screens: 13vw still overflows ~390px, tighten so the
+   two-line headline fits edge-to-edge without clipping */
+@media (max-width: 640px) {
+  .hero-type {
+    font-size: clamp(2.4rem, 11vw, 11rem);
+  }
+}
+
+#scene {
+  position: relative;
+  z-index: 1;
+  width: 100%;
+  height: auto;
+  display: block;
+}
+
+.hero-kicker {
+  position: relative;
+  z-index: 1;
+  text-align: center;
+  max-width: 46ch;
+  margin: 1.5rem auto 0;
+  color: var(--muted);
+  text-transform: none;
+  letter-spacing: 0.04em;
+  line-height: 1.7;
+}
+
+/* 跟随 hero 网格流排版：绝对定位到视口底部会与 kicker / dock 抢同一条窄带 */
+.scroll-hint {
+  position: relative;
+  z-index: 2;
+  margin-top: 1.8rem;
+  color: var(--muted);
+  text-decoration: none;
+  animation: bob 2.2s ease-in-out infinite;
+}
+
+.scroll-hint:hover {
+  color: var(--accent);
+}
+
+@keyframes bob {
+  0%,
+  100% {
+    translate: 0 0;
+  }
+  50% {
+    translate: 0 8px;
+  }
+}
+
+/* mobile: compact hero — stage owns the headline centering, everything
+   stacks in flow so there is no dead gap and nothing sits under the dock */
+@media (max-width: 640px) {
+  .hero {
+    min-height: auto;
+    padding: 6rem 1rem 8rem;
+  }
+
+  .hero-kicker {
+    margin-top: 2.5rem;
+  }
+
+  .scroll-hint {
+    margin-top: 2.5rem;
+    animation: none;
+  }
+}
+
+/* ---------- sections ---------- */
+.section {
+  max-width: 1000px;
+  margin-inline: auto;
+  padding-block: 5rem;
+  padding-inline: 1.5rem;
+  position: relative;
+}
+
+.section + .section {
+  border-top: 2px dashed color-mix(in srgb, var(--ink) 18%, transparent);
+}
+
+.section-index {
+  display: block;
+  color: var(--accent);
+  margin-bottom: 0.6rem;
+}
+
+.section-title {
+  font-family: var(--type-display);
+  font-weight: 800;
+  font-size: clamp(2.2rem, 5vw, 3.4rem);
+  line-height: 1.05;
+  letter-spacing: -0.01em;
+  margin: 0 0 2rem;
+}
+
+/* ---------- prose ---------- */
+.prose p {
+  font-size: 1.15rem;
+  line-height: 1.7;
+  max-width: 62ch;
+  margin: 0 0 1.25rem;
+}
+
+.prose em {
+  font-family: var(--type-display);
+  font-style: italic;
+  font-weight: 600;
+  color: var(--accent);
+}
+
+.aside {
+  color: var(--muted);
+  font-size: 0.72rem;
+  text-transform: none;
+  letter-spacing: 0.05em;
+  line-height: 1.8;
+}
+
+p.prose {
+  font-size: 1.15rem;
+  line-height: 1.7;
+  max-width: 62ch;
+}
+
+/* ---------- cards ---------- */
+.cards {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 2rem;
+}
+
+@media (max-width: 900px) {
+  .cards {
+    grid-template-columns: 1fr;
+    gap: 2.6rem;
+  }
+}
+
+.card {
+  position: relative;
+  background: var(--surface);
+  border: 2px solid var(--ink);
+  box-shadow: 6px 6px 0 var(--shadow-hard);
+  padding: 1.9rem 1.6rem 1.6rem;
+  transition: box-shadow 0.25s ease, translate 0.25s ease;
+}
+
+.card:nth-child(odd) {
+  rotate: -1deg;
+}
+
+.card:nth-child(even) {
+  rotate: 1.2deg;
+}
+
+.card:hover {
+  translate: 0 -4px;
+  box-shadow: 9px 11px 0 var(--shadow-hard);
+}
+
+.card h3 {
+  font-family: var(--type-display);
+  font-weight: 700;
+  font-size: 1.4rem;
+  line-height: 1.2;
+  margin: 0 0 0.6rem;
+}
+
+.card p {
+  color: var(--muted);
+  font-size: 0.95rem;
+  line-height: 1.65;
+  margin: 0 0 1.1rem;
+}
+
+.card h3 a {
+  color: inherit;
+  text-decoration: underline;
+  text-decoration-thickness: 2px;
+  text-underline-offset: 4px;
+  text-decoration-color: color-mix(in srgb, var(--ink) 25%, transparent);
+  transition: color 0.2s ease, text-decoration-color 0.2s ease;
+}
+
+.card h3 a:hover {
+  color: var(--accent);
+  text-decoration-color: var(--accent);
+}
+
+/* 作品卡下的一行补充链接 */
+.more-work {
+  margin-top: 2.4rem;
+}
+
+.more-work a {
+  color: var(--ink);
+  text-decoration: underline;
+  text-decoration-thickness: 1.5px;
+  text-underline-offset: 3px;
+  text-decoration-color: color-mix(in srgb, var(--ink) 35%, transparent);
+}
+
+.more-work a:hover {
+  color: var(--accent);
+  text-decoration-color: var(--accent);
+}
+
+.keepcase {
+  text-transform: none;
+}
+
+/* washi tape */
+.tape,
+.tape-alt {
+  position: absolute;
+  top: -13px;
+  left: 50%;
+  width: 90px;
+  height: 26px;
+  translate: -50% 0;
+  rotate: -3deg;
+  background: color-mix(in srgb, var(--accent) 55%, transparent);
+  border-inline: 1px dashed color-mix(in srgb, var(--paper) 45%, transparent);
+  box-shadow: 0 1px 2px color-mix(in srgb, var(--ink) 12%, transparent);
+  pointer-events: none;
+}
+
+.tape-alt {
+  background: color-mix(in srgb, var(--sky) 60%, transparent);
+  rotate: 2.5deg;
+}
+
+/* ---------- tags ---------- */
+.tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.tags li {
+  font-family: var(--type-mono);
+  font-size: 0.72rem;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  border: 1px solid var(--ink);
+  border-radius: 999px;
+  padding: 0.2rem 0.6rem;
+  color: var(--muted);
+}
+
+.tags.big {
+  gap: 0.75rem;
+}
+
+.tags.big li {
+  font-size: 0.95rem;
+  padding: 0.45rem 1.1rem;
+  color: var(--ink);
+  background: var(--surface);
+  border-width: 2px;
+  transition: background-color 0.2s ease, color 0.2s ease, rotate 0.2s ease;
+}
+
+.tags.big li:nth-child(odd) {
+  rotate: -0.8deg;
+}
+
+.tags.big li:nth-child(even) {
+  rotate: 0.8deg;
+}
+
+.tags.big li:hover {
+  background: var(--accent);
+  border-color: var(--accent);
+  color: var(--paper);
+}
+
+.tags.big + .aside {
+  margin-top: 1.6rem;
+}
+
+/* ---------- contact ---------- */
+.contact-list {
+  list-style: none;
+  margin: 2rem 0 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 0.9rem;
+}
+
+.contact-list a {
+  font-family: var(--type-mono);
+  font-size: 0.9rem;
+  letter-spacing: 0.06em;
+  color: var(--ink);
+  text-decoration: underline;
+  text-decoration-thickness: 2px;
+  text-underline-offset: 5px;
+  text-decoration-color: color-mix(in srgb, var(--ink) 35%, transparent);
+  transition: color 0.2s ease, text-decoration-color 0.2s ease;
+}
+
+.contact-list a:hover {
+  color: var(--accent);
+  text-decoration-color: var(--accent);
+}
+
+.contact-list a.contact-big {
+  font-family: var(--type-display);
+  font-weight: 700;
+  font-size: clamp(1.6rem, 4.5vw, 3rem);
+  line-height: 1.15;
+  letter-spacing: -0.01em;
+  text-transform: none;
+  color: var(--ink);
+  text-decoration: underline;
+  text-decoration-thickness: 3px;
+  text-underline-offset: 8px;
+  text-decoration-color: color-mix(in srgb, var(--ink) 30%, transparent);
+  transition: color 0.2s ease, text-decoration-color 0.2s ease;
+  word-break: break-word;
+}
+
+.contact-list a.contact-big:hover {
+  color: var(--accent);
+  text-decoration-color: var(--accent);
+}
+
+.contact-list.row {
+  flex-direction: row;
+  flex-wrap: wrap;
+  gap: 1.5rem;
+  margin-top: 1.4rem;
+}
+
+.contact-list .mono {
+  font-size: 0.9rem;
+  letter-spacing: 0.06em;
+  text-transform: none;
+}
+
+/* 微信号无法点击，视觉上要像一条注释而不是一个坏掉的链接 */
+.contact-list span.mono {
+  color: var(--muted);
+}
+
+/* ---------- dock ---------- */
+.dock {
+  position: fixed;
+  bottom: 1.2rem;
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  gap: 0.4rem;
+  padding: 0.5rem 0.7rem;
+  background: var(--surface);
+  border: 2px solid var(--ink);
+  border-radius: 999px;
+  box-shadow: 5px 5px 0 var(--shadow-hard);
+  z-index: 40;
+}
+
+.dock-btn {
+  width: 44px;
+  height: 44px;
+  display: grid;
+  place-items: center;
+  border-radius: 999px;
+  transition: background-color 0.2s ease;
+}
+
+.dock-btn svg {
+  width: 22px;
+  height: 22px;
+  fill: none;
+  stroke: var(--ink);
+  stroke-width: 2;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  transition: stroke 0.2s ease;
+}
+
+.dock-btn:hover {
+  background: color-mix(in srgb, var(--ink) 8%, transparent);
+}
+
+.dock-btn.is-active {
+  background: var(--accent);
+}
+
+.dock-btn.is-active svg {
+  stroke: var(--paper);
+}
+
+/* ============================================================
+   SVG scene helpers
+   ============================================================ */
+.s {
+  fill: none;
+  stroke: var(--ink);
+  stroke-width: 6;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+.s-thin {
+  fill: none;
+  stroke: var(--ink);
+  stroke-width: 3;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+.f-surface {
+  fill: var(--surface);
+}
+
+/* the bulb only glows in dark theme */
+.f-bulb {
+  fill: var(--surface);
+  transition: fill 0.5s ease;
+}
+
+html[data-theme="dark"] .f-bulb {
+  fill: var(--sun);
+  filter: drop-shadow(0 0 14px color-mix(in srgb, var(--sun) 70%, transparent));
+}
+
+.f-sky {
+  fill: var(--sky);
+}
+
+.f-sun {
+  fill: var(--sun);
+}
+
+.f-switch {
+  fill: var(--shade);
+}
+
+.f-dark {
+  fill: var(--darkblock);
+}
+
+.f-glyph {
+  fill: #fff;
+}
+
+.f-shelf {
+  fill: var(--shelf);
+}
+
+.f-shade {
+  fill: var(--shade);
+}
+
+/* terracotta accent stays constant across day/night: nose, inner ears, blush, tail tip */
+.f-accent {
+  fill: var(--accent);
+}
+
+.soft {
+  fill-opacity: 0.32;
+}
+
+.f-flag {
+  fill: var(--flag);
+}
+
+.f-ink {
+  fill: var(--ink);
+}
+
+.f-laptop {
+  fill: var(--shade);
+}
+
+.glyph {
+  fill: none;
+  stroke: #fff;
+  stroke-width: 3;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+.sun-rays line {
+  stroke: var(--sun);
+  stroke-width: 4;
+}
+
+/* ---------- day / night window ---------- */
+#sun {
+  transition: opacity 0.5s ease;
+}
+
+#night {
+  opacity: 0;
+  transition: opacity 0.5s ease;
+}
+
+html[data-theme="dark"] #sun {
+  opacity: 0;
+}
+
+html[data-theme="dark"] #night {
+  opacity: 1;
+}
+
+.steam path {
+  stroke: var(--muted);
+  stroke-width: 3;
+  fill: none;
+  animation: steam-rise 3.2s ease-in-out infinite;
+}
+
+.steam path:nth-child(2) {
+  animation-delay: 1.4s;
+}
+
+@keyframes steam-rise {
+  0%,
+  100% {
+    opacity: 0.35;
+    translate: 0 0;
+  }
+  50% {
+    opacity: 0.9;
+    translate: 0 -6px;
+  }
+}
+
+.whiskers line {
+  stroke: var(--ink);
+  stroke-width: 3;
+}
+
+/* clickable SVG groups */
+.clickable {
+  cursor: pointer;
+  transform-box: fill-box;
+  transform-origin: center;
+}
+
+/* the UA focus rectangle draws a stray black frame around the illustration;
+   keyboard focus is signalled by an accent halo on the silhouette instead */
+.clickable:focus,
+.clickable:focus-visible {
+  outline: none;
+}
+
+.clickable:focus-visible {
+  filter: drop-shadow(0 0 6px var(--accent));
+}
+
+/* scene fills follow theme transition */
+#scene * {
+  transition: fill 0.5s ease, stroke 0.5s ease;
+}
+
+/* ---------- reveal (hook for later phases; harmless static state) ---------- */
+.reveal {
+  /* phase B animates this; keep visible by default */
+}
+
+/* ---------- reduced motion ---------- */
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.001s !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.001s !important;
+  }
+
+  .scroll-hint,
+  .dot,
+  .steam path {
+    animation: none !important;
+  }
+}
+
+/* ---------- transient "meow" label (spawned by scene.ts on cat pet) ---------- */
+.meow {
+  position: absolute;
+  left: 0;
+  top: 0;
+  z-index: 2;
+  font-family: var(--type-mono);
+  font-size: 0.8rem;
+  letter-spacing: 0.06em;
+  color: var(--accent);
+  pointer-events: none;
+  user-select: none;
+  white-space: nowrap;
+}
+
+/* ---------- phase C: scroll progress bar (element created in motion.ts) ---------- */
+.scroll-progress {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 3px;
+  background: var(--accent);
+  transform: scaleX(0);
+  transform-origin: left center;
+  z-index: 60;
+  pointer-events: none;
+}
