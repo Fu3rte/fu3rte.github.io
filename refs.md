@@ -1,6 +1,7 @@
-1. AI对话 **https://elliottprogrammer.com/**
-2. 猫的lottie动画和动效：https://sumatran.cat/
-3. 字体：https://portfolio-website-template.getdesign.md/
+**https://elliottprogrammer.com/**
+
+1. 猫的lottie动画和动效：https://sumatran.cat/
+2. 字体：https://portfolio-website-template.getdesign.md/
 
 pinterest关键词：
 

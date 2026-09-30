@@ -312,13 +312,17 @@ export function initScene(): void {
   if (!cat || !head || !eyes || !earL || !earR || !body || !tail || !pawL || !pawR) return;
 
   const rig: CatRig = { head, eyes, earL, earR, body, tail, pawL, pawR };
-  // every pivot sits on a real joint, in scene coordinates
-  pivot(head, '592 520'); // neck
-  pivot(eyes, '592 464');
-  pivot(earL, '573 430'); // ear base
-  pivot(earR, '611 430');
-  pivot(body, '592 648'); // planted on the desk
-  pivot(tail, '652 604'); // tail base
+  // every pivot sits on a real joint. head/eyes/ears/body/tail live inside the
+  // wrapper <g transform="translate(437.4,339) scale(0.773)">, and gsap resolves
+  // svgOrigin in the element's own user space (ancestors excluded), so their
+  // pivots are cat-study coordinates (400x430). the front paws sit directly in
+  // scene coordinates and keep scene-space pivots.
+  pivot(head, '200 214'); // neck
+  pivot(eyes, '200 152');
+  pivot(earL, '158 110'); // ear base
+  pivot(earR, '242 110');
+  pivot(body, '200 390'); // planted on the desk
+  pivot(tail, '283 358'); // tail base
   pivot(pawL, '547 525'); // wrist
   pivot(pawR, '635 525');
 

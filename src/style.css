@@ -833,6 +833,133 @@ html[data-theme="dark"] #night {
   stroke-width: 3;
 }
 
+/* ---------- cat coat: the only colored element on the page ----------
+   light = winter silver tabby; dark = white longhair (stripes hidden).
+   cat-only tokens; the page-wide monochrome palette above stays untouched. */
+:root {
+  --cat-coat: #b8c0c8;
+  --cat-coat-shade: #96a1ab;
+  --cat-belly: #ffffff;
+  --cat-stripe: #2b333c;
+  --cat-tipping: #6d7883;
+  --cat-outline: #181d24;
+  --cat-eye: #4ea8b6;
+  --cat-pupil: #12181f;
+  --cat-nose: #d98888;
+  --cat-inner-ear: #e8b6b6;
+  --cat-whisker: #333c46;
+  --cat-stripe-op: 1;
+}
+
+html[data-theme="dark"] {
+  --cat-coat: #f1ebe1;
+  --cat-coat-shade: #d8cfc0;
+  --cat-belly: #ffffff;
+  --cat-stripe: #33241a;
+  --cat-tipping: #c9c0b2;
+  --cat-outline: #2a2a30;
+  --cat-eye: #e0a445;
+  --cat-pupil: #241a10;
+  --cat-nose: #e0a9a9;
+  --cat-inner-ear: #ecd2d2;
+  --cat-whisker: #cfcdc6;
+  --cat-stripe-op: 0;
+}
+
+.cat-coat {
+  fill: var(--cat-coat);
+}
+
+.cat-coat-shade {
+  fill: var(--cat-coat-shade);
+}
+
+.cat-belly {
+  fill: var(--cat-belly);
+}
+
+.cat-stripe {
+  fill: none;
+  stroke: var(--cat-stripe);
+  stroke-width: 6;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  opacity: var(--cat-stripe-op);
+}
+
+.cat-stripe-thin {
+  fill: none;
+  stroke: var(--cat-stripe);
+  stroke-width: 4;
+  stroke-linecap: round;
+  opacity: var(--cat-stripe-op);
+}
+
+.cat-tipping {
+  fill: none;
+  stroke: var(--cat-tipping);
+  stroke-width: 4;
+  stroke-linecap: round;
+  opacity: 0.8;
+}
+
+.cat-outline {
+  fill: none;
+  stroke: var(--cat-outline);
+  stroke-width: 5;
+  stroke-linejoin: round;
+  stroke-linecap: round;
+}
+
+.cat-outline-thin {
+  fill: none;
+  stroke: var(--cat-outline);
+  stroke-width: 3;
+  stroke-linecap: round;
+}
+
+.cat-eye {
+  fill: var(--cat-eye);
+}
+
+.cat-pupil {
+  fill: var(--cat-pupil);
+}
+
+.cat-nose {
+  fill: var(--cat-nose);
+}
+
+.cat-inner-ear {
+  fill: var(--cat-inner-ear);
+}
+
+.cat-whisker {
+  fill: none;
+  stroke: var(--cat-whisker);
+  stroke-width: 3;
+  stroke-linecap: round;
+}
+
+.cat-mouth {
+  fill: none;
+  stroke: var(--cat-outline);
+  stroke-width: 4;
+  stroke-linecap: round;
+}
+
+/* coat change is a smooth molt: fill/stroke ride the #scene * transition,
+   stripes additionally fade out via opacity */
+.cat-stripe,
+.cat-stripe-thin {
+  transition: opacity 0.5s ease, stroke 0.5s ease;
+}
+
+/* amber eyes glow in the dark theme */
+html[data-theme="dark"] #cat-eyes {
+  filter: drop-shadow(0 0 10px rgba(224, 164, 69, 0.55));
+}
+
 /* clickable SVG groups */
 .clickable {
   cursor: pointer;
