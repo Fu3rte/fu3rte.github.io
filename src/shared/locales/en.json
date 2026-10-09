@@ -1,0 +1,76 @@
+{
+  "meta": {
+    "title": "Finnian — Animation & Interaction Portfolio",
+    "contactTitle": "Contact — Finnian",
+    "photosTitle": "Photos — Finnian",
+    "description": "Animation and interaction portfolio of Finnian — GSAP, Rive and Lottie driven experiments, based in Dongguan, China.",
+    "photosDescription": "Photographs by Finnian.",
+    "contactDescription": "Write to Finnian about motion, interfaces or a hello — email, GitHub, Instagram."
+  },
+  "brand": "FINNIAN",
+  "nav": {
+    "aria": "Site menu",
+    "home": "Home",
+    "photos": "Photos",
+    "contact": "Contact"
+  },
+  "photos": {
+    "title": "Photos",
+    "alt": "Photo"
+  },
+  "hero": {
+    "aria": "Skull in a black hood seated behind a dark grey Apple laptop, a cup of coffee steaming on the desk"
+  },
+  "about": {
+    "title": "About",
+    "p1": "I'm Finnian. Frontend background, now focused on AI applications and interaction, based in Dongguan. This site doubles as my motion lab — GSAP, Rive and Lottie all show up here.",
+    "p2": "Away from work I write, rarely publish. I take animation mechanics apart for fun and collect odd, useful open-source tools. Come say hi."
+  },
+  "skills": {
+    "title": "Skills",
+    "craft": {
+      "1": "Scroll-driven storytelling & timeline choreography",
+      "2": "State-machine driven interaction animation",
+      "3": "SVG paths and frame-by-frame tuning",
+      "title": "Motion"
+    },
+    "tools": {
+      "1": "Rive & Lottie workflows",
+      "2": "AE / PR short-form editing",
+      "3": "AI apps and agent building",
+      "title": "Tools"
+    },
+    "play": {
+      "1": "Observation & notes",
+      "2": "Cycling",
+      "3": "Animation and games",
+      "title": "Everyday"
+    }
+  },
+  "works": {
+    "title": "Works",
+    "scroll": {
+      "name": "Scroll experiments",
+      "desc": "Narrative pages driven by GSAP ScrollTrigger"
+    },
+    "motion": {
+      "name": "Animation prototypes",
+      "desc": "Interactive samples built in Rive and Lottie"
+    },
+    "toys": {
+      "name": "Small toys",
+      "desc": "Bits of playful mechanics"
+    },
+    "writing": {
+      "name": "Writing",
+      "desc": "Personal, non-technical pieces"
+    }
+  },
+  "contact": {
+    "title": "Contact",
+    "p": "I check my inbox twice a day, with the same hands-in-pockets patience this page is drawn with. Write to me about agents, interfaces, a role you think fits — or just to say hi.",
+    "github": "github / Fu3rte",
+    "instagram": "instagram / cq777h",
+    "wechat": "wechat / F1nnian_"
+  }
+}

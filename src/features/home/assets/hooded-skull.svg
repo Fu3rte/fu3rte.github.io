@@ -1,0 +1,288 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1254" height="1254" viewBox="0 0 1254 1254" fill="none" role="img" aria-labelledby="art-title art-desc">
+  <title id="art-title">&#x9ed1;&#x8272;&#x515c;&#x5e3d;&#x9ab7;&#x9ac5;&#x4e0e;&#x82f9;&#x679c;&#x7b14;&#x8bb0;&#x672c;</title>
+  <desc id="art-desc">&#x6b63;&#x9762;&#x89c6;&#x89d2;&#xff0c;&#x9ed1;&#x8272;&#x536b;&#x8863;&#x7684;&#x9ab7;&#x9ac5;&#x6234;&#x7740;&#x515c;&#x5e3d;&#xff0c;&#x5750;&#x5728;&#x6df1;&#x7070;&#x8272;&#x7b14;&#x8bb0;&#x672c;&#x7535;&#x8111;&#x540e;&#x3002;&#x5168;&#x90e8;&#x5143;&#x7d20;&#x4f7f;&#x7528;&#x77e2;&#x91cf;&#x8def;&#x5f84;&#x7ed8;&#x5236;&#x3002;</desc>
+  <defs>
+    <radialGradient id="paper" cx="49%" cy="46%" r="72%">
+      <stop stop-color="#e3e3e3"/>
+      <stop offset=".7" stop-color="#dfdfdf"/>
+      <stop offset="1" stop-color="#dedede"/>
+    </radialGradient>
+    <linearGradient id="torso" x1="355" y1="665" x2="830" y2="982" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#242424"/>
+      <stop offset=".5" stop-color="#111111"/>
+      <stop offset="1" stop-color="#1e1e1e"/>
+    </linearGradient>
+    <linearGradient id="left-shoulder" x1="293" y1="705" x2="424" y2="816" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#292929"/>
+      <stop offset=".53" stop-color="#202020"/>
+      <stop offset="1" stop-color="#101010"/>
+    </linearGradient>
+    <linearGradient id="right-shoulder" x1="875" y1="698" x2="1001" y2="817" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#252525"/>
+      <stop offset=".61" stop-color="#202020"/>
+      <stop offset="1" stop-color="#0d0d0d"/>
+    </linearGradient>
+    <linearGradient id="g-left-sleeve" x1="182" y1="907" x2="324" y2="1020" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#262626"/>
+      <stop offset=".62" stop-color="#1b1b1b"/>
+      <stop offset="1" stop-color="#141414"/>
+    </linearGradient>
+    <linearGradient id="g-right-sleeve" x1="1059" y1="884" x2="954" y2="1082" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#252525"/>
+      <stop offset=".54" stop-color="#1c1c1c"/>
+      <stop offset="1" stop-color="#121212"/>
+    </linearGradient>
+    <linearGradient id="hood" x1="448" y1="173" x2="790" y2="662" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#202020"/>
+      <stop offset=".42" stop-color="#1b1b1b"/>
+      <stop offset=".76" stop-color="#1e1e1e"/>
+      <stop offset="1" stop-color="#141414"/>
+    </linearGradient>
+    <linearGradient id="hood-left-rim" x1="433" y1="189" x2="390" y2="582" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#333332"/>
+      <stop offset=".58" stop-color="#303030"/>
+      <stop offset="1" stop-color="#282828"/>
+    </linearGradient>
+    <linearGradient id="hood-right-rim" x1="720" y1="152" x2="952" y2="551" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#323232"/>
+      <stop offset=".66" stop-color="#333333"/>
+      <stop offset="1" stop-color="#272727"/>
+    </linearGradient>
+    <linearGradient id="g-left-lapel" x1="332" y1="557" x2="549" y2="718" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#222222"/>
+      <stop offset=".42" stop-color="#252525"/>
+      <stop offset="1" stop-color="#1b1b1b"/>
+    </linearGradient>
+    <linearGradient id="g-right-lapel" x1="900" y1="568" x2="699" y2="721" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#202020"/>
+      <stop offset=".5" stop-color="#232323"/>
+      <stop offset="1" stop-color="#171717"/>
+    </linearGradient>
+    <radialGradient id="bone" cx="51%" cy="31%" r="81%">
+      <stop stop-color="#fcfcfc"/>
+      <stop offset=".67" stop-color="#fafafa"/>
+      <stop offset="1" stop-color="#f4f4f4"/>
+    </radialGradient>
+    <linearGradient id="bone-rim" x1="479" y1="416" x2="789" y2="454" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#c4c4c3"/>
+      <stop offset=".51" stop-color="#d0d0cf"/>
+      <stop offset="1" stop-color="#c8c8c7"/>
+    </linearGradient>
+    <radialGradient id="socket" cx="47%" cy="37%" r="73%">
+      <stop stop-color="#050505"/>
+      <stop offset="1" stop-color="#090909"/>
+    </radialGradient>
+    <linearGradient id="metal-rim" x1="316" y1="769" x2="939" y2="1108" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#b7b7b7"/>
+      <stop offset=".29" stop-color="#8c8c8d"/>
+      <stop offset=".6" stop-color="#a5a5a5"/>
+      <stop offset="1" stop-color="#9b9b9b"/>
+    </linearGradient>
+    <linearGradient id="aluminum" x1="369" y1="775" x2="916" y2="1107" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#5b5b5d"/>
+      <stop offset=".49" stop-color="#5a595b"/>
+      <stop offset="1" stop-color="#555456"/>
+    </linearGradient>
+    <radialGradient id="metal-light" cx="51%" cy="34%" r="78%">
+      <stop stop-color="#767578" stop-opacity=".09"/>
+      <stop offset="1" stop-color="#333335" stop-opacity=".025"/>
+    </radialGradient>
+    <linearGradient id="base-metal" x1="627" y1="1115" x2="627" y2="1146" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#606062"/>
+      <stop offset=".3" stop-color="#5a595b"/>
+      <stop offset="1" stop-color="#545456"/>
+    </linearGradient>
+    <linearGradient id="hinge-metal" x1="303" y1="1110" x2="325" y2="1139" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#a6a6a6"/>
+      <stop offset=".5" stop-color="#6e6e6f"/>
+      <stop offset="1" stop-color="#444444"/>
+    </linearGradient>
+    <filter id="paper-grain" x="0" y="0" width="100%" height="100%" color-interpolation-filters="sRGB">
+      <feTurbulence type="fractalNoise" baseFrequency=".026" numOctaves="3" seed="18" stitchTiles="stitch"/>
+      <feColorMatrix type="saturate" values="0"/>
+      <feComponentTransfer><feFuncA type="linear" slope=".028"/></feComponentTransfer>
+      <feBlend in="SourceGraphic" mode="soft-light"/>
+    </filter>
+    <filter id="fabric-grain" x="-1%" y="-1%" width="102%" height="102%" color-interpolation-filters="sRGB">
+      <feTurbulence type="fractalNoise" baseFrequency=".34" numOctaves="2" seed="11" stitchTiles="stitch"/>
+      <feColorMatrix type="saturate" values="0"/>
+      <feComposite in2="SourceGraphic" operator="in"/>
+      <feComponentTransfer><feFuncA type="linear" slope=".026"/></feComponentTransfer>
+      <feBlend in="SourceGraphic" mode="soft-light"/>
+    </filter>
+    <filter id="aluminum-grain" x="0" y="0" width="100%" height="100%" color-interpolation-filters="sRGB">
+      <feTurbulence type="fractalNoise" baseFrequency=".014" numOctaves="4" seed="7" stitchTiles="stitch"/>
+      <feColorMatrix type="saturate" values="0"/>
+      <feComposite in2="SourceGraphic" operator="in"/>
+      <feComponentTransfer><feFuncA type="linear" slope=".063"/></feComponentTransfer>
+      <feBlend in="SourceGraphic" mode="soft-light"/>
+    </filter>
+    <path id="lid-face-path" d="M330 769 H924 C936 769 943 775 942 788 L926 1095 C925 1106 920 1111 909 1111 H343 C332 1111 327 1106 326 1095 L310 789 C309 776 315 769 330 769Z"/>
+    <clipPath id="lid-face-clip"><use href="#lid-face-path"/></clipPath>
+  </defs>
+
+  <!-- Background -->
+  <g id="background">
+    <path d="M0 0H1254V1254H0Z" fill="url(#paper)" filter="url(#paper-grain)"/>
+  </g>
+
+  <!-- Sweatshirt silhouette and shoulders -->
+  <g id="sweatshirt" stroke-linecap="round" stroke-linejoin="round">
+    <path id="body-silhouette" d="M357 642 C347 651 342 663 344 676 C311 688 278 743 248 820 C224 833 197 851 183 866 C171 878 180 915 192 950 C178 975 168 996 168 1013 C168 1037 187 1061 209 1078 C214 1101 219 1109 248 1113 C303 1125 404 1091 460 1069 H798 C857 1094 947 1125 1008 1112 C1033 1111 1040 1104 1047 1078 C1073 1057 1087 1033 1086 1013 C1086 994 1072 970 1061 950 C1068 925 1079 891 1073 879 C1069 864 1034 840 1008 822 C978 758 948 700 908 677 C909 663 903 649 892 642Z" fill="url(#torso)" stroke="#020202" stroke-width="8"/>
+    <path id="left-shoulder-panel" d="M357 674 C324 679 288 739 251 818 L298 848 L443 804 C432 760 412 706 385 686 C375 678 367 674 357 674Z" fill="url(#left-shoulder)" stroke="#070707" stroke-width="6"/>
+    <path d="M352 682 C323 696 289 757 263 812 L277 808 C300 760 324 719 357 694 C364 689 370 690 378 693 C370 684 361 678 352 682Z" fill="#373737"/>
+    <path d="M304 729 C322 730 340 743 356 764 L346 766 C331 747 316 736 304 735Z" fill="#030303"/>
+    <path d="M358 679 C387 691 408 728 422 758" stroke="#050505" stroke-width="6"/>
+    <path d="M283 783 C297 767 307 756 321 752 L342 769 L310 809 L264 821Z" fill="#191919"/>
+    <path d="M315 744 C327 749 338 759 345 770 L335 770 C327 759 321 752 315 744Z" fill="#424242" opacity=".5"/>
+    <path id="right-shoulder-panel" d="M884 675 C920 680 961 739 1004 820 L960 847 L813 806 C827 755 850 708 872 684Z" fill="url(#right-shoulder)" stroke="#070707" stroke-width="6"/>
+    <path d="M884 682 C917 688 956 747 991 814 L978 808 C950 756 922 714 887 691 C880 687 875 691 870 697 L877 682Z" fill="#373737"/>
+    <path d="M884 680 C858 694 837 727 822 758" stroke="#050505" stroke-width="6"/>
+    <path d="M946 729 C925 733 910 745 895 763 L905 766 C920 748 934 738 946 735Z" fill="#040404"/>
+    <path d="M941 744 C928 750 918 759 910 770 L920 770 C928 759 935 751 941 744Z" fill="#424242" opacity=".46"/>
+    <path d="M972 783 C958 767 946 756 933 752 L914 770 L943 809 L989 821Z" fill="#181818"/>
+    <path id="chest-left-fold" d="M405 693 C435 706 461 721 479 730 L479 760 H441 C427 730 417 711 405 693Z" fill="#292929"/>
+    <path d="M407 692 C426 716 434 738 438 757 L422 757 C415 734 404 716 394 700Z" fill="#060606"/>
+    <path id="chest-right-fold" d="M824 709 C799 721 782 728 767 733 L768 760 H812Z" fill="#2c2c2c"/>
+    <path d="M850 693 C831 716 820 740 816 758 L832 758 C840 734 850 714 860 700Z" fill="#080808"/>
+    <g id="hood-drawstrings">
+      <path d="M480 708 L503 718 L504 775 L480 775Z" fill="#080808"/>
+      <path d="M485 715 L499 722 L500 765 L486 765Z" fill="#383838"/>
+      <path d="M751 716 L775 706 L774 775 L749 775Z" fill="#080808"/>
+      <path d="M756 721 L769 715 L768 766 L755 766Z" fill="#3b3b3b"/>
+    </g>
+  </g>
+
+  <!-- Sleeve fabric, entirely behind the laptop -->
+  <g id="sleeves" stroke-linejoin="round" stroke-linecap="round">
+    <g id="left-sleeve">
+      <path d="M293 817 C254 825 208 853 186 876 C177 887 186 923 194 949 C219 920 258 902 312 899 L313 840Z" fill="url(#g-left-sleeve)"/>
+      <path d="M289 818 C258 835 218 860 205 881 C194 896 201 918 205 930 L195 947 C184 923 178 894 185 881 C200 861 242 834 269 825Z" fill="#333333"/>
+      <path d="M307 890 C281 884 252 877 231 884 C216 889 212 902 213 929 C235 909 267 901 310 905Z" fill="#040404"/>
+      <path d="M309 899 C266 891 231 907 207 937 C184 964 162 1000 171 1025 C178 1048 192 1061 210 1078 C213 1099 221 1107 245 1111 C276 1116 307 1113 333 1101 L336 982Z" fill="url(#g-left-sleeve)" stroke="#030303" stroke-width="6"/>
+      <path d="M306 903 C257 899 223 924 198 962 C181 987 171 1010 181 1028 C185 1036 190 1032 194 1019 C207 974 253 930 309 919Z" fill="#303030"/>
+      <path d="M305 920 C272 925 248 946 231 980 C254 952 278 938 308 930Z" fill="#030303"/>
+      <path d="M220 987 C205 1008 201 1039 207 1071 C211 1093 217 1104 237 1108 L255 1112 C230 1101 224 1083 220 1065 C216 1041 217 1014 220 987Z" fill="#030303"/>
+      <path d="M218 1000 C207 1024 208 1059 216 1081 C215 1054 216 1022 222 995Z" fill="#363636" opacity=".3"/>
+      <path d="M247 1080 C264 1094 271 1095 282 1083 L316 1047 L322 1109 C293 1117 267 1108 247 1080Z" fill="#060606"/>
+      <path d="M249 1082 C258 1094 272 1104 286 1108 L269 1108 C260 1102 253 1094 249 1082Z" fill="#202020"/>
+    </g>
+    <g id="right-sleeve">
+      <path d="M956 817 C995 817 1040 851 1068 876 C1078 887 1067 925 1060 950 C1033 920 995 902 946 899 L945 842Z" fill="url(#g-right-sleeve)"/>
+      <path d="M966 818 C1000 834 1041 860 1051 882 C1057 896 1051 918 1048 930 L1060 947 C1070 921 1078 891 1070 880 C1049 856 1009 832 982 822Z" fill="#343434"/>
+      <path d="M949 893 C977 896 1005 879 1022 883 C1035 886 1040 897 1042 915 C1015 908 985 902 948 906Z" fill="#030303"/>
+      <path d="M946 900 C990 892 1028 911 1052 945 C1073 974 1092 1006 1083 1029 C1076 1051 1059 1069 1047 1079 C1043 1101 1035 1107 1011 1111 C985 1115 953 1113 926 1101 L923 982Z" fill="url(#g-right-sleeve)" stroke="#030303" stroke-width="6"/>
+      <path d="M949 904 C994 899 1026 923 1051 960 C1069 986 1080 1010 1070 1028 C1062 1042 1054 1045 1052 1033 C1049 1008 1035 978 1015 957 C995 936 973 924 947 919Z" fill="#303030"/>
+      <path d="M948 923 C981 929 1009 951 1025 981 C1001 955 978 939 946 931Z" fill="#030303"/>
+      <path d="M1035 987 C1049 1010 1052 1039 1047 1069 C1043 1093 1037 1105 1015 1110 L996 1113 C1022 1104 1032 1083 1036 1064 C1040 1043 1039 1011 1035 987Z" fill="#030303"/>
+      <path d="M1039 1000 C1048 1023 1048 1053 1040 1080 C1042 1056 1041 1025 1036 995Z" fill="#333333" opacity=".32"/>
+      <path d="M1007 1081 C990 1093 984 1095 975 1083 L941 1048 L933 1109 C964 1116 988 1109 1007 1081Z" fill="#050505"/>
+    </g>
+  </g>
+
+  <!-- Hood crown -->
+  <g id="hood-crown" stroke-linejoin="round" stroke-linecap="round">
+    <path id="hood-outline" d="M630 92 C608 91 574 120 530 151 C459 192 416 235 377 294 C355 327 337 361 325 395 C300 435 276 485 271 532 C268 547 268 560 274 576 C285 607 311 631 348 655 C389 680 450 701 504 723 C546 739 582 749 609 755 L649 755 C687 741 737 721 787 704 C834 686 876 670 901 647 C931 622 956 593 971 562 C980 545 980 535 974 516 C957 462 936 411 909 364 C876 305 839 248 795 204 C773 182 752 167 727 153 C700 130 678 108 655 97 C646 92 638 91 630 92Z" fill="url(#hood)" stroke="#020202" stroke-width="8" filter="url(#fabric-grain)"/>
+    <path id="crown-left-highlight" d="M619 99 C595 110 567 134 534 157 C464 200 421 242 379 301 C361 327 346 352 335 378 C378 317 420 264 471 224 C489 209 507 199 522 190 C553 160 584 130 619 99Z" fill="url(#hood-left-rim)"/>
+    <path d="M631 109 C628 126 628 142 629 156 C590 157 552 172 506 198 C550 180 594 161 624 160 C652 158 680 166 709 177 C688 164 667 153 645 143 C634 139 632 134 631 109Z" fill="#040404"/>
+    <path id="crown-right-highlight" d="M666 110 C695 133 717 154 741 173 C786 208 826 253 860 306 C906 377 943 454 967 528 C971 538 963 546 954 552 C950 507 936 464 915 419 C894 373 858 322 817 279 C801 247 779 219 750 191 C720 161 695 139 666 110Z" fill="url(#hood-right-rim)"/>
+    <path id="crown-center-seam" d="M625 177 C620 216 617 256 614 302 L610 326 C608 335 610 341 614 346 L618 344 C613 337 612 332 614 324 C617 282 620 225 625 177Z" fill="#030303"/>
+    <path id="hood-left-edge-light" d="M449 302 C404 329 358 370 326 412 C303 444 288 478 281 514 C276 539 279 558 291 576 C292 551 300 524 312 498 C332 454 362 413 395 373 C413 350 430 326 449 302Z" fill="#323232"/>
+    <path d="M291 532 C287 548 288 562 293 575 L279 562 C281 580 293 597 309 610 C300 590 304 568 319 547Z" fill="#3a3a3a" opacity=".56"/>
+    <path id="hood-right-fold-shadow" d="M925 442 C944 482 953 521 955 552 C965 547 972 538 977 531 C978 555 947 604 903 644 C925 611 934 570 931 523 C930 490 927 462 925 442Z" fill="#080808"/>
+    <path d="M946 484 C958 515 963 534 962 546 L952 554 C950 531 948 506 946 484Z" fill="#303030"/>
+  </g>
+
+  <!-- Black opening and recessed lining -->
+  <g id="hood-interior">
+    <path id="hood-opening" d="M614 344 C626 340 645 348 669 358 C728 382 782 415 823 446 C864 477 889 507 902 540 C913 565 916 591 901 617 C881 651 824 681 776 705 C731 727 687 747 650 758 H605 C559 744 507 724 457 702 C401 677 347 648 324 619 C302 594 308 567 326 539 C349 503 390 465 435 433 C483 399 540 368 588 350Z" fill="#020202" stroke="#030303" stroke-width="6" stroke-linejoin="round"/>
+    <path id="lining-left-recess" d="M363 507 C375 550 392 577 421 602 C450 628 480 651 505 675 C469 658 428 637 400 610 C373 584 355 555 353 530Z" fill="#0c0c0c"/>
+    <path d="M374 542 C390 576 415 600 444 625 L479 657 C442 634 396 599 374 542Z" fill="#141414"/>
+    <path id="lining-right-recess" d="M883 518 C867 558 844 584 812 609 L750 662 C789 642 829 618 855 591 C875 570 891 548 895 532Z" fill="#0c0c0c"/>
+    <path d="M868 560 C847 589 822 611 794 633 L757 664 C796 642 843 609 868 560Z" fill="#161616"/>
+    <path d="M484 637 C499 650 522 672 540 691 L560 702 L557 659 L539 640 L515 645Z" fill="#080808"/>
+    <path d="M754 638 C738 651 718 673 699 690 L685 701 L694 653 L715 636 L736 640Z" fill="#080808"/>
+  </g>
+
+  <!-- Skull: bone, temple cuts, sockets, nose and teeth -->
+  <g id="skull" stroke-linejoin="round">
+    <path id="skull-bone" d="M613 348 C601 351 582 358 569 364 C552 371 534 380 520 387 C491 403 462 420 438 438 C434 451 433 465 433 478 C433 492 435 505 438 515 L437 524 C433 529 432 535 434 541 C438 553 449 569 454 578 C458 587 456 595 453 605 C451 611 454 616 462 623 C473 633 488 643 497 646 C505 647 520 637 531 635 C543 633 556 643 562 654 C559 662 560 675 561 683 C563 692 574 697 591 702 C609 707 633 708 657 703 C674 700 689 694 694 685 C697 679 695 663 694 655 C700 644 714 634 727 633 C738 633 750 643 759 643 C766 642 783 626 795 615 C802 609 805 603 802 594 C798 585 796 578 799 571 L814 537 C817 530 815 525 812 520 L812 512 C815 500 816 488 815 478 C814 465 813 454 810 445 C788 428 759 410 732 394 C709 381 684 369 661 360 C642 352 626 346 613 348Z" fill="url(#bone)"/>
+    <path id="skull-upper-shadow" d="M438 438 C479 408 527 382 569 364 C591 355 605 350 613 348 C625 345 642 353 661 360 C710 380 767 411 810 445 C814 461 817 491 812 512 L795 491 L792 460 C765 434 730 410 697 393 C666 377 640 367 621 370 C596 372 562 386 533 403 C502 421 478 442 460 465 L459 496 L438 519 C432 495 432 466 438 438Z" fill="url(#bone-rim)"/>
+    <path id="left-temple-cut" d="M458 449 C458 465 458 481 460 496 C449 508 439 521 433 534 L435 524 L456 494Z" fill="#0a0a0a"/>
+    <path id="right-temple-cut" d="M792 454 C793 468 793 480 795 491 L815 518 L817 532 C809 517 798 505 790 493Z" fill="#090909"/>
+    <path d="M489 514 C510 501 544 507 568 520 L585 531 C562 519 544 516 526 515Z" fill="#828281" opacity=".68"/>
+    <path d="M661 525 C675 513 689 502 700 498 C711 495 724 499 733 501 C708 501 688 512 661 525Z" fill="#9a9a98" opacity=".66"/>
+    <g id="left-eye-socket">
+      <path d="M491 512 C502 505 514 504 525 506 C544 507 561 514 576 523 L557 517 C572 530 581 545 585 561 C588 573 587 584 583 594 C574 606 560 617 546 620 C534 624 519 618 501 613 C489 610 482 608 478 596 C473 581 473 568 466 557 C461 552 459 548 463 541 C466 532 483 519 497 511 L490 515Z" fill="url(#socket)"/>
+      <path d="M474 565 C479 574 480 589 486 597 C496 608 520 613 537 617 C526 617 499 610 486 604 C477 600 476 584 474 565Z" fill="#bcbcbc"/>
+      <path d="M486 597 C495 605 509 609 525 613 L542 618 C523 618 503 613 490 607 C484 604 481 599 479 591Z" fill="#323232"/>
+      <path d="M541 618 C556 613 572 601 582 588 L582 595 C572 608 558 618 546 620Z" fill="#656564"/>
+      <path d="M489 533 C500 520 514 513 529 513 C513 511 500 518 489 533Z" fill="#090909"/>
+    </g>
+    <g id="right-eye-socket">
+      <path d="M664 524 C682 513 699 504 716 500 C725 497 733 499 742 503 C759 510 774 521 783 530 C788 535 789 541 787 550 C783 565 780 580 776 592 C773 600 765 604 755 607 C741 611 721 616 710 617 C698 617 683 606 675 598 C667 591 665 586 666 574 C666 556 671 542 681 527 C685 520 691 515 699 509Z" fill="url(#socket)"/>
+      <path d="M781 557 C778 574 775 588 769 595 C760 602 748 606 735 609 C750 608 767 604 773 598 C779 589 780 570 781 557Z" fill="#cacaca"/>
+      <path d="M669 581 C677 595 690 606 705 612 C711 614 719 614 728 613 C719 617 709 618 701 614 C685 607 674 596 669 590Z" fill="#656565"/>
+      <path d="M679 598 C690 608 702 615 712 616 L705 616 C692 612 683 606 679 598Z" fill="#9b9b9a"/>
+      <path d="M774 578 C771 590 764 598 752 602 C764 599 770 594 774 587Z" fill="#363636"/>
+    </g>
+    <path id="nasal-cavity" d="M620 586 C623 581 627 581 631 586 C636 593 646 611 650 620 C653 628 652 632 646 636 C638 642 631 635 626 629 C622 634 617 639 612 639 C603 639 597 633 600 623 C603 611 613 594 620 586Z" fill="#030303"/>
+    <path d="M607 619 C611 606 618 593 623 588 C618 598 612 610 607 619Z" fill="#141414" opacity=".6"/>
+    <path id="left-cheek-bevel" d="M516 640 C526 634 534 633 541 635 C551 638 559 646 563 655 L560 661 C555 650 545 642 535 639 C529 638 522 640 516 640Z" fill="#777776"/>
+    <path d="M516 641 C528 636 534 636 540 638 C548 641 554 647 559 653 C552 649 544 643 534 641 C527 640 521 642 516 644Z" fill="#060606"/>
+    <path id="right-cheek-bevel" d="M695 659 L692 652 C699 642 709 635 718 633 C726 631 735 636 741 639 C731 636 724 636 717 639 C708 643 701 650 695 659Z" fill="#858584"/>
+    <path d="M697 654 C703 646 711 641 718 638 C726 635 733 637 741 640 C732 638 725 638 719 641 C710 644 703 650 696 658Z" fill="#080808"/>
+    <g id="tooth-divisions" fill="#080808">
+      <path d="M585 669 C583 668 582 673 582 681 L581 698 L586 701 L586 680Z"/>
+      <path d="M613 674 C611 674 610 681 610 689 L610 706 L615 707 L615 691Z"/>
+      <path d="M644 672 C642 674 642 682 642 690 L641 706 L647 705 L646 685Z"/>
+      <path d="M672 666 C670 666 670 671 671 679 L672 698 L676 696 L675 676Z"/>
+    </g>
+  </g>
+
+  <!-- Hood folds crossing below the skull -->
+  <g id="hood-lapels" stroke-linejoin="round" stroke-linecap="round">
+    <path id="left-lapel" d="M362 513 C370 550 391 579 421 606 C451 634 487 664 520 690 C550 714 582 740 608 754 C563 742 514 724 465 705 C424 689 383 675 349 655 C326 642 312 624 312 602 C310 578 331 542 362 513Z" fill="url(#g-left-lapel)"/>
+    <path id="left-opening-edge" d="M434 436 C392 467 352 504 327 542 C311 565 305 589 313 607 C317 617 324 625 331 631 C312 617 301 598 307 579 C317 536 373 477 434 436Z" fill="#3d3d3d" opacity=".66"/>
+    <path id="left-fold-light" d="M365 565 C391 603 432 637 475 670 C516 702 557 731 593 749 C553 717 511 685 473 657 C428 625 393 596 365 565Z" fill="#3a3a3a" opacity=".66"/>
+    <path d="M377 561 C389 581 405 600 424 615 L467 650 C440 622 405 599 377 561Z" fill="#323232" opacity=".45"/>
+    <path id="left-lapel-outline" d="M362 513 C370 550 391 579 421 606 C480 659 553 719 608 754 C560 741 514 724 465 705 C421 688 379 673 349 655 C326 642 312 624 312 602" stroke="#040404" stroke-width="5"/>
+    <path id="right-lapel" d="M891 531 C872 560 846 588 816 612 C784 638 749 666 717 694 C691 717 668 739 648 754 C696 736 746 716 792 701 C834 685 866 672 888 653 C906 638 914 617 914 598 C915 574 906 549 891 531Z" fill="url(#g-right-lapel)"/>
+    <path id="right-fold-light" d="M890 545 C862 582 829 612 786 646 C750 675 710 706 677 734 C716 711 759 682 799 652 C844 618 878 584 895 560Z" fill="#3b3b3b" opacity=".78"/>
+    <path id="right-opening-edge" d="M817 443 C852 470 882 500 900 531 C917 560 924 591 913 617 C908 630 899 642 889 651 C904 631 912 612 910 592 C908 543 871 492 817 443Z" fill="#404040" opacity=".64"/>
+    <path id="right-lapel-outline" d="M891 531 C872 560 846 588 816 612 C756 660 690 720 648 754 C696 736 746 716 792 701 C834 685 866 672 888 653 C906 638 914 617 914 598" stroke="#040404" stroke-width="5"/>
+    <path d="M342 652 L352 659 L349 678 L342 680 C341 669 342 659 342 652Z" fill="#040404"/>
+    <path d="M350 660 L366 669 L352 673Z" fill="#2b2b2b"/>
+    <path d="M894 653 L902 645 C908 655 911 666 910 678 L901 673 C902 666 899 659 894 653Z" fill="#050505"/>
+    <path d="M897 657 C901 661 903 667 903 672 L889 665Z" fill="#303030"/>
+  </g>
+
+  <!-- Laptop back: black silhouette, silver rim, aluminum panel -->
+  <g id="laptop" stroke-linejoin="round" stroke-linecap="round">
+    <g id="hinges">
+      <path id="left-hinge" d="M316 1107 H333 L336 1143 H315 C305 1143 301 1139 301 1132 V1118 C301 1110 307 1107 316 1107Z" fill="url(#hinge-metal)" stroke="#030303" stroke-width="7"/>
+      <path d="M309 1117 C311 1114 319 1114 326 1115 L327 1120 H312Z" fill="#c2c2c2"/>
+      <path d="M311 1121 H325 V1133 H316 C312 1133 311 1130 311 1126Z" fill="#080808"/>
+      <path id="right-hinge" d="M922 1107 H939 C948 1107 952 1111 952 1118 V1132 C952 1140 947 1143 938 1143 H920Z" fill="url(#hinge-metal)" stroke="#030303" stroke-width="7"/>
+      <path d="M930 1115 H941 C945 1115 946 1117 945 1120 H929Z" fill="#bbbbbb"/>
+      <path d="M930 1121 H942 V1127 C942 1132 939 1133 935 1133 H929Z" fill="#070707"/>
+    </g>
+    <path id="lid-outline" d="M329 757 H925 C943 757 952 766 952 784 L936 1095 C935 1111 927 1118 913 1118 H342 C325 1118 317 1111 316 1095 L299 785 C298 767 310 757 329 757Z" fill="#101010" stroke="#020202" stroke-width="8"/>
+    <path id="lid-silver-rim" d="M329 762 H925 C940 762 947 770 947 786 L931 1095 C930 1108 924 1114 911 1114 H342 C328 1114 323 1108 322 1095 L305 787 C304 771 313 762 329 762Z" fill="url(#metal-rim)"/>
+    <use href="#lid-face-path" fill="url(#aluminum)" filter="url(#aluminum-grain)"/>
+    <use href="#lid-face-path" fill="url(#metal-light)"/>
+    <path id="lid-left-specular-edge" d="M327 768 C315 768 309 775 310 789 L327 1095 C328 1103 332 1108 339 1110" stroke="#d4d4d4" stroke-opacity=".71" stroke-width="2.2"/>
+    <path id="lid-top-specular-edge" d="M331 767 H923 C936 767 943 774 943 785" stroke="#cecece" stroke-opacity=".65" stroke-width="1.8"/>
+    <path id="lid-right-specular-edge" d="M943 789 L927 1096 C926 1104 923 1108 918 1110" stroke="#c7c7c7" stroke-opacity=".59" stroke-width="1.7"/>
+    <g id="apple-logo" fill="#fcfcfc">
+      <path id="apple-leaf" d="M629 912 C628 900 636 891 649 887 C650 898 642 910 629 912Z"/>
+      <path id="apple-body" d="M625 917 C632 918 638 913 645 913 C654 912 662 916 668 923 C660 929 656 937 658 946 C659 954 663 960 670 963 C666 976 658 988 650 990 C643 992 637 986 630 986 C623 985 617 991 610 990 C599 989 591 975 587 962 C581 945 585 926 597 917 C607 910 616 913 625 917Z"/>
+    </g>
+    <g id="laptop-base">
+      <path id="base-outline" d="M335 1114 H919 C926 1114 928 1117 928 1123 V1143 C928 1148 925 1150 920 1150 H333 C328 1150 325 1148 325 1143 V1123 C325 1117 328 1114 335 1114Z" fill="url(#base-metal)" stroke="#020202" stroke-width="7"/>
+      <path d="M335 1118 H918 C922 1118 923 1120 923 1124" stroke="#999999" stroke-width="1.8" opacity=".55"/>
+      <path d="M330 1124 V1141 C330 1144 331 1145 335 1145 H919" stroke="#707071" stroke-width="1.5" opacity=".46"/>
+      <path d="M335 1147 H919" stroke="#242424" stroke-width="2" opacity=".7"/>
+    </g>
+  </g>
+</svg>

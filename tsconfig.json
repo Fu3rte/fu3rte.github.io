@@ -1,6 +1,8 @@
 {
   "compilerOptions": {
+    "types": ["vite/client"],
     "target": "ES2022",
+    "jsx": "react-jsx",
     "useDefineForClassFields": true,
     "module": "ESNext",
     "lib": ["ES2022", "DOM", "DOM.Iterable"],

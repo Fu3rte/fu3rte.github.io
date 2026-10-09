@@ -6,16 +6,27 @@
   "scripts": {
     "dev": "vite",
     "build": "tsc --noEmit && vite build",
-    "preview": "vite preview"
+    "preview": "vite preview",
+    "lottie": "node scripts/build-brook-lottie.mjs",
+    "steam": "node scripts/build-steam-lottie.mjs",
+    "test": "node scripts/check-hero.mjs",
+    "test:lottie": "node scripts/check-lottie.mjs"
   },
   "dependencies": {
     "gsap": "^3.12.5",
     "i18next": "^26.4.2",
-    "i18next-browser-languagedetector": "^8.2.1"
+    "i18next-browser-languagedetector": "^8.2.1",
+    "lottie-web": "^5.12.2",
+    "react": "^19.3.0",
+    "react-dom": "^19.3.0"
   },
   "devDependencies": {
     "@tailwindcss/vite": "^4.1.0",
+    "@types/react": "^19.2.0",
+    "@types/react-dom": "^19.2.0",
+    "@vitejs/plugin-react": "^4.7.0",
     "playwright": "^1.63.0",
+    "svg-path-parser": "^1.1.0",
     "tailwindcss": "^4.1.0",
     "typescript": "~5.6.3",
     "vite": "^6.0.5"

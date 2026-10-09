@@ -1,0 +1,76 @@
+{
+  "meta": {
+    "title": "Finnian — 动画与交互作品集",
+    "contactTitle": "联系 — Finnian",
+    "photosTitle": "照片 — Finnian",
+    "description": "Finnian 的动画与交互作品集：GSAP、Rive、Lottie 驱动的实验页面，坐标中国东莞。",
+    "photosDescription": "Finnian 的照片集。",
+    "contactDescription": "聊聊动画、界面，或者只是打个招呼 —— 邮箱、GitHub、Instagram。"
+  },
+  "brand": "FINNIAN",
+  "nav": {
+    "aria": "站点菜单",
+    "home": "首页",
+    "photos": "照片",
+    "contact": "联系"
+  },
+  "photos": {
+    "title": "照片",
+    "alt": "照片"
+  },
+  "hero": {
+    "aria": "黑色兜帽骷髅坐在深灰苹果笔记本后，桌面左侧一杯咖啡正冒热气"
+  },
+  "about": {
+    "title": "关于",
+    "p1": "我是 Finnian。做过前端，现在把重心放在 AI 应用与交互上，坐标东莞。这个站点本身是我的动效试验场：GSAP、Rive、Lottie 都会出现在这里。",
+    "p2": "工作之外写一点东西，不发平台，只留给自己和少数人看。拆过一些动画机制，也收藏各种奇怪好用的开源工具，欢迎来聊。"
+  },
+  "skills": {
+    "title": "能力",
+    "craft": {
+      "1": "滚动叙事与时间轴编排",
+      "2": "状态机驱动的交互动画",
+      "3": "SVG 路径与逐帧调参",
+      "title": "动效"
+    },
+    "tools": {
+      "1": "Rive 与 Lottie 工作流",
+      "2": "AE / PR 短片剪辑",
+      "3": "AI 应用与智能体搭建",
+      "title": "工具"
+    },
+    "play": {
+      "1": "观察记录",
+      "2": "骑行",
+      "3": "动画与游戏",
+      "title": "日常"
+    }
+  },
+  "works": {
+    "title": "作品",
+    "scroll": {
+      "name": "滚动实验",
+      "desc": "GSAP ScrollTrigger 驱动的叙事页面"
+    },
+    "motion": {
+      "name": "动画原型",
+      "desc": "Rive 与 Lottie 的交互样片"
+    },
+    "toys": {
+      "name": "小玩具",
+      "desc": "零碎但好玩的机制碎片"
+    },
+    "writing": {
+      "name": "写作",
+      "desc": "非技术向的个人文字"
+    }
+  },
+  "contact": {
+    "title": "联系",
+    "p": "我每天检查两次收件箱，耐心就像这页画的样子 —— 双手插袋，等得起。想聊智能体、聊界面、内推合适的岗位，或者只是打个招呼，都欢迎写信给我。",
+    "github": "GitHub / Fu3rte",
+    "instagram": "Instagram / cq777h",
+    "wechat": "微信 / F1nnian_"
+  }
+}
