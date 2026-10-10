@@ -9,10 +9,14 @@
     "preview": "vite preview",
     "lottie": "node scripts/build-brook-lottie.mjs",
     "steam": "node scripts/build-steam-lottie.mjs",
+    "rive:eyes": "node scripts/build-hero-eyes-rml.mjs",
     "test": "node scripts/check-hero.mjs",
-    "test:lottie": "node scripts/check-lottie.mjs"
+    "test:lottie": "node scripts/check-lottie.mjs",
+    "test:blink": "node scripts/check-blink.mjs",
+    "test:typing": "node scripts/check-typing.mjs"
   },
   "dependencies": {
+    "@rive-app/canvas": "^2.44.1",
     "gsap": "^3.12.5",
     "i18next": "^26.4.2",
     "i18next-browser-languagedetector": "^8.2.1",

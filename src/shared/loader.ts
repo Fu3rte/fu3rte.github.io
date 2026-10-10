@@ -22,6 +22,7 @@ const WEIGHTS: Record<Stage, number> = { fonts: 35, content: 35, assets: 30 };
 
 let overlayEl: HTMLElement | null = null;
 let markEl: HTMLElement | null = null;
+let captionEl: HTMLElement | null = null;
 let anim: AnimationItem | null = null;
 let phase: Phase = 'waiting';
 let looping = false;
@@ -41,6 +42,7 @@ export function bootLoader(): void {
   const mark = document.getElementById('brook-mark')!;
   overlayEl = overlay;
   markEl = mark;
+  captionEl = document.getElementById('brook-caption');
   reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
   bootAt = performance.now();
 
@@ -157,7 +159,7 @@ function release(): void {
   gsap
     .timeline({ onComplete: finish })
     .to(markEl, { scale: mode === 'long' ? 1.06 : 0.94, duration: 0.34, ease: 'power2.inOut' }, 0)
-    .to(markEl, { autoAlpha: 0, duration: 0.26, ease: 'power1.in' }, 0.1)
+    .to([markEl, captionEl], { autoAlpha: 0, duration: 0.26, ease: 'power1.in' }, 0.1)
     .to(
       overlay,
       {
@@ -172,7 +174,7 @@ function release(): void {
 function finish(): void {
   phase = 'released';
   overlayEl!.classList.add('is-hidden');
-  gsap.set([overlayEl, markEl], { clearProps: 'all' });
+  gsap.set([overlayEl, markEl, captionEl], { clearProps: 'all' });
   for (const waiter of waiters) waiter();
   waiters.clear();
 }
@@ -237,6 +239,7 @@ function replayForDeparture(onCovered: () => void): void {
     { scale: 0.85, autoAlpha: 0 },
     { scale: 1, autoAlpha: 1, duration: 0.3, ease: 'back.out(1.5)' },
   );
+  gsap.fromTo(captionEl, { autoAlpha: 0 }, { autoAlpha: 1, duration: 0.3, ease: 'power1.out' });
   if (looping) anim?.play();
   else startLoop();
 }

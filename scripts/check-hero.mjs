@@ -1,5 +1,7 @@
 import assert from 'node:assert/strict';
-import { mkdirSync } from 'node:fs';
+import { execFile } from 'node:child_process';
+import { existsSync, mkdirSync, readFileSync, writeFileSync } from 'node:fs';
+import { promisify } from 'node:util';
 import { chromium } from 'playwright';
 
 mkdirSync('.shots', { recursive: true });
@@ -8,6 +10,42 @@ const origin = new URL(url).origin;
 const errors = [];
 const checks = [];
 const browser = await chromium.launch();
+
+// works 的正文来自 api.github.com，匿名配额按 IP 计 60 次/小时。
+// 验收走 gh 的鉴权通道取一次真实响应，再喂给应用自己的缓存，测试不再随配额抖动
+const stickerRepos = ['Fit-Agent', 'contextus', 'dsh-sight'];
+const repoFields = ['name', 'html_url', 'language'];
+const repoFixture = '.shots/repos.json';
+const run = promisify(execFile);
+const sleep = ms => new Promise(resolve => setTimeout(resolve, ms));
+
+// 连发三次 gh 会偶发连接重置，重试到第三次仍失败就照旧崩
+const ghJson = async path => {
+  for (let attempt = 1; ; attempt += 1) {
+    try {
+      return JSON.parse((await run('gh', ['api', path])).stdout);
+    } catch (error) {
+      if (attempt === 3) throw error;
+      await sleep(400 * attempt);
+    }
+  }
+};
+
+const loadRepos = async () => {
+  const cached = existsSync(repoFixture) ? JSON.parse(readFileSync(repoFixture, 'utf8')) : null;
+  // 应用侧缓存一小时过期，取物比它更早一步换新，避免种子被当成过期数据丢掉
+  if (cached && Date.now() - cached.at < 45 * 60 * 1000) return cached.repos;
+  const repos = [];
+  for (const name of stickerRepos) {
+    const raw = await ghJson(`repos/Fu3rte/${name}`);
+    repos.push(Object.fromEntries(repoFields.map(field => [field, raw[field]])));
+    await sleep(250);
+  }
+  writeFileSync(repoFixture, JSON.stringify({ at: Date.now(), repos }));
+  return repos;
+};
+
+const repos = await loadRepos();
 
 // 单入口 SPA：路由路径就是页面地址，尾斜杠由 normalizePath 收敛
 const ready = {
@@ -60,14 +98,23 @@ const sceneParts = () => ({
   viewBox: document.querySelector('.brook-scene > svg').getAttribute('viewBox'),
   groups: [...document.querySelectorAll('.brook-scene > svg > g > g[id]')].map(g => g.id),
   paths: document.querySelectorAll('.brook-scene > svg path').length,
+  art: document.querySelector('.brook-scene > svg > g').getAttribute('transform'),
   desk: document.querySelector('#brook-desk').getAttribute('d'),
   cup: document.querySelectorAll('#brook-props path').length,
+  lamp: document.querySelector('#brook-lamp').getAttribute('transform'),
+  // 热气盒的中心换算回画框用户单位，必须压在杯口上
+  steam: (() => {
+    const frame = document.querySelector('.brook-scene').getBoundingClientRect();
+    const box = document.querySelector('.brook-steam').getBoundingClientRect();
+    return Math.round((((box.left + box.right) / 2 - frame.left) / frame.width) * 2198);
+  })(),
 });
 
 const open = async (options = {}, initial = {}, path = '/') => {
   const page = attach(await browser.newPage({ viewport: { width: 1440, height: 900 }, locale: 'en-US', ...options }));
   await page.addInitScript(init => {
     localStorage.setItem('lang', init.lang ?? 'en');
+    if (init.repos) localStorage.setItem('works.repos', JSON.stringify({ at: Date.now(), repos: init.repos }));
   }, initial);
   await page.goto(new URL(path, url).href, { waitUntil: 'networkidle' });
   await page.waitForSelector(ready[path]);
@@ -81,9 +128,10 @@ const open = async (options = {}, initial = {}, path = '/') => {
 // loading 页需要看首帧，不能用 networkidle
 const openRaw = async (path = '/', options = {}, lang = 'en') => {
   const page = attach(await browser.newPage({ viewport: { width: 1440, height: 900 }, locale: 'en-US', ...options }));
-  await page.addInitScript(lng => {
-    localStorage.setItem('lang', lng);
-  }, lang);
+  await page.addInitScript(seed => {
+    localStorage.setItem('lang', seed.lang);
+    localStorage.setItem('works.repos', JSON.stringify({ at: Date.now(), repos: seed.repos }));
+  }, { lang, repos });
   await page.addInitScript(observeLoader);
   await page.goto(new URL(path, url).href, { waitUntil: 'commit' });
   return page;
@@ -214,9 +262,16 @@ try {
 
   // 降低动效偏好：静态徽标即时放行，路由切换直接落位，覆盖层从头到尾不盖回
   const still = await openRaw('/contact', { reducedMotion: 'reduce' });
-  await still.waitForFunction(() => window.__loaderHids.length >= 1, null, { timeout: 8000 });
-  const reducedHid = await still.evaluate(() => window.__loaderHids[0]);
-  assert(reducedHid < 2000, `reduced motion releases without a dwell, hid at ${reducedHid}ms`);
+  await still.waitForFunction(() => window.__loaderHids.length >= 1, null, { timeout: 15000 });
+  // 放行时刻只按就绪度量，第三方字体链路的快慢不算进驻留时长
+  const reduced = await still.evaluate(() => ({
+    hid: window.__loaderHids[0],
+    load: Math.round(performance.getEntriesByType('navigation')[0].loadEventEnd),
+  }));
+  assert(
+    reduced.hid - reduced.load < 400,
+    `reduced motion releases on readiness, hid ${reduced.hid - reduced.load}ms after the load event`,
+  );
   assert(
     await still.evaluate(() => !performance.getEntriesByType('resource').some(r => r.name.includes('brook-load.json'))),
     'reduced motion never downloads the animation asset',
@@ -235,25 +290,103 @@ try {
     'reduced motion keeps the overlay hidden the whole time',
   );
   assert.equal(await still.title(), 'Photos — Finnian');
-  checks.push(`Loader: reduced motion hid at ${reducedHid}ms, route switch lands without the overlay`);
+  checks.push(`Loader: reduced motion hid ${reduced.hid - reduced.load}ms after the load event, route switch lands without the overlay`);
   await still.close();
 
-  const page = await open();
-  // 兜帽骷髅原稿整幅挂进 1700x1254 画框，桌面一条直线，左侧一杯咖啡
+  // 降低动效下眼窝仍由原稿画着：既不起 Rive，也不去要 riv 与 wasm
+  const stillHome = await openRaw('/', { reducedMotion: 'reduce' });
+  await stillHome.waitForSelector('.brook-scene');
+  await stillHome.waitForTimeout(2500);
+  assert(
+    await stillHome.evaluate(() => !performance.getEntriesByType('resource').some((r) => r.name.includes('/rive/'))),
+    'reduced motion never downloads the eyes',
+  );
+  assert.notEqual(
+    await stillHome.evaluate(() => getComputedStyle(document.getElementById('left-eye-socket')).display),
+    'none',
+    'reduced motion keeps the authored sockets',
+  );
+  await stillHome.close();
+
+  const page = await open({}, { repos });
+  // 兜帽骷髅原稿整幅挂进 1980x1254 画框，桌面一条直线，左侧一杯咖啡、右手边一盏台灯
   const box = await page.locator('.brook-scene > svg').boundingBox();
   assert(box && box.width > 400 && box.height > 250, `hooded skull must render, got ${JSON.stringify(box)}`);
   assert.deepEqual(await page.evaluate(sceneParts), {
-    viewBox: '0 0 1700 1254',
+    viewBox: '0 0 2198 1254',
     groups: ['background', 'sweatshirt', 'sleeves', 'hood-crown', 'hood-interior', 'skull', 'hood-lapels', 'laptop'],
-    paths: 118,
-    desk: 'M50 1150H1370',
+    paths: 134,
+    art: 'translate(472 0)',
+    desk: 'M50 1150H2150',
     cup: 3,
+    lamp: 'translate(1552 464.8) scale(0.6)',
+    steam: 374,
   }, 'the authored hooded skull ships intact');
+  // 台灯素材自带的画板白纸在站点侧收起，整幅只有方格纸一层底色
+  assert.equal(
+    await page.evaluate(() => getComputedStyle(document.querySelector('#brook-lamp > rect')).display),
+    'none',
+    'the lamp brings no artboard background',
+  );
+  // 光锥的顶点必须落在灯口中心上：素材里 (246,350) 是发散点，(407.5,449) 是灯口椭圆面中心
+  const anchorGap = await page.evaluate(() => {
+    const svg = document.querySelector('.brook-scene > svg');
+    const px = svg.getBoundingClientRect().width / svg.viewBox.baseVal.width; // getCTM 落在 CSS px 上，换算回画框单位
+    const groups = document.getElementById('brook-lamp').querySelectorAll(':scope > g');
+    const apex = new DOMPoint(246, 350).matrixTransform(groups[0].getCTM());
+    const mouth = new DOMPoint(407.5, 449).matrixTransform(groups[1].getCTM());
+    return Math.round(Math.hypot(apex.x - mouth.x, apex.y - mouth.y) / px);
+  });
+  assert(anchorGap <= 2, `the light cone must start at the bulb opening, got ${anchorGap} units off`);
+  // 光锥只许停在人物右侧之外：两边各自栅格化（连 defs 一起搬进游离 svg，否则渐变与滤镜引用失效）后求交
+  const beamOnPerson = await page.evaluate(async () => {
+    const W = 2198;
+    const H = 1254;
+    const raster = async node => {
+      const clone = node.cloneNode(true);
+      clone.querySelector('#background')?.remove();
+      const href = URL.createObjectURL(new Blob(
+        [`<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 ${W} ${H}" width="${W}" height="${H}">${clone.outerHTML}</svg>`],
+        { type: 'image/svg+xml' },
+      ));
+      const img = await new Promise((ok, err) => {
+        const el = new Image();
+        el.onload = () => ok(el);
+        el.onerror = err;
+        el.src = href;
+      });
+      const c = document.createElement('canvas');
+      c.width = W;
+      c.height = H;
+      const ctx = c.getContext('2d', { willReadFrequently: true });
+      ctx.drawImage(img, 0, 0, W, H);
+      URL.revokeObjectURL(href);
+      return ctx.getImageData(0, 0, W, H).data;
+    };
+    const light = document.getElementById('brook-lamp').cloneNode(true);
+    const keep = new Set([light.querySelector('defs'), light.querySelector(':scope > g')]);
+    [...light.children].forEach(el => {
+      if (!keep.has(el)) el.remove();
+    });
+    const person = await raster(document.querySelector('.brook-scene > svg > g'));
+    const beam = await raster(light);
+    let hits = 0;
+    for (let i = 3; i < person.length; i += 4) if (person[i] > 8 && beam[i] > 8) hits += 1;
+    return hits;
+  });
+  assert.equal(beamOnPerson, 0, 'the light pool must stop short of the skull');
   // 颅骨呼吸挂在 #skull 上，SVG 变换落在 transform 属性
   assert(
     await page.evaluate(() => /matrix/.test(document.querySelector('#skull').getAttribute('transform') ?? '')),
     'the skull breathes inside the hood',
   );
+  // 眼窝交给 hero-eyes.riv 之后，画布交出第一帧才收起原稿那两片
+  await page.waitForSelector('.brook-scene.eyes-live', { timeout: 25000 });
+  assert.equal(
+    await page.evaluate(() => getComputedStyle(document.getElementById('left-eye-socket')).display),
+    'none',
+  );
+  assert(await page.evaluate(() => document.querySelector('.brook-eyes').width > 100), 'the eyes canvas is sized');
   // 热气是 lottie 无限循环：两帧之间画面没推进就是没在播
   const steamFrame = () => page.evaluate(() => document.querySelector('.brook-steam svg')?.innerHTML ?? '');
   const steamBefore = await steamFrame();
@@ -261,13 +394,22 @@ try {
   assert.notEqual(await steamFrame(), steamBefore, 'the steam keeps looping');
   assert.deepEqual(
     await page.locator('main > section').evaluateAll(nodes => nodes.map(node => node.id)),
-    ['home', 'about', 'works', 'skills'],
+    ['home', 'about', 'works', 'contact'],
   );
   assert.equal(await page.locator('.topbar').count(), 0);
-  assert.equal(await page.locator('.work-card').count(), 4);
-  assert.equal(await page.locator('.site-foot a').getAttribute('href'), '/contact');
+  // 三张贴纸落位才继续
+  await page.waitForFunction(() => document.querySelectorAll('.sticker').length === 3, null, { timeout: 15000 });
+  assert.deepEqual(await page.locator('.sticker-name').allTextContents(), stickerRepos);
+  assert.deepEqual(
+    await page.locator('.sticker-open').evaluateAll(nodes => nodes.map(node => node.getAttribute('href'))),
+    repos.map(repo => repo.html_url),
+  );
+  assert.equal(await page.locator('.sticker-tape').count(), 3, 'every sticker is taped at the top edge');
+  // 贴纸正文统一英文：整块作品区不许出现汉字
+  assert(!/[\u4e00-\u9fff]/.test(await page.locator('#works').innerText()), 'sticker copy stays English');
+  assert.equal(await page.locator('.skill-group').count(), 0);
   assert.equal(await page.locator('.scroll-progress').count(), 1);
-  checks.push('Hooded skull original renders; home sections; topbar gone; footer points at the contact route');
+  checks.push('Hooded skull original renders; home sections; works stickers from the GitHub API');
 
   await page.screenshot({ path: '.shots/hero-desktop.png' });
   await checkOrb(page, 'home', '/');
@@ -279,14 +421,100 @@ try {
   await page.waitForFunction(() => document.querySelector('.orb')?.dataset.open === 'false');
   checks.push('Orb collapses on outside click');
 
+  // 贴纸墙：滚到揭示位落定；拖动已取消，横向位移不许再挪动贴纸
+  const tiltOf = locator => locator.evaluate(el => {
+    const m = new DOMMatrixReadOnly(getComputedStyle(el).transform);
+    return Math.round(Math.atan2(m.b, m.a) * (180 / Math.PI) * 10) / 10;
+  });
+  await page.locator('#works').scrollIntoViewIfNeeded();
+  await page.waitForTimeout(1600);
+  await page.locator('#works').screenshot({ path: '.shots/works-stickers.png' });
+  const card = page.locator('.sticker').nth(1);
+  const tilt = await tiltOf(card);
+  assert.equal(tilt, 2.2, 'the middle sticker rests at its hand-placed angle');
+  const body = await card.boundingBox();
+  await page.mouse.move(body.x + body.width / 2, body.y + body.height / 2);
+  await page.mouse.down();
+  await page.mouse.move(body.x + body.width / 2 + 90, body.y + body.height / 2, { steps: 10 });
+  await page.waitForTimeout(350);
+  assert.equal(await tiltOf(card), tilt, 'dragging the sticker does nothing');
+  await page.mouse.up();
+  checks.push(`Sticker wall reveals on scroll at ${tilt}deg tilt; the sticker is drag-inert`);
+
+  // 跳转只归右下角那颗圆钮：点贴纸本体不开新标签
+  const popups = [];
+  page.on('popup', popup => popups.push(popup));
+  await page.locator('.sticker').nth(0).click();
+  await page.waitForTimeout(500);
+  assert.equal(popups.length, 0, 'the sticker body must not navigate anywhere');
+  const [repoTab] = await Promise.all([
+    page.waitForEvent('popup'),
+    page.locator('.sticker-open').nth(0).click(),
+  ]);
+  await repoTab.waitForURL(/Fu3rte\/Fit-Agent/);
+  assert.equal(popups.length, 1, 'the corner button opens the repo');
+  await repoTab.close();
+  checks.push('Sticker body ignores navigation; the corner button opens the repo in a new tab');
+
+  // 联系区：巨型标题 + 一行渠道，图钉、卷线、二维码都不在
+  await page.locator('#contact').scrollIntoViewIfNeeded();
+  await page.waitForTimeout(600);
+  assert.equal(await page.locator('.contact-me').textContent(), 'Contact me');
+  assert.deepEqual(
+    await page.locator('.contact-rows li').evaluateAll(list => list.map(li => [
+      li.querySelector('b').textContent,
+      li.querySelector('a, span').textContent,
+    ])),
+    [
+      ['Email', '2575716528cqh@gmail.com'],
+      ['GitHub', 'Fu3rte'],
+      ['Instagram', 'cq777h'],
+      ['WeChat', 'F1nnian_'],
+    ],
+  );
+  assert.equal(
+    await page.locator('.contact-rows a').first().getAttribute('href'),
+    'mailto:2575716528cqh@gmail.com',
+  );
+  assert.equal(
+    await page.locator('.contact-pin, .contact-cord, .contact-stage, .contact-rows img, .contact-rows canvas, .qr').count(),
+    0,
+    'no pins, no cord, no QR',
+  );
+  assert(
+    await page.evaluate(() => !performance.getEntriesByType('resource').some(r => r.name.includes('matter'))),
+    'the physics engine is out of the load graph',
+  );
+  // matter 的 Mouse 会在宿主元素上 preventDefault 掉 wheel，滚轮扫过联系区必须照常翻页
+  const atBottom = await page.evaluate(() => window.scrollY);
+  const contactBox = await page.locator('#contact').boundingBox();
+  await page.mouse.move(contactBox.x + contactBox.width / 2, contactBox.y + contactBox.height / 2);
+  await page.mouse.wheel(0, -500);
+  await page.waitForTimeout(700);
+  assert(await page.evaluate(() => window.scrollY) < atBottom - 300, 'the wheel scrolls over the contact section');
+  await page.locator('#contact').screenshot({ path: '.shots/contact-home.png' });
+  checks.push('Contact section: oversized title, four channels, wheel still scrolls past it');
+
+  // 冷缓存：按仓库名各发一发 GET，配额耗尽时也不会有第四发
+  const coldWall = await browser.newPage({ viewport: { width: 1440, height: 900 }, locale: 'en-US' });
+  const calls = [];
+  coldWall.on('request', request => {
+    if (request.url().includes('api.github.com')) calls.push(request.url());
+  });
+  await coldWall.goto(new URL('/', url).href, { waitUntil: 'networkidle' });
+  await coldWall.waitForTimeout(1500);
+  assert.deepEqual(calls, stickerRepos.map(name => `https://api.github.com/repos/Fu3rte/${name}`));
+  checks.push(`Cold cache issues ${calls.length} GETs for the sticker wall`);
+  await coldWall.close();
+
   // :focus-visible 只在真实键盘导航下成立；全新页面才有确定的 Tab 起点
   await page.close();
-  const focused = await open();
+  const focused = await open({}, { repos });
   await focused.keyboard.press('Tab');
   assert.equal(await focused.evaluate(() => document.activeElement?.className), 'orb-trigger');
   assert.notEqual(await focused.evaluate(() => getComputedStyle(document.activeElement).outlineStyle), 'none');
   await focused.keyboard.press('Tab');
-  assert.match(await focused.evaluate(() => document.activeElement?.className ?? ''), /work-card/);
+  assert.match(await focused.evaluate(() => document.activeElement?.className ?? ''), /sticker/);
   assert.notEqual(await focused.evaluate(() => getComputedStyle(document.activeElement).outlineStyle), 'none');
   // 折叠态的菜单项 visibility:hidden，不进入 Tab 序列；键盘 Enter 展开后才可达
   await focused.keyboard.press('Shift+Tab');
@@ -294,7 +522,7 @@ try {
   await settled(focused, true);
   await focused.keyboard.press('Tab');
   assert.match(await focused.evaluate(() => document.activeElement?.className ?? ''), /orb-item/);
-  checks.push('Orb trigger then work cards are keyboard-focusable with a visible focus ring');
+  checks.push('Orb trigger then sticker links are keyboard-focusable with a visible focus ring');
   await focused.close();
 
   const photos = await open({}, {}, '/photos');
@@ -318,9 +546,14 @@ try {
   checks.push('Contact route stands alone: title, mail, three links, wordmark back');
   await contact.close();
 
-  const chinese = await open({ viewport: { width: 390, height: 844 }, reducedMotion: 'reduce' }, { lang: 'zh' });
+  const chinese = await open({ viewport: { width: 390, height: 844 }, reducedMotion: 'reduce' }, { lang: 'zh', repos });
   assert.equal(await chinese.locator('html').getAttribute('lang'), 'zh-CN');
-  assert.equal(await chinese.locator('.site-foot a').textContent(), '联系');
+  assert.equal(await chinese.locator('.contact-me').textContent(), '联系我');
+  assert.deepEqual(
+    await chinese.locator('.contact-rows b').allTextContents(),
+    ['邮箱', 'GitHub', 'Instagram', '微信'],
+  );
+  await chinese.locator('#contact').screenshot({ path: '.shots/contact-mobile-zh.png' });
   // 降低动效偏好下展开/收起直接落到终态
   await chinese.locator('.orb-trigger').click();
   await settled(chinese, true);

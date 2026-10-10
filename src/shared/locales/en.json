@@ -19,55 +19,25 @@
     "alt": "Photo"
   },
   "hero": {
-    "aria": "Skull in a black hood seated behind a dark grey Apple laptop, a cup of coffee steaming on the desk"
+    "aria": "Skull in a black hood seated behind a dark grey Apple laptop, a cup of coffee steaming on the left of the desk and a warm desk lamp lit on the right"
   },
   "about": {
     "title": "About",
     "p1": "I'm Finnian. Frontend background, now focused on AI applications and interaction, based in Dongguan. This site doubles as my motion lab — GSAP, Rive and Lottie all show up here.",
     "p2": "Away from work I write, rarely publish. I take animation mechanics apart for fun and collect odd, useful open-source tools. Come say hi."
   },
-  "skills": {
-    "title": "Skills",
-    "craft": {
-      "1": "Scroll-driven storytelling & timeline choreography",
-      "2": "State-machine driven interaction animation",
-      "3": "SVG paths and frame-by-frame tuning",
-      "title": "Motion"
-    },
-    "tools": {
-      "1": "Rive & Lottie workflows",
-      "2": "AE / PR short-form editing",
-      "3": "AI apps and agent building",
-      "title": "Tools"
-    },
-    "play": {
-      "1": "Observation & notes",
-      "2": "Cycling",
-      "3": "Animation and games",
-      "title": "Everyday"
-    }
-  },
   "works": {
-    "title": "Works",
-    "scroll": {
-      "name": "Scroll experiments",
-      "desc": "Narrative pages driven by GSAP ScrollTrigger"
-    },
-    "motion": {
-      "name": "Animation prototypes",
-      "desc": "Interactive samples built in Rive and Lottie"
-    },
-    "toys": {
-      "name": "Small toys",
-      "desc": "Bits of playful mechanics"
-    },
-    "writing": {
-      "name": "Writing",
-      "desc": "Personal, non-technical pieces"
-    }
+    "title": "Works"
   },
   "contact": {
     "title": "Contact",
+    "me": "Contact me",
+    "channel": {
+      "email": "Email",
+      "github": "GitHub",
+      "instagram": "Instagram",
+      "wechat": "WeChat"
+    },
     "p": "I check my inbox twice a day, with the same hands-in-pockets patience this page is drawn with. Write to me about agents, interfaces, a role you think fits — or just to say hi.",
     "github": "github / Fu3rte",
     "instagram": "instagram / cq777h",

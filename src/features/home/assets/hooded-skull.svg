@@ -1,6 +1,6 @@
 <svg xmlns="http://www.w3.org/2000/svg" width="1254" height="1254" viewBox="0 0 1254 1254" fill="none" role="img" aria-labelledby="art-title art-desc">
   <title id="art-title">&#x9ed1;&#x8272;&#x515c;&#x5e3d;&#x9ab7;&#x9ac5;&#x4e0e;&#x82f9;&#x679c;&#x7b14;&#x8bb0;&#x672c;</title>
-  <desc id="art-desc">&#x6b63;&#x9762;&#x89c6;&#x89d2;&#xff0c;&#x9ed1;&#x8272;&#x536b;&#x8863;&#x7684;&#x9ab7;&#x9ac5;&#x6234;&#x7740;&#x515c;&#x5e3d;&#xff0c;&#x5750;&#x5728;&#x6df1;&#x7070;&#x8272;&#x7b14;&#x8bb0;&#x672c;&#x7535;&#x8111;&#x540e;&#x3002;&#x5168;&#x90e8;&#x5143;&#x7d20;&#x4f7f;&#x7528;&#x77e2;&#x91cf;&#x8def;&#x5f84;&#x7ed8;&#x5236;&#x3002;</desc>
+  <desc id="art-desc">&#x6b63;&#x9762;&#x89c6;&#x89d2;&#xff0c;&#x9ed1;&#x8272;&#x536b;&#x8863;&#x7684;&#x9ab7;&#x9ac5;&#x6234;&#x7740;&#x515c;&#x5e3d;&#xff0c;&#x5750;&#x5728;&#x6d45;&#x94f6;&#x8272;&#x7b14;&#x8bb0;&#x672c;&#x7535;&#x8111;&#x540e;&#x3002;&#x5168;&#x90e8;&#x5143;&#x7d20;&#x4f7f;&#x7528;&#x77e2;&#x91cf;&#x8def;&#x5f84;&#x7ed8;&#x5236;&#x3002;</desc>
   <defs>
     <radialGradient id="paper" cx="49%" cy="46%" r="72%">
       <stop stop-color="#e3e3e3"/>
@@ -73,29 +73,29 @@
       <stop offset="1" stop-color="#090909"/>
     </radialGradient>
     <linearGradient id="metal-rim" x1="316" y1="769" x2="939" y2="1108" gradientUnits="userSpaceOnUse">
-      <stop stop-color="#b7b7b7"/>
-      <stop offset=".29" stop-color="#8c8c8d"/>
-      <stop offset=".6" stop-color="#a5a5a5"/>
-      <stop offset="1" stop-color="#9b9b9b"/>
+      <stop stop-color="#f7f7f9"/>
+      <stop offset=".29" stop-color="#c9cacd"/>
+      <stop offset=".6" stop-color="#e4e5e7"/>
+      <stop offset="1" stop-color="#cfd0d4"/>
     </linearGradient>
     <linearGradient id="aluminum" x1="369" y1="775" x2="916" y2="1107" gradientUnits="userSpaceOnUse">
-      <stop stop-color="#5b5b5d"/>
-      <stop offset=".49" stop-color="#5a595b"/>
-      <stop offset="1" stop-color="#555456"/>
+      <stop stop-color="#f2f2f4"/>
+      <stop offset=".49" stop-color="#e3e4e7"/>
+      <stop offset="1" stop-color="#d0d1d5"/>
     </linearGradient>
     <radialGradient id="metal-light" cx="51%" cy="34%" r="78%">
-      <stop stop-color="#767578" stop-opacity=".09"/>
-      <stop offset="1" stop-color="#333335" stop-opacity=".025"/>
+      <stop stop-color="#ffffff" stop-opacity=".42"/>
+      <stop offset="1" stop-color="#f2f3f5" stop-opacity=".06"/>
     </radialGradient>
     <linearGradient id="base-metal" x1="627" y1="1115" x2="627" y2="1146" gradientUnits="userSpaceOnUse">
-      <stop stop-color="#606062"/>
-      <stop offset=".3" stop-color="#5a595b"/>
-      <stop offset="1" stop-color="#545456"/>
+      <stop stop-color="#dcdde0"/>
+      <stop offset=".3" stop-color="#d0d1d5"/>
+      <stop offset="1" stop-color="#c3c4c9"/>
     </linearGradient>
     <linearGradient id="hinge-metal" x1="303" y1="1110" x2="325" y2="1139" gradientUnits="userSpaceOnUse">
-      <stop stop-color="#a6a6a6"/>
-      <stop offset=".5" stop-color="#6e6e6f"/>
-      <stop offset="1" stop-color="#444444"/>
+      <stop stop-color="#d8d9dc"/>
+      <stop offset=".5" stop-color="#a4a5aa"/>
+      <stop offset="1" stop-color="#808186"/>
     </linearGradient>
     <filter id="paper-grain" x="0" y="0" width="100%" height="100%" color-interpolation-filters="sRGB">
       <feTurbulence type="fractalNoise" baseFrequency=".026" numOctaves="3" seed="18" stitchTiles="stitch"/>
@@ -261,28 +261,28 @@
   <g id="laptop" stroke-linejoin="round" stroke-linecap="round">
     <g id="hinges">
       <path id="left-hinge" d="M316 1107 H333 L336 1143 H315 C305 1143 301 1139 301 1132 V1118 C301 1110 307 1107 316 1107Z" fill="url(#hinge-metal)" stroke="#030303" stroke-width="7"/>
-      <path d="M309 1117 C311 1114 319 1114 326 1115 L327 1120 H312Z" fill="#c2c2c2"/>
+      <path d="M309 1117 C311 1114 319 1114 326 1115 L327 1120 H312Z" fill="#f4f4f6"/>
       <path d="M311 1121 H325 V1133 H316 C312 1133 311 1130 311 1126Z" fill="#080808"/>
       <path id="right-hinge" d="M922 1107 H939 C948 1107 952 1111 952 1118 V1132 C952 1140 947 1143 938 1143 H920Z" fill="url(#hinge-metal)" stroke="#030303" stroke-width="7"/>
-      <path d="M930 1115 H941 C945 1115 946 1117 945 1120 H929Z" fill="#bbbbbb"/>
+      <path d="M930 1115 H941 C945 1115 946 1117 945 1120 H929Z" fill="#eaeaec"/>
       <path d="M930 1121 H942 V1127 C942 1132 939 1133 935 1133 H929Z" fill="#070707"/>
     </g>
     <path id="lid-outline" d="M329 757 H925 C943 757 952 766 952 784 L936 1095 C935 1111 927 1118 913 1118 H342 C325 1118 317 1111 316 1095 L299 785 C298 767 310 757 329 757Z" fill="#101010" stroke="#020202" stroke-width="8"/>
     <path id="lid-silver-rim" d="M329 762 H925 C940 762 947 770 947 786 L931 1095 C930 1108 924 1114 911 1114 H342 C328 1114 323 1108 322 1095 L305 787 C304 771 313 762 329 762Z" fill="url(#metal-rim)"/>
     <use href="#lid-face-path" fill="url(#aluminum)" filter="url(#aluminum-grain)"/>
     <use href="#lid-face-path" fill="url(#metal-light)"/>
-    <path id="lid-left-specular-edge" d="M327 768 C315 768 309 775 310 789 L327 1095 C328 1103 332 1108 339 1110" stroke="#d4d4d4" stroke-opacity=".71" stroke-width="2.2"/>
-    <path id="lid-top-specular-edge" d="M331 767 H923 C936 767 943 774 943 785" stroke="#cecece" stroke-opacity=".65" stroke-width="1.8"/>
-    <path id="lid-right-specular-edge" d="M943 789 L927 1096 C926 1104 923 1108 918 1110" stroke="#c7c7c7" stroke-opacity=".59" stroke-width="1.7"/>
+    <path id="lid-left-specular-edge" d="M327 768 C315 768 309 775 310 789 L327 1095 C328 1103 332 1108 339 1110" stroke="#ffffff" stroke-opacity=".71" stroke-width="2.2"/>
+    <path id="lid-top-specular-edge" d="M331 767 H923 C936 767 943 774 943 785" stroke="#f8f8fa" stroke-opacity=".65" stroke-width="1.8"/>
+    <path id="lid-right-specular-edge" d="M943 789 L927 1096 C926 1104 923 1108 918 1110" stroke="#f0f0f2" stroke-opacity=".59" stroke-width="1.7"/>
     <g id="apple-logo" fill="#fcfcfc">
       <path id="apple-leaf" d="M629 912 C628 900 636 891 649 887 C650 898 642 910 629 912Z"/>
       <path id="apple-body" d="M625 917 C632 918 638 913 645 913 C654 912 662 916 668 923 C660 929 656 937 658 946 C659 954 663 960 670 963 C666 976 658 988 650 990 C643 992 637 986 630 986 C623 985 617 991 610 990 C599 989 591 975 587 962 C581 945 585 926 597 917 C607 910 616 913 625 917Z"/>
     </g>
     <g id="laptop-base">
       <path id="base-outline" d="M335 1114 H919 C926 1114 928 1117 928 1123 V1143 C928 1148 925 1150 920 1150 H333 C328 1150 325 1148 325 1143 V1123 C325 1117 328 1114 335 1114Z" fill="url(#base-metal)" stroke="#020202" stroke-width="7"/>
-      <path d="M335 1118 H918 C922 1118 923 1120 923 1124" stroke="#999999" stroke-width="1.8" opacity=".55"/>
-      <path d="M330 1124 V1141 C330 1144 331 1145 335 1145 H919" stroke="#707071" stroke-width="1.5" opacity=".46"/>
-      <path d="M335 1147 H919" stroke="#242424" stroke-width="2" opacity=".7"/>
+      <path d="M335 1118 H918 C922 1118 923 1120 923 1124" stroke="#f2f2f4" stroke-width="1.8" opacity=".55"/>
+      <path d="M330 1124 V1141 C330 1144 331 1145 335 1145 H919" stroke="#b4b5ba" stroke-width="1.5" opacity=".46"/>
+      <path d="M335 1147 H919" stroke="#9a9ba0" stroke-width="2" opacity=".7"/>
     </g>
   </g>
 </svg>

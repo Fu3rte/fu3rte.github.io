@@ -26,6 +26,7 @@
   --orb-size: 60px;
   --orb-item: 46px;
   --orb-gap: 7px;
+  --hero-scale: 0.8;
 }
 
 /* ---------- type tokens ----------
@@ -130,10 +131,12 @@ body {
   padding: 3.5rem 1rem 2rem;
 }
 
-/* 画框 1700x1254，svh 按同一比例换算，矮屏上整幅仍完整可见 */
+/* 画框 2198x1254，svh 按同一比例换算，矮屏上整幅仍完整可见。
+   整幅大小由 :root 的 --hero-scale 控制，1 为原始尺寸；
+   1060px 上限与画框同步加宽，人物在屏幕上的尺寸照旧 */
 .brook-scene {
   position: relative;
-  width: min(92vw, 820px, calc(74svh * 1.356));
+  width: calc(min(92vw, 1060px, 74svh * 1.753) * var(--hero-scale));
 }
 
 .brook-scene > svg {
@@ -142,12 +145,12 @@ body {
   display: block;
 }
 
-/* 热气按画框百分比落位，与画稿同一套坐标：杯口上方 150x190 */
+/* 热气按画框百分比落位，与画稿同一套坐标：杯口上方 150x190，盒中心 x=374 对齐杯口 */
 .brook-steam {
   position: absolute;
-  left: 7.353%;
+  left: 13.603%;
   top: 63.238%;
-  width: 8.824%;
+  width: 6.8244%;
   aspect-ratio: 150 / 190;
 }
 
@@ -156,8 +159,23 @@ body {
   display: block;
 }
 
-/* 站点方格纸即底色，画稿自带的 #e3e3e3 纸底收起，只留人物与电脑 */
-.brook-scene #background {
+/* 站点方格纸即底色，画稿自带的 #e3e3e3 纸底与台灯素材的白纸都收起，只留人物与电脑 */
+.brook-scene #background,
+.brook-scene #brook-lamp > rect {
+  display: none;
+}
+
+/* 眼窝画布与原稿共用 2198x1254 画框，Rive 的 contain 落位与 svg 的 xMidYMid 一致 */
+.brook-eyes {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+}
+
+/* 画布交出第一帧之前，原稿的眼窝照常画着，交接不留空窗 */
+.brook-scene.eyes-live #left-eye-socket,
+.brook-scene.eyes-live #right-eye-socket {
   display: none;
 }
 
@@ -201,80 +219,127 @@ p.prose {
   text-transform: none;
 }
 
-/* ---------- skills ---------- */
-.skills-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
-  gap: 2rem;
-}
-
-.skill-group-title {
-  margin: 0 0 0.75rem;
-  color: var(--muted);
-}
-
-.skill-list {
+/* ---------- works: 方格纸上用胶带贴住的仓库贴纸 ---------- */
+.sticker-wall {
   list-style: none;
   margin: 0;
   padding: 0;
-  display: flex;
-  flex-direction: column;
-  gap: 0.5rem;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+  gap: 3rem 2.25rem;
+  align-items: start;
 }
 
-.skill-list li {
-  font-size: 1.05rem;
-  line-height: 1.55;
-  padding-left: 1.1rem;
+.sticker-slot {
   position: relative;
+  top: var(--slot-drop, 0px);
 }
 
-.skill-list li::before {
-  content: "—";
-  position: absolute;
-  left: 0;
-  color: var(--muted);
-}
-
-/* ---------- works ---------- */
-.works-grid {
-  list-style: none;
-  margin: 0;
-  padding: 0;
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-  gap: 1.25rem;
-}
-
-.work-card {
+.sticker {
+  position: relative;
   display: flex;
   flex-direction: column;
   gap: 0.6rem;
+  padding: 1.7rem 1.4rem 1.4rem;
   background: var(--surface);
-  border: 2px solid var(--ink);
-  border-radius: 14px;
-  box-shadow: 6px 6px 0 var(--shadow-hard);
-  padding: 1.4rem 1.4rem 1.5rem;
+  border-radius: 3px;
   color: var(--ink);
-  text-decoration: none;
+  /* 顶边中点即胶带所在，掉落绕它转 */
+  transform-origin: 50% 0;
+  will-change: transform;
+  box-shadow:
+    0 0 0 1px color-mix(in srgb, var(--ink) 8%, transparent),
+    3px 4px 0 color-mix(in srgb, var(--ink) 5%, transparent),
+    0 18px 26px -16px color-mix(in srgb, var(--ink) 60%, transparent);
+}
+
+.sticker-tape {
+  position: absolute;
+  left: 50%;
+  top: 0;
+  width: 6.75rem;
+  height: 2.3rem;
+  /* translate/rotate 是独立变换属性，交给胶带自身的落位与歪斜，
+     transform 整条留给 GSAP 的按压缩动效 */
+  translate: -50% -50%;
+  rotate: -4deg;
+  pointer-events: none;
+  /* 半透的暖白胶底：底下的方格纸要透得出来。
+     上缘一道亮边、下缘一道暗边，才是压在纸上的那条胶带 */
+  background:
+    linear-gradient(to bottom,
+      rgb(255 255 255 / 0.85) 0 1.5px,
+      transparent 1.5px calc(100% - 2px),
+      rgb(120 113 98 / 0.38) calc(100% - 2px) 100%),
+    linear-gradient(100deg,
+      rgb(236 231 218 / 0.58),
+      rgb(250 248 242 / 0.3) 40%,
+      rgb(233 228 214 / 0.55) 72%,
+      rgb(246 243 234 / 0.4));
+  /* 上下边裁直，两端是撕开的毛口；clip-path 会裁掉 box-shadow，投影走 drop-shadow */
+  clip-path: polygon(4% 0, 96% 0,
+    99% 16%, 95% 33%, 99% 50%, 95% 68%, 99% 84%, 96% 100%,
+    4% 100%,
+    1% 84%, 5% 67%, 1% 50%, 5% 33%, 1% 16%);
+  filter: drop-shadow(0 1px 1px color-mix(in srgb, var(--ink) 30%, transparent));
+}
+
+.sticker-name {
+  font-family: var(--type-mono);
+  font-size: 1.05rem;
+  letter-spacing: 0.01em;
+  overflow-wrap: anywhere;
+}
+
+.sticker-desc {
+  font-size: 0.95rem;
+  line-height: 1.65;
+  color: var(--muted);
+}
+
+.sticker-lang {
+  font-family: var(--type-mono);
+  font-size: 0.7rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: color-mix(in srgb, var(--ink) 42%, var(--paper));
+}
+
+.sticker-foot {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.75rem;
+  margin-top: 0.15rem;
+}
+
+/* 跳转只落在右下角这颗反相圆钮上，贴纸本体留给摆动 */
+.sticker-open {
+  display: grid;
+  place-items: center;
+  flex: none;
+  width: 2.1rem;
+  height: 2.1rem;
+  border-radius: 50%;
+  background: var(--ink);
+  color: var(--paper);
+  box-shadow: 2px 3px 0 color-mix(in srgb, var(--ink) 18%, transparent);
   transition: transform 0.2s ease, box-shadow 0.2s ease;
 }
 
-.work-card:hover {
-  transform: translate(-3px, -3px);
-  box-shadow: 9px 9px 0 var(--shadow-hard);
+.sticker-open:hover {
+  transform: translate(-2px, -2px);
+  box-shadow: 4px 6px 0 color-mix(in srgb, var(--ink) 22%, transparent);
 }
 
-.work-name {
-  font-family: var(--type-display);
-  font-weight: 700;
-  font-size: 1.35rem;
-  line-height: 1.2;
-}
-
-.work-desc {
-  font-size: 0.95rem;
-  color: var(--muted);
+.sticker-open svg {
+  width: 0.95rem;
+  height: 0.95rem;
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 1.6;
+  stroke-linecap: round;
+  stroke-linejoin: round;
 }
 
 /* ---------- contact ---------- */
@@ -343,25 +408,62 @@ p.prose {
   color: var(--muted);
 }
 
-/* ---------- site footer: 唯一入口，指向联系页 ---------- */
-.site-foot {
-  border-top: 2px dashed color-mix(in srgb, var(--ink) 18%, transparent);
-  padding: 2.5rem 1.5rem 4rem;
+/* ---------- 首页底部：巨型标题 + 一行渠道，方格纸仍是唯一底色 ---------- */
+.contact-me {
+  margin: 0;
+  text-align: center;
+  font-family: var(--type-display);
+  font-weight: 800;
+  font-size: clamp(2.4rem, 12vw, 8.5rem);
+  line-height: 0.92;
+  letter-spacing: -0.02em;
+  text-transform: uppercase;
+}
+
+html[lang="zh-CN"] .contact-me {
+  letter-spacing: 0.01em;
+}
+
+.contact-rows {
+  list-style: none;
+  margin: clamp(1.25rem, 4vw, 2.25rem) 0 0;
+  padding: 0;
   display: flex;
+  flex-wrap: wrap;
   justify-content: center;
+  gap: 0.9rem clamp(1.5rem, 5vw, 3.5rem);
 }
 
-.site-foot a {
+.contact-rows li {
+  display: flex;
+  align-items: baseline;
+  gap: 0.5rem;
+}
+
+.contact-rows b {
+  font-weight: 700;
   color: var(--ink);
-  font-size: 0.8rem;
-  text-decoration: underline;
-  text-decoration-thickness: 2px;
-  text-underline-offset: 6px;
-  text-decoration-color: color-mix(in srgb, var(--ink) 35%, transparent);
 }
 
-.site-foot a:hover {
-  text-decoration-color: var(--ink);
+.contact-rows a,
+.contact-rows span {
+  font-family: var(--type-mono);
+  font-size: 0.85rem;
+  letter-spacing: 0.02em;
+  color: var(--ink);
+  text-decoration: none;
+  border-bottom: 2px solid color-mix(in srgb, var(--ink) 22%, transparent);
+  transition: border-bottom-color 0.2s ease;
+}
+
+.contact-rows a:hover {
+  border-bottom-color: var(--ink);
+}
+
+/* 微信号点不动，下划虚线把它标成一条备注 */
+.contact-rows li > span {
+  color: var(--muted);
+  border-bottom-style: dashed;
 }
 
 /* ---------- contact page ---------- */

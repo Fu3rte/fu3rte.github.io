@@ -31,8 +31,6 @@ function playIntro(): void {
   const scene = document.querySelector('.brook-scene');
   if (!scene) return;
   gsap.from(scene, { opacity: 0, scale: 0.96, duration: 1, delay: 0.1, ease: 'power4.out' });
-  // 颅骨在兜帽开口里起伏：内衬与两片 lapel 都排在 #skull 之后，位移露不出接缝
-  gsap.to('#skull', { y: -3, duration: 2.7, ease: 'sine.inOut', yoyo: true, repeat: -1 });
 }
 
 function setupSectionReveals(): void {

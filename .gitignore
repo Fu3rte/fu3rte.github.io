@@ -2,6 +2,7 @@ node_modules/
 dist/
 .shots/
 .demo/
+rive/**/build/
 *.local
 *.log
 .DS_Store
