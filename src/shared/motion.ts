@@ -70,13 +70,18 @@ export function initMotion(): () => void {
   const media = gsap.matchMedia();
   media.add('(prefers-reduced-motion: no-preference)', () => {
     let bar: HTMLDivElement | null = null;
+    let run: gsap.Context | null = null;
     const cancel = onLoaderDone(() => {
-      bar = createProgressBar();
-      playIntro();
-      setupSectionReveals();
+      // 放行那一拍才创建，这批动效长在 matchMedia 的作用域之外，另立一份上下文交给卸载清账
+      run = gsap.context(() => {
+        bar = createProgressBar();
+        playIntro();
+        setupSectionReveals();
+      });
     });
     return () => {
       cancel();
+      run?.revert();
       bar?.remove();
     };
   });

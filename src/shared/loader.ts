@@ -54,6 +54,9 @@ export function bootLoader(): void {
   }
   watchContent();
   window.addEventListener('pageshow', onPageRestore);
+  // 覆盖层压场期间滚动一律拒收：滚轮一推进页面，正文的 ScrollTrigger 锚点就在无人看见的那一拍被消耗光
+  window.addEventListener('wheel', blockScroll, { passive: false });
+  window.addEventListener('touchmove', blockScroll, { passive: false });
 
   void Promise.race([
     document.fonts.ready,
@@ -112,6 +115,10 @@ function markStage(stage: Stage): void {
   target = [...reached].reduce((sum, item) => sum + WEIGHTS[item], 0);
 }
 
+function blockScroll(event: Event): void {
+  if (phase !== 'released') event.preventDefault();
+}
+
 function tick(): void {
   if (phase !== 'waiting') return;
   paintDraw();
@@ -149,6 +156,10 @@ function release(): void {
   if (phase !== 'waiting') return;
   phase = 'releasing';
   gsap.ticker.remove(tick);
+  // 重载时浏览器把上次的 scrollY 还原在覆盖层底下，擦除起点先把页面按回顶端
+  window.scrollTo(0, 0);
+  // 正文动效与擦除同时起跑：覆盖层此刻仍满版压场，等收干净再起就是满版正文闪现后跳回 0
+  announce();
   anim?.pause();
   if (reduced) {
     finish();
@@ -175,13 +186,16 @@ function finish(): void {
   phase = 'released';
   overlayEl!.classList.add('is-hidden');
   gsap.set([overlayEl, markEl, captionEl], { clearProps: 'all' });
+}
+
+function announce(): void {
   for (const waiter of waiters) waiter();
   waiters.clear();
 }
 
-// 正文首屏动效要等覆盖层收干净再起，否则在遮挡后面空放一遍
+// 正文动效的起跑线是覆盖层开始擦除的那一拍，压在满版遮挡后面空放等于白放
 export function onLoaderDone(callback: () => void): () => void {
-  if (phase === 'released') {
+  if (phase !== 'waiting') {
     callback();
     return () => {};
   }
@@ -195,6 +209,7 @@ function onPageRestore(event: PageTransitionEvent): void {
   // bfcache 回来的正文已就位，覆盖层停在哪个状态都直接收走
   if (!event.persisted || phase !== 'waiting') return;
   gsap.ticker.remove(tick);
+  announce();
   finish();
 }
 
