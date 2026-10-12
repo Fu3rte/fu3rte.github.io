@@ -30,9 +30,20 @@ const round = (value, digits = 3) => {
 
 const colorOf = (rgb) => ({ a: 0, k: rgb.map((channel) => round(channel, 6)).concat([1]) });
 
-// 墨色在三通道上同值，序列化后是一个可整串替换的字面量
-const withInk = (animation, inkColor) =>
-  JSON.parse(JSON.stringify(animation).replaceAll(JSON.stringify(colorOf(inkColor)), JSON.stringify(colorOf(night))));
+// 夜色下的骨白颅骨沉进底色 #141414，靠浅色描边与眶留形，与亮色下的明暗关系镜像
+const NIGHT_COLORS = new Map([
+  [colorOf(ink), colorOf(night)],
+  [colorOf(bone), colorOf(ink)],
+]);
+
+// 颜色序列化后是可整串替换的字面量
+const withNight = (animation) => {
+  let source = JSON.stringify(animation);
+  for (const [from, to] of NIGHT_COLORS) {
+    source = source.replaceAll(JSON.stringify(from), JSON.stringify(to));
+  }
+  return JSON.parse(source);
+};
 
 // 逐 id 抓取 path 的 d 属性，缺一条即崩溃
 const extractPathData = (html, id) => {
@@ -276,7 +287,7 @@ for (const layer of LAYERS) {
   layer.bounds = { cx: (minX + maxX) / 2, cy: (minY + maxY) / 2 };
 }
 
-const buildAnimation = (inkColor) => ({
+const buildAnimation = () => ({
   v: '5.7.4',
   fr: FPS,
   ip: 0,
@@ -302,11 +313,11 @@ const buildAnimation = (inkColor) => ({
   })),
 });
 
-const animation = buildAnimation(ink);
+const animation = buildAnimation();
 
 mkdirSync(dirname(outFile), { recursive: true });
 writeFileSync(outFile, `${JSON.stringify(animation, null, 2)}\n`, 'utf8');
-writeFileSync(darkOutFile, `${JSON.stringify(withInk(animation, ink), null, 2)}\n`, 'utf8');
+writeFileSync(darkOutFile, `${JSON.stringify(withNight(animation), null, 2)}\n`, 'utf8');
 
 const report = LAYERS.map((layer) => {
   const [start, end] = layer.draw;
