@@ -32,6 +32,9 @@
   "works": {
     "title": "作品"
   },
+  "stack": {
+    "title": "技术栈"
+  },
   "contact": {
     "title": "联系",
     "me": "联系我",

@@ -37,6 +37,9 @@
   "works": {
     "title": "Works"
   },
+  "stack": {
+    "title": "Stack"
+  },
   "contact": {
     "title": "Contact",
     "me": "Contact me",

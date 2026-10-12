@@ -3,6 +3,7 @@ import { t, useLanguage } from '../../shared/i18n';
 import { initMotion } from '../../shared/motion';
 import BrookHero from './BrookHero';
 import ContactWall from './ContactWall';
+import StackMarquee from './StackMarquee';
 import Works from './Works';
 
 function About() {
@@ -26,6 +27,7 @@ export default function App() {
       <BrookHero />
       <About />
       <Works />
+      <StackMarquee />
       <ContactWall />
     </main>
   );

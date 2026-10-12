@@ -31,6 +31,7 @@
     rgb(250 248 242 / 0.3) 40%,
     rgb(233 228 214 / 0.55) 72%,
     rgb(246 243 234 / 0.4));
+  --chip-fill: color-mix(in srgb, var(--surface) 82%, transparent);
   --orb-size: 60px;
   --orb-item: 46px;
   --orb-gap: 7px;
@@ -62,6 +63,7 @@ html[data-theme="dark"] {
     rgb(236 235 231 / 0.07) 40%,
     rgb(236 235 231 / 0.13) 72%,
     rgb(236 235 231 / 0.09));
+  --chip-fill: color-mix(in srgb, var(--surface) 75%, transparent);
 }
 
 /* ---------- type tokens ----------
@@ -552,6 +554,115 @@ p.prose {
   stroke-width: 1.6;
   stroke-linecap: round;
   stroke-linejoin: round;
+}
+
+/* ---------- stack: 满屏双轨的胶带技术栈 ----------
+   和纸胶带的手感沿用 works 贴纸那套 --tape-* 令牌，靠 clip-path 只撕两端，
+   上下边留给明暗两条边线收口；投影走 drop-shadow，因为 clip-path 裁掉 box-shadow。 */
+.stack > .section-title {
+  /* 带子自己的上内边距已经隔开两轨，标题不再叠一份下边距 */
+  margin-block-end: 0;
+}
+
+.stack-band {
+  /* 挣脱 .section 的 1000px 上限，整条带子铺满视口宽 */
+  position: relative;
+  left: 50%;
+  width: 100vw;
+  transform: translateX(-50%);
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  gap: var(--stack-gap);
+  padding-block: 4rem;
+  --stack-gap: 1.25rem;
+  -webkit-mask-image: linear-gradient(to right, transparent, #000 8%, #000 92%, transparent);
+  mask-image: linear-gradient(to right, transparent, #000 8%, #000 92%, transparent);
+}
+
+.stack-row {
+  cursor: grab;
+  /* 横向擦洗归这条轨道，纵向仍交回页面原生滚动 */
+  touch-action: pan-y;
+}
+
+.stack-row.is-grabbing {
+  cursor: grabbing;
+}
+
+.stack-track {
+  display: flex;
+  width: max-content;
+  will-change: transform;
+}
+
+.stack-group {
+  display: flex;
+  align-items: center;
+  gap: var(--stack-gap);
+  /* 组尾补一个间距，副本首尾相接时节奏不断 */
+  padding-right: var(--stack-gap);
+}
+
+.stack-chip {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.5rem 1rem;
+  /* 手撕胶带斜贴的角度，三个一档轮着来 */
+  rotate: -1.2deg;
+  font-family: var(--type-mono);
+  font-weight: 500;
+  font-size: 0.75rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  white-space: nowrap;
+  color: var(--ink);
+  background:
+    linear-gradient(to bottom,
+      var(--tape-edge-light) 0 1.5px,
+      transparent 1.5px calc(100% - 2px),
+      var(--tape-edge-dark) calc(100% - 2px) 100%),
+    var(--tape-body),
+    var(--chip-fill);
+  clip-path: polygon(4% 0, 96% 0,
+    99% 16%, 95% 33%, 99% 50%, 95% 68%, 99% 84%, 96% 100%,
+    4% 100%,
+    1% 84%, 5% 67%, 1% 50%, 5% 33%, 1% 16%);
+  filter:
+    drop-shadow(0 0 0.5px color-mix(in srgb, var(--ink) 16%, transparent))
+    drop-shadow(0 2px 8px color-mix(in srgb, var(--ink) 8%, transparent));
+}
+
+.stack-chip:nth-child(3n + 2) {
+  rotate: 0.9deg;
+}
+
+.stack-chip:nth-child(3n) {
+  rotate: -0.5deg;
+}
+
+/* 工坊指示灯只做一颗墨水点，冷暖不参与分类 */
+.stack-chip::before {
+  content: '';
+  flex: none;
+  width: 4px;
+  height: 4px;
+  border-radius: 50%;
+  background: color-mix(in srgb, var(--ink) 78%, transparent);
+}
+
+@media (max-width: 767px) {
+  .stack-band {
+    padding-block: 2.5rem;
+    --stack-gap: 0.75rem;
+  }
+
+  .stack-chip {
+    padding: 0.375rem 0.75rem;
+    font-size: 0.6875rem;
+  }
 }
 
 /* ---------- contact ---------- */
