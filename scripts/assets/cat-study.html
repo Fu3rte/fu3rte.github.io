@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="zh-CN" data-theme="light">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>角色设计稿 · 几何火柴人</title>
+<style>
+  :root {
+    --paper: #f0f2f5;
+    --grid: rgba(30, 40, 55, 0.07);
+    /* 浅色：墨黑线 + 冷银平涂 + 单一强调色 */
+    --ink: #181d24;
+    --block: #c9d2da;
+    --block-2: #e6eaef;
+    --eye: #3d95a8;
+  }
+  html[data-theme="dark"] {
+    --paper: #0e0e0e;
+    --grid: rgba(242, 242, 240, 0.08);
+    /* 深色：白线 + 深灰平涂 + 琥珀强调 */
+    --ink: #f2f2f0;
+    --block: #2c333c;
+    --block-2: #1b1f26;
+    --eye: #e0a445;
+  }
+  * { box-sizing: border-box; }
+  body {
+    margin: 0;
+    min-height: 100vh;
+    display: grid;
+    place-items: center;
+    background-color: var(--paper);
+    background-image:
+      linear-gradient(to right, var(--grid) 1px, transparent 1px),
+      linear-gradient(to bottom, var(--grid) 1px, transparent 1px);
+    background-size: 28px 28px;
+    font-family: "Space Grotesk", system-ui, sans-serif;
+    transition: background-color .5s ease;
+    padding: 2rem;
+  }
+  .stage { width: min(90vw, 460px); }
+  svg { width: 100%; height: auto; display: block; }
+  svg * { transition: fill .5s ease, stroke .5s ease, opacity .5s ease; }
+  .btn {
+    margin-top: 1.2rem;
+    font-family: "Space Mono", monospace;
+    font-size: .75rem; letter-spacing: .08em; text-transform: uppercase;
+    border: 2px solid var(--ink); background: transparent; color: var(--ink);
+    border-radius: 999px; padding: .5rem 1rem; cursor: pointer;
+  }
+  .cap { text-align: center; font-size: .8rem; color: var(--ink); opacity: .6; margin-top: .6rem; }
+
+  /* 线：开放式几何笔画 */
+  .line { fill: none; stroke: var(--ink); stroke-width: 7; stroke-linecap: round; stroke-linejoin: round; }
+  .line-thin { fill: none; stroke: var(--ink); stroke-width: 4; stroke-linecap: round; }
+  /* 平涂色块：闭合式几何形 */
+  .block { fill: var(--block); stroke: var(--ink); stroke-width: 7; stroke-linejoin: round; }
+  .flat { fill: var(--ink); }
+  .flat-eye { fill: var(--eye); }
+</style>
+</head>
+<body>
+  <div class="stage">
+    <svg viewBox="0 0 400 430" role="img" aria-label="坐在桌前的几何火柴人">
+      <!-- 躯干：闭合梯形平涂 -->
+      <g id="body">
+        <path class="block" d="M166 200 L234 200 L292 344 L108 344 Z" />
+      </g>
+
+      <!-- 手臂：两段折线，肘部外开 -->
+      <g id="arm-l">
+        <path class="line" d="M164 216 L122 246 L144 262" />
+      </g>
+      <g id="arm-r">
+        <path class="line" d="M236 216 L278 246 L256 262" />
+      </g>
+
+      <!-- 颈 -->
+      <path class="line" d="M200 184 L200 204" />
+
+      <!-- 头：闭合圆 + 开放式三角耳 -->
+      <g id="head">
+        <g id="ear-l">
+          <path class="line" d="M148 76 L137 21 L182 54" />
+        </g>
+        <g id="ear-r">
+          <path class="line" d="M252 76 L263 21 L218 54" />
+        </g>
+
+        <circle class="block" cx="200" cy="120" r="68" />
+
+        <g id="eyes">
+          <circle class="flat-eye" cx="172" cy="114" r="14" />
+          <circle class="flat-eye" cx="228" cy="114" r="14" />
+        </g>
+
+        <!-- 符号化表情：一条弧 -->
+        <path class="line-thin" d="M184 146 q16 14 32 0" />
+
+        <!-- 胡须：每侧两条开放线 -->
+        <g class="whiskers">
+          <path class="line-thin" d="M134 124 L74 112" />
+          <path class="line-thin" d="M134 142 L74 158" />
+          <path class="line-thin" d="M266 124 L326 112" />
+          <path class="line-thin" d="M266 142 L326 158" />
+        </g>
+      </g>
+
+      <!-- 笔记本盖板：生产场景里 y=268 以下全部被它遮住，用于判断真实 silhouette -->
+      <g id="laptop-mask">
+        <rect x="84" y="268" width="253" height="162" fill="var(--paper)" />
+        <line x1="62" y1="268" x2="358" y2="268" class="line" />
+      </g>
+
+      <!-- 手：两个闭合圆盘，扣在盖板沿上（生产里与笔记本同层序） -->
+      <g id="hand-l">
+        <circle class="block" cx="142" cy="268" r="17" />
+      </g>
+      <g id="hand-r">
+        <circle class="block" cx="258" cy="268" r="17" />
+      </g>
+    </svg>
+    <div style="text-align:center"><button class="btn" id="toggle">切换日夜</button></div>
+    <div class="cap" id="cap">浅色：墨黑线 + 冷银平涂</div>
+  </div>
+<script>
+  const btn = document.getElementById('toggle');
+  const cap = document.getElementById('cap');
+  btn.addEventListener('click', () => {
+    const html = document.documentElement;
+    const next = html.dataset.theme === 'dark' ? 'light' : 'dark';
+    html.dataset.theme = next;
+    cap.textContent = next === 'dark' ? '深色：白线 + 琥珀强调' : '浅色：墨黑线 + 冷银平涂';
+  });
+</script>
+</body>
+</html>

@@ -15,6 +15,7 @@
 
 /* ---------- palette: strict monochrome on graph paper ---------- */
 :root {
+  color-scheme: light;
   --paper: #fafaf9;
   --ink: #141414;
   --surface: #ffffff;
@@ -23,10 +24,44 @@
   --muted: color-mix(in srgb, var(--ink) 55%, var(--paper));
   --shadow-hard: color-mix(in srgb, var(--ink) 12%, transparent);
   --grid: rgba(20, 20, 20, 0.07);
+  --tape-edge-light: rgb(255 255 255 / 0.85);
+  --tape-edge-dark: rgb(120 113 98 / 0.38);
+  --tape-body: linear-gradient(100deg,
+    rgb(236 231 218 / 0.58),
+    rgb(250 248 242 / 0.3) 40%,
+    rgb(233 228 214 / 0.55) 72%,
+    rgb(246 243 234 / 0.4));
   --orb-size: 60px;
   --orb-item: 46px;
   --orb-gap: 7px;
   --hero-scale: 0.8;
+}
+
+/* ---------- dark: 同一套方格纸翻到夜里 ----------
+   纸与墨整体反相，画稿的兜帽本就是近黑，底色跟着压到 #141414 时
+   衣料溶进夜里、只剩颅骨与台灯亮着。白色系的物理阴影跟着光源翻转，
+   在夜里成为贴纸与卡片边缘的浅光晕；环境投影仍由纯黑承担。 */
+html[data-theme="dark"] {
+  color-scheme: dark;
+  /* Tailwind 的彩色工具类与令牌同名，一并翻转 */
+  --color-paper: #141414;
+  --color-ink: #ecebe7;
+  --color-accent: #ecebe7;
+  --paper: #141414;
+  --ink: #ecebe7;
+  --surface: #1e1e1d;
+  --sky: #2a2a29;
+  --accent: #ecebe7;
+  --muted: #9a9a97;
+  --shadow-hard: color-mix(in srgb, var(--ink) 16%, transparent);
+  --grid: rgba(236, 235, 231, 0.055);
+  --tape-edge-light: rgb(236 235 231 / 0.5);
+  --tape-edge-dark: rgb(0 0 0 / 0.55);
+  --tape-body: linear-gradient(100deg,
+    rgb(236 235 231 / 0.16),
+    rgb(236 235 231 / 0.07) 40%,
+    rgb(236 235 231 / 0.13) 72%,
+    rgb(236 235 231 / 0.09));
 }
 
 /* ---------- type tokens ----------
@@ -62,6 +97,19 @@ html[lang="zh-CN"] .contact-list a.contact-big {
 html {
   scroll-behavior: smooth;
   scrollbar-width: none;
+  -webkit-touch-callout: none;
+  -webkit-user-select: none;
+  user-select: none;
+}
+
+/* 表单控件回到可选中，站点没有可输入的文案区，只有开关的隐藏 input */
+:is(input, textarea) {
+  -webkit-user-select: auto;
+  user-select: auto;
+}
+
+img {
+  -webkit-user-drag: none;
 }
 
 html::-webkit-scrollbar {
@@ -159,6 +207,27 @@ body {
   display: block;
 }
 
+/* 咖啡杯的悬停区：同一套画框百分比罩住杯身与杯把（画稿坐标 284..530 x 983..1150），
+   热气层正落在杯口上缘 y=983 之上，两层不重叠 */
+.brook-coffee {
+  position: absolute;
+  left: 12.921%;
+  top: 78.389%;
+  width: 11.192%;
+  height: 13.317%;
+}
+
+/* 说话位：#hood-outline 的包围盒（画稿局部 269..978 x 92..755，随画稿整组平移 472）
+   换算成画框百分比；气泡统一悬在这块头顶空纸上，尖角朝下指着人物 */
+.brook-speaker {
+  position: absolute;
+  left: 33.712%;
+  top: 7.336%;
+  width: 32.257%;
+  height: 52.871%;
+  pointer-events: none;
+}
+
 /* 站点方格纸即底色，画稿自带的 #e3e3e3 纸底与台灯素材的白纸都收起，只留人物与电脑 */
 .brook-scene #background,
 .brook-scene #brook-lamp > rect {
@@ -177,6 +246,152 @@ body {
 .brook-scene.eyes-live #left-eye-socket,
 .brook-scene.eyes-live #right-eye-socket {
   display: none;
+}
+
+/* 开关钉在画框左侧的墙面上：跟着画框一起居中、一起入场。
+   占位按方格纸算，竖两格横一格半（格子 28px，即 56x42），
+   把 97x170 的原稿非等比压到位；锚点在画框左缘外侧，缩放围绕右中展开 */
+.brook-scene .hero-theme {
+  position: absolute;
+  top: 62%;
+  right: calc(100% + clamp(6px, 3.35vw, 68px));
+  transform: translateY(-50%) scale(0.433, 0.3294);
+  transform-origin: right center;
+}
+
+/* 窗挂在左墙上、开关正上方：左缘与开关的视觉左缘（画框左缘外 clamp(6px,3.35vw,68px) + 42）齐平，
+   向右探进画框左上那片空白方格纸；底边停在开关顶缘（62% 处往上 28）再空一个格子。
+   占位按格子倍数算，长 9 格即 252，宽跟画稿线条的 940:1092 走 217 */
+.brook-window {
+  position: absolute;
+  left: calc(-42px - clamp(6px, 3.35vw, 68px));
+  bottom: calc(38% + 56px);
+  width: 217px;
+}
+
+.brook-window > svg {
+  display: block;
+  width: 100%;
+  height: auto;
+}
+
+/* 站点方格纸即底色，两张窗自带的画板纸都收起，只留窗框、窗外的景与猫 */
+.brook-window-day > rect,
+.brook-window-night #night-window-paper {
+  display: none;
+}
+
+.brook-window > .brook-window-night {
+  display: none;
+}
+
+/* 光芒与星星由 lottie 承接，画稿里对应的图元收起；两层按窗同一份裁切（940x1092 减左上角 88,176）落位，
+   画布坐标与窗稿坐标一比一重合 */
+.brook-window-day [stroke="#111412"],
+.brook-window-night :is(#star-dots, #star-crosses) {
+  display: none;
+}
+
+.brook-window-lottie {
+  position: absolute;
+  inset: 0;
+}
+
+/* lottie 已把 width/height 100% 内联写进它自己的 svg，这里只压掉基线留白 */
+.brook-window-lottie svg {
+  display: block;
+}
+
+/* 800 以下画框缩到窗子要压上人物左肩、左缘也贴不住 hero 的 16px 内衬，墙上的装饰随墙一起收起；
+   开关是控件，照旧留在原位 */
+@media (max-width: 800px) {
+  .brook-window {
+    display: none;
+  }
+}
+
+/* ---------- 浅色画稿里台灯是关着的 ----------
+   暖光只在夜里出现：光束整层收起，灯口内壁与内壁光斑退回画稿的黑白线稿，
+   灯口那条面用与白漆金属件同一套字面漆。CSS 声明压过图元的 paint server 属性。 */
+html[data-theme="light"] .brook-scene #brook-lamp [aria-label="暖光光束"] {
+  display: none;
+}
+
+html[data-theme="light"] .brook-scene #brook-lamp :is([fill="url(#innerShade)"], [fill="#fffdf0"]) {
+  fill: #fff;
+}
+
+html[data-theme="light"] .brook-scene #brook-lamp [stroke="url(#rimWarm)"] {
+  stroke: #050505;
+}
+
+html[data-theme="light"] .brook-scene #brook-lamp [stroke="#ffd665"] {
+  display: none;
+}
+
+/* ---------- hero 画稿的夜色：月光下的同一张画 ----------
+   深色下画稿按同一光源方向反相：兜帽与衣料本就是近黑，随底色沉进夜里，
+   靠极淡的轮廓光与颅骨高光留形；台灯白漆翻成剪影，
+   暖光渐变（beamDown / innerShade）原样保留，夜里反而更实。
+   图元的 paint server 写在属性上，CSS 声明优先于属性，按字面值定点覆盖。 */
+html[data-theme="dark"] .brook-scene #brook-lamp {
+  fill: var(--paper);
+}
+
+/* 白漆金属件：只认画稿里那一对字面值，带渐变填充的灯口与光束原样不动 */
+html[data-theme="dark"] .brook-scene #brook-lamp [fill="#fff"] {
+  fill: var(--paper);
+}
+
+html[data-theme="dark"] .brook-scene #brook-lamp [stroke="#050505"] {
+  stroke: var(--ink);
+}
+
+/* defs 里的渐变子节点与底板同样受组内继承影响，逐类收形：
+   stop 只认 stop-color（继承来的 fill 落不到它身上），滤镜与剪裁路径交出绘制 */
+html[data-theme="dark"] .brook-scene #brook-lamp > :is(defs, clipPath, filter, mask),
+html[data-theme="dark"] .brook-scene #brook-lamp stop {
+  fill: none;
+  stroke: none;
+}
+
+/* 桌面线、杯沿描边与杯身按站点色值落位，跟着纸墨反相 */
+html[data-theme="dark"] .brook-scene #brook-desk,
+html[data-theme="dark"] .brook-scene #brook-props {
+  stroke: var(--ink);
+}
+
+html[data-theme="dark"] .brook-scene #brook-cup {
+  fill: var(--surface);
+}
+
+/* 银色笔记本翻成夜色金属壳：面板与底座压暗，logo 与高光描边留在原位 */
+html[data-theme="dark"] .brook-scene #laptop use,
+html[data-theme="dark"] .brook-scene #laptop #base-outline,
+html[data-theme="dark"] .brook-scene #laptop #hinges {
+  fill: var(--surface);
+}
+
+/* 剪影与纸面同为近黑，补一道极淡的轮廓光把人物从夜里捞出来 */
+html[data-theme="dark"] .brook-scene #sweatshirt > #body-silhouette,
+html[data-theme="dark"] .brook-scene #hood-outline,
+html[data-theme="dark"] .brook-scene #sleeves path,
+html[data-theme="dark"] .brook-scene #laptop #lid-outline {
+  stroke: color-mix(in srgb, var(--ink) 16%, transparent);
+}
+
+/* 台灯自带的白纸底板在两个主题里都收起，写在上面之后压过字面值覆盖 */
+html[data-theme="dark"] .brook-scene #brook-lamp > rect {
+  display: none;
+}
+
+/* 夜里同一扇窗换成月夜版：深蓝夜空、新月与星，猫翻成白色，裁切与位置照旧 */
+html[data-theme="dark"] .brook-window > .brook-window-day {
+  display: none;
+}
+
+html[data-theme="dark"] .brook-window > .brook-window-night {
+  display: block;
 }
 
 /* ---------- sections ---------- */
@@ -265,17 +480,14 @@ p.prose {
   rotate: -4deg;
   pointer-events: none;
   /* 半透的暖白胶底：底下的方格纸要透得出来。
-     上缘一道亮边、下缘一道暗边，才是压在纸上的那条胶带 */
+     上缘一道亮边、下缘一道暗边，才是压在纸上的那条胶带；
+     两条边的明暗由 --tape-edge-* 随主题给出 */
   background:
     linear-gradient(to bottom,
-      rgb(255 255 255 / 0.85) 0 1.5px,
+      var(--tape-edge-light) 0 1.5px,
       transparent 1.5px calc(100% - 2px),
-      rgb(120 113 98 / 0.38) calc(100% - 2px) 100%),
-    linear-gradient(100deg,
-      rgb(236 231 218 / 0.58),
-      rgb(250 248 242 / 0.3) 40%,
-      rgb(233 228 214 / 0.55) 72%,
-      rgb(246 243 234 / 0.4));
+      var(--tape-edge-dark) calc(100% - 2px) 100%),
+    var(--tape-body);
   /* 上下边裁直，两端是撕开的毛口；clip-path 会裁掉 box-shadow，投影走 drop-shadow */
   clip-path: polygon(4% 0, 96% 0,
     99% 16%, 95% 33%, 99% 50%, 95% 68%, 99% 84%, 96% 100%,
@@ -403,11 +615,6 @@ p.prose {
   text-transform: none;
 }
 
-/* 微信号无法点击，视觉上要像一条注释而不是一个坏掉的链接 */
-.contact-list span.mono {
-  color: var(--muted);
-}
-
 /* ---------- 首页底部：巨型标题 + 一行渠道，方格纸仍是唯一底色 ---------- */
 .contact-me {
   margin: 0;
@@ -445,8 +652,7 @@ html[lang="zh-CN"] .contact-me {
   color: var(--ink);
 }
 
-.contact-rows a,
-.contact-rows span {
+.contact-rows a {
   font-family: var(--type-mono);
   font-size: 0.85rem;
   letter-spacing: 0.02em;
@@ -460,10 +666,37 @@ html[lang="zh-CN"] .contact-me {
   border-bottom-color: var(--ink);
 }
 
-/* 微信号点不动，下划虚线把它标成一条备注 */
-.contact-rows li > span {
+/* ---------- 可复制的值：点得动的那条注记 ----------
+   微信号没有可跳转的协议，点它是把号抄进剪贴板；虚线是它的下划线，
+   抄进去的那一刻虚线落成实线、字样换成 copied，1.6s 后交还原值。 */
+.copy-value {
+  padding: 0;
+  border: 0;
+  border-bottom: 2px dashed color-mix(in srgb, var(--ink) 22%, transparent);
+  background: none;
+  font-family: var(--type-mono);
+  font-size: inherit;
+  letter-spacing: inherit;
+  text-align: left;
   color: var(--muted);
-  border-bottom-style: dashed;
+  cursor: pointer;
+  transition: color 0.2s ease, border-bottom-color 0.2s ease;
+}
+
+.contact-rows .copy-value {
+  font-size: 0.85rem;
+  letter-spacing: 0.02em;
+}
+
+.copy-value:hover {
+  color: var(--ink);
+  border-bottom-color: var(--ink);
+}
+
+.copy-value[data-copied="true"] {
+  color: var(--ink);
+  border-bottom-style: solid;
+  border-bottom-color: var(--ink);
 }
 
 /* ---------- contact page ---------- */
@@ -502,10 +735,6 @@ html[lang="zh-CN"] .contact-me {
     animation-iteration-count: 1 !important;
     /* transition-property 初值是 all，只压时长会让 visibility 也变成 1ms 的步进过渡 */
     transition: none !important;
-  }
-
-  .dot {
-    animation: none !important;
   }
 }
 
@@ -625,4 +854,279 @@ html[lang="zh-CN"] .contact-me {
   border: 2px solid var(--ink);
   border-radius: 14px;
   box-shadow: 6px 6px 0 var(--shadow-hard);
+}
+
+/* 夜里的相纸：白框翻成深灰，照片按暗场观感压一档亮度 */
+html[data-theme="dark"] .photos-grid img {
+  filter: brightness(0.88) saturate(0.94);
+}
+
+/* ---------- theme switch: 实体拨动开关 ----------
+   开关只有一套白漆，不参与主题翻转：夜色里留一只亮着的白开关，
+   明暗层次按浅色纸色定值（纸 #fafaf9 与个位数百分比的墨），
+   环境投影与拨杆投在墙上的斜影同样固定。 */
+.theme-switch {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: relative;
+  width: 97px;
+  height: 170px;
+  border-radius: 3px;
+  background: #fafaf9;
+  box-shadow:
+    inset -4px -4px 8px rgb(0 0 0 / 0.25),
+    inset 4px 4px 8px rgb(255 255 255 / 0.5),
+    inset 2px 2px 2px rgb(20 20 20 / 0.31),
+    1px 1px 1px rgb(0 0 0 / 0.1),
+    4px 4px 2px rgb(0 0 0 / 0.05),
+    6px 6px 3px rgb(0 0 0 / 0.05);
+  pointer-events: none;
+}
+
+.theme-switch-hole,
+.theme-switch-lever {
+  pointer-events: auto;
+  cursor: pointer;
+}
+
+.theme-switch-input {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  opacity: 0;
+}
+
+.theme-switch-hole {
+  position: absolute;
+  top: 47%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 47px;
+  height: 100px;
+  padding: 1px;
+  border-radius: 6px;
+  background: #dcdcdc;
+}
+
+.theme-switch-lever {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  border: 1px solid #dfdfdf;
+  border-radius: 3px;
+  background: #fafaf9;
+  box-shadow:
+    0 0 2px rgb(20 20 20 / 0.3),
+    -2px -2px 2px rgb(255 255 255 / 0.75);
+}
+
+/* 拨杆两侧的斜向投影，靠 cast 的 overflow 裁成一条边 */
+.theme-switch-cast {
+  position: absolute;
+  top: -4px;
+  left: 46.12px;
+  width: 26px;
+  height: 97px;
+  overflow: hidden;
+  z-index: 1;
+}
+
+.theme-switch-cast.is-bottom {
+  top: 2px;
+}
+
+.theme-switch-blade {
+  position: absolute;
+  bottom: 20px;
+  left: -90px;
+  width: 80px;
+  height: 70px;
+  opacity: 0.1;
+  transform: rotate(0deg);
+  filter: blur(0);
+  background: rgb(0 0 0 / 0.33);
+  transition: left 0.25s ease, filter 0.25s ease, opacity 0.25s ease, transform 0.25s ease;
+}
+
+.theme-switch-blade.is-bottom {
+  bottom: 0;
+  left: -70px;
+  opacity: 1;
+  transform: rotate(-20deg);
+  filter: blur(10px);
+}
+
+.theme-switch-face {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 50%;
+  z-index: 2;
+  background: #fafaf9;
+  box-shadow:
+    inset 0 0 3px rgb(0 0 0 / 0.1),
+    inset 0 0 12px rgb(0 0 0 / 0.05);
+  transition: background 0.25s ease, box-shadow 0.25s ease;
+}
+
+.theme-switch-face.is-bottom {
+  top: 50%;
+  background: #eeeeed;
+}
+
+.theme-switch-lip {
+  width: 100%;
+  height: 0;
+  background-image: linear-gradient(90deg, #fafaf9, #f3f3f2);
+  transition: height 0.25s ease;
+}
+
+.theme-switch-lip.is-bottom {
+  position: absolute;
+  bottom: 0;
+  height: 10px;
+  background-image: linear-gradient(90deg, #eeeeed, #e3e3e2);
+  box-shadow:
+    inset 0 0 3px rgb(0 0 0 / 0.1),
+    inset 0 0 12px rgb(0 0 0 / 0.05);
+}
+
+/* checked = 深色：拨杆翻到上沿，两侧的明暗随之交换 */
+.theme-switch-input:checked ~ .theme-switch-hole .theme-switch-face.is-top {
+  background: #eeeeed;
+  box-shadow:
+    inset 0 0 6px rgb(0 0 0 / 0.05),
+    inset 0 0 24px rgb(0 0 0 / 0.025),
+    inset -16px -16px 36px rgb(0 0 0 / 0.1);
+}
+
+.theme-switch-input:checked ~ .theme-switch-hole .theme-switch-lip.is-top {
+  height: 5px;
+}
+
+.theme-switch-input:checked ~ .theme-switch-hole .theme-switch-face.is-bottom {
+  background: #fafaf9;
+}
+
+.theme-switch-input:checked ~ .theme-switch-hole .theme-switch-lip.is-bottom {
+  height: 0;
+}
+
+.theme-switch-input:checked ~ .theme-switch-hole .theme-switch-blade.is-top {
+  left: -70px;
+  opacity: 1;
+  transform: rotate(20deg);
+  filter: blur(10px);
+}
+
+.theme-switch-input:checked ~ .theme-switch-hole .theme-switch-blade.is-bottom {
+  left: -90px;
+  opacity: 0.5;
+  transform: rotate(0deg);
+  filter: blur(0);
+}
+
+.theme-switch-input:focus-visible ~ .theme-switch-hole {
+  outline: 2px solid #141414;
+  outline-offset: 4px;
+}
+
+/* ---------- tooltip: 别在方格纸上的一条注记 ----------
+   与贴纸同一套墨线语言：2px 实描边、3px 圆角、--shadow-hard 的硬投影，
+   正文走 mono 的小字距注记。色值全取自纸墨令牌，夜里同一张便签翻成深灰纸。
+   气泡由 Tooltip 挂到 body 上按 fixed 落位，--tip-caret 是尖角对准锚点的位置。 */
+.tooltip-anchor {
+  display: contents;
+}
+
+.tooltip {
+  position: fixed;
+  z-index: 80;
+  max-width: 30ch;
+  padding: 0.5rem 0.7rem;
+  font-family: var(--type-mono);
+  font-size: 0.72rem;
+  line-height: 1.5;
+  letter-spacing: 0.02em;
+  text-wrap: balance;
+  color: var(--ink);
+  background: var(--surface);
+  border: 2px solid var(--ink);
+  border-radius: 3px;
+  box-shadow: 3px 3px 0 var(--shadow-hard);
+  opacity: 0;
+  visibility: hidden;
+  pointer-events: none;
+  transform: scale(0.94);
+  /* 三处悬停共用说话位：上一句立刻收声，下一句才亮起来，两句绝不同框 */
+  transition: none;
+}
+
+.tooltip[data-open="true"] {
+  opacity: 1;
+  visibility: visible;
+  transform: scale(1);
+  transition: opacity 0.16s ease, transform 0.16s cubic-bezier(0.2, 0.9, 0.3, 1.15);
+}
+
+/* 生长点钉在尖角那一头：气泡从说话位的那条边往外撑开，像话从嘴里出来 */
+.tooltip[data-placement="top"] {
+  transform-origin: 50% 100%;
+}
+
+.tooltip[data-placement="bottom"] {
+  transform-origin: 50% 0;
+}
+
+.tooltip[data-placement="left"] {
+  transform-origin: 100% 50%;
+}
+
+.tooltip[data-placement="right"] {
+  transform-origin: 0 50%;
+}
+
+/* 尖角是贴着气泡那条边的实心墨三角，底边压在 2px 描边里，与描边不断缝 */
+.tooltip::after {
+  content: '';
+  position: absolute;
+  background: var(--ink);
+}
+
+.tooltip[data-placement="top"]::after {
+  bottom: -7px;
+  left: var(--tip-caret, 50%);
+  width: 11px;
+  height: 7px;
+  translate: -50% 0;
+  clip-path: polygon(0 0, 100% 0, 50% 100%);
+}
+
+.tooltip[data-placement="bottom"]::after {
+  top: -7px;
+  left: var(--tip-caret, 50%);
+  width: 11px;
+  height: 7px;
+  translate: -50% 0;
+  clip-path: polygon(0 100%, 100% 100%, 50% 0);
+}
+
+.tooltip[data-placement="left"]::after {
+  right: -7px;
+  top: var(--tip-caret, 50%);
+  width: 7px;
+  height: 11px;
+  translate: 0 -50%;
+  clip-path: polygon(0 0, 0 100%, 100% 50%);
+}
+
+.tooltip[data-placement="right"]::after {
+  left: -7px;
+  top: var(--tip-caret, 50%);
+  width: 7px;
+  height: 11px;
+  translate: 0 -50%;
+  clip-path: polygon(100% 0, 100% 100%, 0 50%);
 }

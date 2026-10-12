@@ -1,7 +1,6 @@
 node_modules/
 dist/
-.shots/
-.demo/
+.tmp/
 rive/**/build/
 *.local
 *.log

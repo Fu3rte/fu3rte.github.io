@@ -15,6 +15,12 @@
         var saved = localStorage.getItem('lang');
         var zh = saved ? saved === 'zh' : /^zh/i.test(navigator.language);
         document.documentElement.lang = zh ? 'zh-CN' : 'en';
+        // 主题在样式表生效前就定下，深色访客的首屏与 loading 层都按夜色压住
+        var theme = localStorage.getItem('theme');
+        if (theme !== 'light' && theme !== 'dark') {
+          theme = window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
+        }
+        document.documentElement.dataset.theme = theme;
         // 覆盖层只在 JS 可用时出现，无脚本环境直接露出正文
         document.documentElement.classList.add('js');
       })();
@@ -29,7 +35,8 @@
         place-content: center;
         justify-items: center;
         gap: clamp(10px, 2.2vmin, 16px);
-        background: #fafaf9;
+        /* 底色与正文共用主题令牌，head 内联早于样式表时按亮色兜底 */
+        background: var(--paper, #fafaf9);
       }
       .js .brook-loader { display: grid; }
       .brook-loader.is-hidden { display: none; }
@@ -44,7 +51,7 @@
         /* 字距会在末尾多留一格，起首补等宽把视觉中线挪回徽标轴上 */
         text-indent: 0.18em;
         text-transform: uppercase;
-        color: rgba(20, 20, 20, 0.42);
+        color: var(--muted, rgba(20, 20, 20, 0.42));
       }
     </style>
     <link rel="preconnect" href="https://fonts.googleapis.com" />

@@ -1,0 +1,83 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Brook Lottie 自检 harness</title>
+  <style>
+    :root { color-scheme: light; }
+    * { box-sizing: border-box; }
+    html, body { margin: 0; min-height: 100%; background: #fefefe; }
+    .stage-wrap { display: grid; place-items: center; min-height: 100svh; }
+    .lottie { width: 626px; height: 626px; background: #fefefe; }
+    .lottie svg { width: 100%; height: 100%; display: block; }
+    #source { position: fixed; left: -2000px; top: 0; width: 626px; height: 626px; }
+  </style>
+</head>
+<body>
+  <main class="stage-wrap">
+    <div class="lottie" id="stage"></div>
+    <img id="source" alt="" width="626" height="626" />
+  </main>
+  <script src="../../node_modules/lottie-web/build/player/lottie_svg.js"></script>
+  <script>
+    // 暴露 seek(frame) 给 Playwright；loop:false + autoplay:false，帧位置完全由外部驱动
+    var animation = lottie.loadAnimation({
+      container: document.getElementById('stage'),
+      renderer: 'svg',
+      loop: false,
+      autoplay: false,
+      path: '../../public/lottie/brook-load.json',
+    });
+
+    window.animation = animation;
+    window.seek = function (frame) {
+      animation.goToAndStop(frame, true);
+      return animation.currentFrame;
+    };
+
+    // 把源 SVG 里的 #000 归一到站点令牌 #141414，其余保持原样
+    function normalizeSourceMarkup(svg) {
+      var serialized = new XMLSerializer().serializeToString(svg);
+      return serialized
+        .replace(/xmlns="[^"]*"/, 'xmlns="http://www.w3.org/2000/svg"')
+        .replace(/#000([^0-9a-fA-F]|$)/gi, '#141414$1');
+    }
+
+    function loadSvgAsImage(markup) {
+      return new Promise(function (resolve, reject) {
+        var url = URL.createObjectURL(new Blob([markup], { type: 'image/svg+xml;charset=utf-8' }));
+        var image = new Image();
+        image.onload = function () { resolve({ image: image, url: url }); };
+        image.onerror = function () { reject(new Error('source svg failed to decode')); };
+        image.src = url;
+      });
+    }
+
+    // window.ready 解析后，Lottie 数据与源 SVG 位图都可用
+    var animationReady = new Promise(function (resolve) {
+      if (animation.isLoaded) resolve();
+      else animation.addEventListener('DOMLoaded', function () { resolve(); });
+    });
+
+    var sourceReady = fetch('./brook-logo.html')
+      .then(function (response) { return response.text(); })
+      .then(function (html) {
+        var doc = new DOMParser().parseFromString(html, 'text/html');
+        var svg = doc.querySelector('svg');
+        if (!svg) throw new Error('source svg missing');
+        svg.removeAttribute('role');
+        svg.removeAttribute('aria-labelledby');
+        return normalizeSourceMarkup(svg);
+      })
+      .then(loadSvgAsImage)
+      .then(function (loaded) {
+        window.sourceSvg = loaded;
+        document.getElementById('source').src = loaded.url;
+        return loaded;
+      });
+
+    window.ready = Promise.all([animationReady, sourceReady]);
+  </script>
+</body>
+</html>

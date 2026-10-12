@@ -14,12 +14,20 @@
     "photos": "Photos",
     "contact": "Contact"
   },
+  "theme": {
+    "aria": "Dark mode"
+  },
+  "tooltip": {
+    "theme": "I work both shifts. This switch decides which one.",
+    "window": "That's my cat on the sill. She only watches the weather.",
+    "coffee": "Third refill tonight. The steam is a Lottie loop I never got tired of."
+  },
   "photos": {
     "title": "Photos",
     "alt": "Photo"
   },
   "hero": {
-    "aria": "Skull in a black hood seated behind a dark grey Apple laptop, a cup of coffee steaming on the left of the desk and a warm desk lamp lit on the right"
+    "aria": "Skull in a black hood seated behind a dark grey Apple laptop, a cup of coffee steaming on the left of the desk and a desk lamp on the right"
   },
   "about": {
     "title": "About",
@@ -41,6 +49,8 @@
     "p": "I check my inbox twice a day, with the same hands-in-pockets patience this page is drawn with. Write to me about agents, interfaces, a role you think fits — or just to say hi.",
     "github": "github / Fu3rte",
     "instagram": "instagram / cq777h",
-    "wechat": "wechat / F1nnian_"
+    "wechat": "wechat / F1nnian_",
+    "copy": "Copy",
+    "copied": "copied"
   }
 }

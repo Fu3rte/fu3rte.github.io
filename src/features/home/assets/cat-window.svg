@@ -1,0 +1,173 @@
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 1122 1402" width="1122" height="1402" role="img" aria-labelledby="artTitle artDesc">
+  <title id="artTitle">窗边晒太阳的黑猫</title>
+  <desc id="artDesc">粗黑手绘线条勾勒的白色窗框，窗外是蓝天、暖黄色太阳、三朵白云和绿色灌木，一只背对观众的深灰黑猫坐在窗台上，尾巴自然垂落。</desc>
+  <defs>
+    <linearGradient id="paper" x1="0" y1="0" x2=".92" y2="1">
+      <stop offset="0" stop-color="#faf9f5"/>
+      <stop offset=".58" stop-color="#fbfaf7"/>
+      <stop offset="1" stop-color="#f8f7f3"/>
+    </linearGradient>
+    <linearGradient id="sky" x1="0" y1="0" x2=".95" y2="1">
+      <stop offset="0" stop-color="#a4dcfc"/>
+      <stop offset=".55" stop-color="#9ed6fa"/>
+      <stop offset="1" stop-color="#9dd5f6"/>
+    </linearGradient>
+    <radialGradient id="sun" cx="47%" cy="43%" r="69%">
+      <stop offset="0" stop-color="#ffe486"/>
+      <stop offset="1" stop-color="#ffda68"/>
+    </radialGradient>
+    <linearGradient id="leaf" x1="0" y1="0" x2=".9" y2="1">
+      <stop offset="0" stop-color="#c1dca3"/>
+      <stop offset="1" stop-color="#a9ce8a"/>
+    </linearGradient>
+    <linearGradient id="fur" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#363737"/>
+      <stop offset=".55" stop-color="#2f3030"/>
+      <stop offset="1" stop-color="#303131"/>
+    </linearGradient>
+    <filter id="surfaceNoise" x="0" y="0" width="100%" height="100%">
+      <feTurbulence type="fractalNoise" baseFrequency=".085" numOctaves="3" seed="13" stitchTiles="stitch"/>
+      <feColorMatrix type="saturate" values="0"/>
+    </filter>
+    <filter id="inkRough" x="-2%" y="-2%" width="104%" height="104%">
+      <feTurbulence type="fractalNoise" baseFrequency=".016" numOctaves="2" seed="7" result="noise"/>
+      <feDisplacementMap in="SourceGraphic" in2="noise" scale="1.3" xChannelSelector="R" yChannelSelector="G"/>
+    </filter>
+    <clipPath id="innerWindow">
+      <path d="M198 243 Q512 238 913 242 L912 986 Q585 990 198 985 Z"/>
+    </clipPath>
+    <clipPath id="canvasClip"><rect width="1122" height="1402"/></clipPath>
+  </defs>
+
+  <!-- Natural, faintly mottled drawing paper -->
+  <rect width="1122" height="1402" fill="url(#paper)"/>
+
+  <!-- View beyond the window. Nothing is raster-embedded. -->
+  <g clip-path="url(#innerWindow)">
+    <path d="M193 234 L917 234 L917 997 L193 997 Z" fill="url(#sky)"/>
+
+    <!-- Sunshine: eight separate little pen marks -->
+    <g stroke="#111412" stroke-width="10.5" stroke-linecap="round" fill="none" filter="url(#inkRough)">
+      <path d="M383 291 L385 330"/>
+      <path d="M290 333 L317 359"/>
+      <path d="M481 321 L458 351"/>
+      <path d="M538 407 L494 414"/>
+      <path d="M505 506 L474 485"/>
+      <path d="M389 533 L390 570"/>
+      <path d="M288 529 L315 501"/>
+      <path d="M249 438 L287 433"/>
+    </g>
+    <path d="M393 367 C428 364 455 383 458 420 C462 461 437 492 398 496 C365 498 330 472 325 435 C320 400 347 371 383 367 Q388 367 393 367 Z" fill="url(#sun)" stroke="#141614" stroke-width="11" stroke-linejoin="round" filter="url(#inkRough)"/>
+
+    <!-- The three puffy clouds; edges intentionally asymmetrical -->
+    <g fill="#fcfbf7" stroke="#161716" stroke-width="7.8" stroke-linecap="round" stroke-linejoin="round" filter="url(#inkRough)">
+      <path d="M914 449 C903 448 904 449 899 449 C892 425 873 419 852 426 C845 400 827 386 800 386 C773 387 755 405 751 427 C738 419 721 424 713 437 C708 444 706 450 707 456 C685 448 670 463 667 478 C662 500 687 509 715 506 C729 504 735 506 743 511 C768 521 794 522 818 510 C834 517 848 515 863 511 C887 517 902 507 917 505 Z"/>
+      <path d="M196 635 Q204 641 212 635 C220 615 230 608 246 611 C266 611 279 624 283 642 C299 634 316 645 317 663 C334 663 350 673 353 690 C356 709 328 715 307 710 Q292 707 286 706 C266 717 237 718 214 708 Q205 714 195 711 Z"/>
+      <path d="M917 595 Q909 596 907 595 C893 577 875 583 864 590 Q855 597 851 607 C840 603 823 607 818 617 C809 633 826 647 845 646 C860 654 877 655 892 648 Q906 649 918 642 Z"/>
+    </g>
+
+    <!-- Far-side shrubs -->
+    <g stroke="#171917" stroke-width="11.2" stroke-linejoin="round" stroke-linecap="round" fill="url(#leaf)" filter="url(#inkRough)">
+      <path d="M197 814 C210 798 224 790 243 792 C279 786 312 818 323 852 C329 871 326 889 317 901 C337 886 356 892 369 905 C383 917 383 934 376 944 C407 937 439 953 445 986 L196 990 Z"/>
+      <path d="M913 776 C891 762 872 777 863 791 C850 811 846 824 854 830 C838 826 829 835 833 854 C815 850 797 864 792 884 C799 915 805 950 803 988 L914 987 Z"/>
+    </g>
+    <!-- Small ink dots scattered on the foliage -->
+    <g fill="#171917">
+      <circle cx="248" cy="829" r="5.7"/>
+      <circle cx="278" cy="841" r="5.5"/>
+      <circle cx="233" cy="872" r="5.2"/>
+      <circle cx="293" cy="885" r="5.4"/>
+      <circle cx="299" cy="935" r="5.3"/>
+      <circle cx="365" cy="938" r="5.4"/>
+      <circle cx="885" cy="808" r="5.5"/>
+      <circle cx="852" cy="885" r="5.7"/>
+      <circle cx="885" cy="911" r="5.8"/>
+    </g>
+  </g>
+
+  <!-- Frame: cream-colored wood strips and corner miters -->
+  <g fill="#fcfbf7" stroke="#151615" stroke-width="13" stroke-linejoin="round" stroke-linecap="round" filter="url(#inkRough)">
+    <path d="M151 196 L959 196 L913 242 L199 242 Z"/>
+    <path d="M151 196 L199 242 L199 986 L151 1019 Z"/>
+    <path d="M959 196 L959 1018 L912 985 L913 242 Z"/>
+    <path d="M199 985 L913 985 L959 1018 L151 1018 Z"/>
+  </g>
+  <!-- Fine joins, with gaps and angles from a slightly imperfect ink pen -->
+  <g stroke="#131413" stroke-width="9.5" fill="none" stroke-linejoin="round" stroke-linecap="round" filter="url(#inkRough)">
+    <path d="M155 201 L196 240"/>
+    <path d="M957 202 L914 242"/>
+    <path d="M152 1017 L198 985"/>
+    <path d="M957 1015 L912 984"/>
+  </g>
+
+  <!-- Deep windowsill, extending to both sides -->
+  <g stroke="#151615" stroke-width="12.6" stroke-linejoin="round" stroke-linecap="round" fill="#fcfbf7" filter="url(#inkRough)">
+    <path d="M151 1017 L960 1018 L1015 1058 L100 1058 Z"/>
+    <path d="M100 1058 C288 1056 579 1058 1015 1058 L1015 1112 C781 1109 374 1110 104 1111 Z"/>
+  </g>
+  <path d="M103 1108 C339 1106 739 1107 1014 1110" stroke="#191b18" stroke-width="10" stroke-linecap="round" fill="none" filter="url(#inkRough)"/>
+
+  <!-- Cat's whiskers and a tucked-in back foot sit behind the silhouette -->
+  <g fill="none" stroke="#141614" stroke-width="10.5" stroke-linecap="round" stroke-linejoin="round" filter="url(#inkRough)">
+    <path d="M508 736 Q488 732 465 729"/>
+    <path d="M511 761 Q485 769 467 779"/>
+    <path d="M754 733 Q780 730 800 731"/>
+    <path d="M753 758 Q778 766 795 775"/>
+  </g>
+  <path d="M539 997 Q520 1007 516 1029 C512 1045 521 1061 544 1058 L570 1054" fill="#323333" stroke="#151615" stroke-width="12.5" stroke-linejoin="round" stroke-linecap="round" filter="url(#inkRough)"/>
+  <path d="M538 1012 Q526 1029 540 1044" stroke="#4e4e4d" opacity=".52" stroke-width="11" fill="none" stroke-linecap="round"/>
+
+  <!-- One continuous back-facing cat, including both pointed ears -->
+  <path id="catBody" d="M551 597
+      C541 612 525 658 525 688
+      C505 709 497 730 502 755
+      C505 785 523 800 546 812
+      C530 847 520 884 524 935
+      C526 965 531 1006 544 1032
+      C558 1060 581 1071 615 1076
+      C651 1082 691 1085 714 1072
+      C749 1074 786 1054 804 1015
+      C830 957 801 875 740 815
+      C759 796 769 766 766 741
+      C765 720 755 695 746 688
+      C747 650 732 604 720 594
+      C710 584 673 615 660 640
+      C647 634 625 634 605 641
+      C594 627 566 600 551 597 Z"
+      fill="url(#fur)" stroke="#101211" stroke-width="14.4" stroke-linecap="round" stroke-linejoin="round" filter="url(#inkRough)"/>
+
+  <!-- Soft, irregular hand-shaded patches inside the dark coat -->
+  <g fill="#575857" opacity=".39">
+    <path d="M551 620 C535 644 535 678 535 693 C517 712 513 741 520 765 C525 788 549 801 559 803 C541 851 540 885 541 938 C540 956 545 987 553 997 C556 968 560 950 573 932 C558 883 566 828 577 794 C544 759 535 734 543 707 C548 689 543 652 565 625 Z"/>
+    <path d="M710 619 C722 636 730 676 727 703 C750 724 750 772 728 797 C769 838 796 900 795 956 C788 899 763 837 717 805 C739 775 748 741 729 708 C729 670 718 637 710 619 Z"/>
+    <path d="M553 998 C554 1020 570 1043 588 1051 C631 1074 686 1066 706 1065 C676 1075 605 1077 574 1057 C563 1047 556 1026 553 998 Z"/>
+  </g>
+  <path d="M551 625 Q550 650 545 680" fill="none" stroke="#626362" stroke-width="7" opacity=".11" stroke-linecap="round"/>
+
+  <!-- Curved leg line, which finishes before reaching the cat's outer edge -->
+  <path d="M538 1004 C543 978 557 958 581 951" stroke="#121413" stroke-width="12" fill="none" stroke-linecap="round" filter="url(#inkRough)"/>
+
+  <!-- Long tail drops over the front of the window ledge -->
+  <path d="M711 1066
+      C732 1090 741 1123 734 1154
+      C728 1178 708 1199 695 1209
+      C683 1220 685 1225 700 1227
+      C721 1233 738 1209 750 1190
+      C766 1161 774 1129 769 1107
+      C766 1084 761 1067 758 1055"
+      fill="none" stroke="#121413" stroke-width="69" stroke-linecap="round" stroke-linejoin="round" filter="url(#inkRough)"/>
+  <path d="M711 1066
+      C732 1090 741 1123 734 1154
+      C728 1178 708 1199 695 1209
+      C683 1220 685 1225 700 1227
+      C721 1233 738 1209 750 1190
+      C766 1161 774 1129 769 1107
+      C766 1084 761 1067 758 1055"
+      fill="none" stroke="#323333" stroke-width="50" stroke-linecap="round" stroke-linejoin="round"/>
+  <path d="M715 1082 C741 1127 740 1181 705 1209 C697 1214 699 1215 705 1217" fill="none" stroke="#5a5b59" stroke-width="15" opacity=".4" stroke-linecap="round"/>
+
+  <!-- Subtle watercolor speckles and paper fibers over the whole drawing -->
+  <g clip-path="url(#canvasClip)" style="mix-blend-mode:multiply" opacity=".030" pointer-events="none">
+    <rect x="0" y="0" width="1122" height="1402" filter="url(#surfaceNoise)"/>
+  </g>
+</svg>

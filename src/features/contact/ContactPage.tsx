@@ -1,4 +1,5 @@
 import { t, useLanguage } from '../../shared/i18n';
+import CopyValue from '../../shared/CopyValue';
 import { Link } from '../../shared/router';
 
 export default function ContactPage() {
@@ -27,8 +28,8 @@ export default function ContactPage() {
               {t('contact.instagram')}
             </a>
           </li>
-          <li>
-            <span className="mono keepcase">{t('contact.wechat')}</span>
+          <li className="mono keepcase">
+            <CopyValue value="F1nnian_">{t('contact.wechat')}</CopyValue>
           </li>
         </ul>
       </section>

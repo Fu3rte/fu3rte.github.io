@@ -1,4 +1,4 @@
-// 把 .demo/brook-logo.html 里的 SVG 徽标编译成可播放的 Lottie JSON
+// scripts/assets/brook-logo.html 里的 SVG 徽标编译成可播放的 Lottie JSON
 // 顶点坐标直接沿用原始绝对坐标（0..626），每层 anchor = position = 几何包围盒中心
 // 静止帧满足 (point - anchor) + position === point，与源 SVG 完全重合
 import { readFileSync, writeFileSync, mkdirSync } from 'node:fs';
@@ -7,8 +7,10 @@ import { fileURLToPath } from 'node:url';
 import parsePath from 'svg-path-parser';
 
 const root = dirname(dirname(fileURLToPath(import.meta.url)));
-const sourceFile = join(root, '.demo', 'brook-logo.html');
+const sourceFile = join(root, 'scripts', 'assets', 'brook-logo.html');
 const outFile = join(root, 'public', 'lottie', 'brook-load.json');
+// 深色主题下压场的是同一支动画的墨色反相变体，帧数与关键帧逐字相同
+const darkOutFile = join(root, 'public', 'lottie', 'brook-load.dark.json');
 
 const FPS = 60;
 const OUT_POINT = 222;
@@ -16,6 +18,8 @@ const SAMPLES = 240; // 每条三次贝塞尔的采样点数，>= 200
 
 // 站点令牌色，RGB 归一化浮点
 const ink = [0x14 / 255, 0x14 / 255, 0x14 / 255];
+// 深色主题的 --ink：#ecebe7
+const night = [0xec / 255, 0xeb / 255, 0xe7 / 255];
 const bone = [1, 1, 1];
 const purple = [0xa2 / 255, 0x60 / 255, 0xcc / 255];
 
@@ -25,6 +29,10 @@ const round = (value, digits = 3) => {
 };
 
 const colorOf = (rgb) => ({ a: 0, k: rgb.map((channel) => round(channel, 6)).concat([1]) });
+
+// 墨色在三通道上同值，序列化后是一个可整串替换的字面量
+const withInk = (animation, inkColor) =>
+  JSON.parse(JSON.stringify(animation).replaceAll(JSON.stringify(colorOf(inkColor)), JSON.stringify(colorOf(night))));
 
 // 逐 id 抓取 path 的 d 属性，缺一条即崩溃
 const extractPathData = (html, id) => {
@@ -268,7 +276,7 @@ for (const layer of LAYERS) {
   layer.bounds = { cx: (minX + maxX) / 2, cy: (minY + maxY) / 2 };
 }
 
-const animation = {
+const buildAnimation = (inkColor) => ({
   v: '5.7.4',
   fr: FPS,
   ip: 0,
@@ -292,10 +300,13 @@ const animation = {
     st: 0,
     bm: 0,
   })),
-};
+});
+
+const animation = buildAnimation(ink);
 
 mkdirSync(dirname(outFile), { recursive: true });
 writeFileSync(outFile, `${JSON.stringify(animation, null, 2)}\n`, 'utf8');
+writeFileSync(darkOutFile, `${JSON.stringify(withInk(animation, ink), null, 2)}\n`, 'utf8');
 
 const report = LAYERS.map((layer) => {
   const [start, end] = layer.draw;
@@ -309,3 +320,4 @@ const report = LAYERS.map((layer) => {
 });
 console.log(report.join('\n'));
 console.log(`\nwrote ${outFile}`);
+console.log(`wrote ${darkOutFile}`);

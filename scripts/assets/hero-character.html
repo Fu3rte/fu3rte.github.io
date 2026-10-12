@@ -1,0 +1,330 @@
+<!DOCTYPE html>
+<html lang="zh-CN" data-theme="light">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>角色替换 demo · 站立的火柴人</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,300..900&family=Space+Grotesk:wght@300..700&family=Space+Mono:wght@400;700&family=Noto+Serif+SC:wght@300..900&family=Noto+Sans+SC:wght@300..700&display=swap" rel="stylesheet" />
+<style>
+  /* ---------- 与 src/style.css 同步的 token ---------- */
+  :root {
+    --paper: #fafaf9;
+    --ink: #141414;
+    --surface: #ffffff;
+    --sky: #efefed;
+    --accent: #141414;
+    --shade: #e6e6e3;
+    --muted: color-mix(in srgb, var(--ink) 55%, var(--paper));
+    --shadow-hard: color-mix(in srgb, var(--ink) 12%, transparent);
+    --grid: rgba(20, 20, 20, 0.07);
+    --type-display: "Fraunces", Georgia, serif;
+    --type-body: "Space Grotesk", system-ui, sans-serif;
+    --type-mono: "Space Mono", ui-monospace, monospace;
+  }
+  html[data-theme="dark"] {
+    --paper: #0e0e0e;
+    --ink: #f2f2f0;
+    --surface: #1b1b1b;
+    --sky: #161616;
+    --accent: #f2f2f0;
+    --shade: #262626;
+    --shadow-hard: color-mix(in srgb, #000 50%, transparent);
+    --grid: rgba(242, 242, 240, 0.08);
+  }
+
+  /* ---------- 角色配色：全站唯一彩色元素，随主题切换 ---------- */
+  :root {
+    --fig-line: #111111;
+    --fig-skin: #ffffff;
+    --fig-shirt: #1c1a1e;
+    --fig-pants: #4c779f;
+    --fig-pants-shadow: #395f83;
+    --fig-cuff: #5b87b0;
+    --fig-shoe: #ffffff;
+    --fig-sole: #f3f3f0;
+    --fig-ground: #e8e7e3;
+  }
+  html[data-theme="dark"] {
+    --fig-line: #f2f2f0;
+    --fig-skin: #1b1b1b;
+    --fig-shirt: #26242a;
+    --fig-pants: #3f6791;
+    --fig-pants-shadow: #2f4e6f;
+    --fig-cuff: #4d739c;
+    --fig-shoe: #1b1b1b;
+    --fig-sole: #2b2b2b;
+    --fig-ground: #1a1a1a;
+  }
+
+  * { box-sizing: border-box; }
+  body {
+    margin: 0;
+    background-color: var(--paper);
+    background-image: linear-gradient(to right, var(--grid) 1px, transparent 1px),
+      linear-gradient(to bottom, var(--grid) 1px, transparent 1px);
+    background-size: 28px 28px;
+    color: var(--ink);
+    font-family: var(--type-body);
+    line-height: 1.6;
+    overflow-x: hidden;
+    transition: background-color .5s ease, color .5s ease;
+  }
+  .mono { font-family: var(--type-mono); font-size: .75rem; letter-spacing: .08em; text-transform: uppercase; }
+
+  /* ---------- topbar ---------- */
+  .topbar {
+    position: fixed; top: 0; left: 0; width: 100%;
+    display: flex; justify-content: space-between; align-items: center;
+    padding: 1rem 1.5rem; z-index: 50; pointer-events: none;
+  }
+  .topbar > * { pointer-events: auto; }
+  .topbar-right { display: inline-flex; align-items: center; gap: .5rem; }
+  .dot { width: 9px; height: 9px; border-radius: 999px; background: var(--accent); display: inline-block; }
+  .theme-toggle {
+    font-family: var(--type-mono); font-size: .68rem; letter-spacing: .08em; text-transform: uppercase;
+    border: 2px solid var(--ink); background: var(--surface); color: var(--ink);
+    border-radius: 999px; padding: .34rem .7rem; cursor: pointer; white-space: nowrap;
+    box-shadow: 3px 3px 0 var(--shadow-hard);
+  }
+
+  /* ---------- hero A：编辑排版双栏，角色站在基线上 ---------- */
+  .hero-a {
+    min-height: 100svh;
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) auto;
+    align-items: end;
+    gap: clamp(1rem, 5vw, 5rem);
+    max-width: 1240px;
+    margin-inline: auto;
+    padding: 7rem 4vw 4rem;
+  }
+  .hero-a-copy { align-self: end; padding-bottom: 2.2rem; }
+  .hero-a-type {
+    font-family: var(--type-display); font-weight: 900; text-transform: uppercase;
+    font-size: clamp(2.6rem, 8.2vw, 7.6rem); line-height: .86; letter-spacing: -.035em;
+    margin: 0;
+  }
+  .hero-a-type .ghost {
+    color: transparent;
+    -webkit-text-stroke: 2px color-mix(in srgb, var(--ink) 42%, transparent);
+    display: block;
+  }
+  .hero-kicker {
+    text-align: left; max-width: 42ch; margin: 1.6rem 0 0;
+    color: var(--muted); text-transform: none; letter-spacing: .04em; line-height: 1.75;
+  }
+  .hero-a .figure-box { height: min(82svh, 860px); align-self: end; }
+
+  /* ---------- 角色 ---------- */
+  .figure-box { display: block; }
+  .figure-box svg { height: 100%; width: auto; display: block; overflow: visible; }
+  svg * { transition: fill .5s ease, stroke .5s ease; }
+  .fig-line { stroke: var(--fig-line); stroke-linecap: round; stroke-linejoin: round; }
+  .fig-skin { fill: var(--fig-skin); stroke: var(--fig-line); stroke-width: 6; stroke-linecap: round; stroke-linejoin: round; }
+  .fig-shirt { fill: var(--fig-shirt); stroke: var(--fig-line); stroke-width: 6; stroke-linecap: round; stroke-linejoin: round; }
+  .fig-pants { fill: var(--fig-pants); stroke: var(--fig-line); stroke-width: 6; stroke-linecap: round; stroke-linejoin: round; }
+  .fig-pants-shadow { fill: var(--fig-pants-shadow); }
+  .fig-cuff { fill: var(--fig-cuff); stroke: var(--fig-line); stroke-width: 6; stroke-linecap: round; stroke-linejoin: round; }
+  .fig-shoe { fill: var(--fig-shoe); stroke: var(--fig-line); stroke-width: 5.5; stroke-linecap: round; stroke-linejoin: round; }
+  .fig-sole { fill: var(--fig-sole); stroke: var(--fig-line); stroke-width: 5; stroke-linecap: round; stroke-linejoin: round; }
+  .fig-fold { stroke: var(--fig-line); fill: none; stroke-linecap: round; }
+  .fig-flat { fill: var(--fig-line); }
+
+  /* idle：整体重心轻摆 + 呼吸 + 眨眼，全部绕支点而不是位移 */
+  #figure { transform-box: fill-box; transform-origin: 50% 99%; animation: sway 6s ease-in-out infinite; }
+  @keyframes sway { 0%, 100% { transform: rotate(-.55deg); } 50% { transform: rotate(.55deg); } }
+  #torso { transform-box: fill-box; transform-origin: 50% 100%; animation: breathe 4.2s ease-in-out infinite; }
+  @keyframes breathe { 0%, 100% { transform: scale(1, 1); } 50% { transform: scale(1.012, 1.022); } }
+  #head-g { transform-box: fill-box; transform-origin: 50% 100%; animation: tilt 7s ease-in-out infinite; }
+  @keyframes tilt { 0%, 100% { transform: rotate(-1.2deg); } 50% { transform: rotate(1.6deg); } }
+  .eye-wrap { transform-box: fill-box; transform-origin: center; animation: blink 6.4s infinite; }
+  @keyframes blink { 0%, 91%, 100% { transform: scaleY(1); } 94% { transform: scaleY(.08); } }
+
+  /* ---------- about 预览 ---------- */
+  .section { max-width: 1000px; margin-inline: auto; padding-block: 5rem; padding-inline: 1.5rem; border-top: 2px dashed color-mix(in srgb, var(--ink) 18%, transparent); }
+  .section-index { display: block; color: var(--accent); margin-bottom: .6rem; }
+  .section-title { font-family: var(--type-display); font-weight: 800; font-size: clamp(2.2rem, 5vw, 3.4rem); line-height: 1.05; margin: 0 0 2rem; }
+  .prose p { font-size: 1.15rem; line-height: 1.7; max-width: 62ch; margin: 0 0 1.25rem; }
+  .prose em { font-family: var(--type-display); font-style: italic; font-weight: 600; color: var(--accent); }
+
+  /* ---------- dock ---------- */
+  .dock {
+    position: fixed; bottom: 1.2rem; left: 50%; transform: translateX(-50%);
+    display: flex; gap: .4rem; padding: .5rem .7rem;
+    background: var(--surface); border: 2px solid var(--ink); border-radius: 999px;
+    box-shadow: 5px 5px 0 var(--shadow-hard); z-index: 40;
+  }
+  .dock-btn { width: 44px; height: 44px; display: grid; place-items: center; border-radius: 999px; }
+  .dock-btn svg { width: 22px; height: 22px; fill: none; stroke: var(--ink); stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; }
+  .dock-btn.is-active { background: var(--accent); }
+  .dock-btn.is-active svg { stroke: var(--paper); }
+
+  /* 窄屏：角色改为按高度定尺的裁切窗口，切口固定落在下摆，
+     人从 hero 底边出画，等于"下半身在折叠线以下" */
+  @media (max-width: 860px) {
+    .hero-a {
+      grid-template-columns: 1fr;
+      grid-template-rows: auto 1fr;
+      align-items: stretch;
+      padding: 6rem 7vw 0;
+      gap: 0;
+    }
+    .hero-a-copy { align-self: start; padding-bottom: 0; }
+    .hero-kicker { text-align: left; margin-top: 1.2rem; }
+    .hero-a .figure-box {
+      align-self: stretch;
+      height: auto;
+      overflow: hidden;
+      justify-self: center;
+    }
+    /* 155% 是固定的越界比例：可见部分 = 884/1.55 ≈ 570 单位，
+       正好落在下摆 y=584，所以切口位置与视口高度无关 */
+    .hero-a .figure-box svg { height: 155%; width: auto; }
+    .topbar-loc { display: none; }
+  }
+  @media (max-width: 430px) {
+    .topbar-status { display: none; }
+  }
+</style>
+</head>
+<body>
+
+<header class="topbar">
+  <span class="mono">FINNIAN · 陈祺宏</span>
+  <div style="display:flex;align-items:center;gap:1rem">
+    <span class="mono topbar-right">
+      <span class="dot"></span>
+      <span class="topbar-status">open to AI roles</span>
+      <span class="topbar-loc">· dongguan, cn</span>
+    </span>
+    <button class="theme-toggle" id="toggle">日夜</button>
+  </div>
+</header>
+
+<main>
+  <!-- ============ 方案 A：角色作为独立主体，与标题同排 ============ -->
+  <section class="hero-a">
+    <div class="hero-a-copy">
+      <h1 class="hero-a-type">
+        <span>AI</span>
+        <span class="ghost">Application</span>
+        <span>Developer</span>
+      </h1>
+      <p class="mono hero-kicker">hi — i'm Finnian (陈祺宏). a frontend dev who fell in love with agents. this is me, hands in pockets, waiting for your message.</p>
+    </div>
+
+    <div class="figure-box">
+      <svg viewBox="98 12 250 884" role="img" aria-label="站立的火柴人角色，白T黑衫蓝色短裤">
+        <g id="figure">
+          <ellipse cx="216" cy="884" rx="112" ry="13" fill="var(--fig-ground)" />
+
+          <rect class="fig-skin" x="187" y="700" width="16" height="125" rx="8" />
+          <rect class="fig-skin" x="276" y="695" width="16" height="130" rx="8" />
+
+          <g id="left-shoe">
+            <path class="fig-shoe" d="M 183 812 L 156 830 C 143 838 132 843 124 849 C 120 854 121 860 126 864 C 140 870 175 873 218 867 C 222 865 223 858 219 850 L 214 815 Z" />
+            <path class="fig-sole" d="M 124 855 C 140 863 175 866 218 860 L 219 868 C 175 874 140 871 123 862 Z" />
+            <path d="M 148 834 C 140 844 135 852 135 858" class="fig-fold" stroke-width="4.5" />
+            <line x1="168" y1="822" x2="176" y2="832" class="fig-line" stroke-width="4.5" />
+            <line x1="176" y1="817" x2="184" y2="827" class="fig-line" stroke-width="4.5" />
+            <line x1="184" y1="812" x2="192" y2="822" class="fig-line" stroke-width="4.5" />
+            <circle cx="168" cy="823" r="2.5" class="fig-flat" />
+            <circle cx="176" cy="818" r="2.5" class="fig-flat" />
+            <circle cx="184" cy="813" r="2.5" class="fig-flat" />
+          </g>
+
+          <g id="right-shoe">
+            <path class="fig-shoe" d="M 273 816 C 268 835 264 855 265 868 C 265 876 272 882 288 882 C 304 882 312 876 312 868 C 313 855 308 835 303 816 Z" />
+            <ellipse class="fig-shoe" cx="288" cy="815" rx="16" ry="7" />
+            <path class="fig-shoe" d="M 280 812 C 285 802 293 802 297 812" />
+            <path class="fig-sole" d="M 264 864 C 264 876 273 883 288 883 C 304 883 313 876 313 864 C 313 871 304 876 288 876 C 273 876 264 871 264 864 Z" />
+            <line x1="277" y1="830" x2="299" y2="830" class="fig-line" stroke-width="4" />
+            <line x1="276" y1="842" x2="301" y2="842" class="fig-line" stroke-width="4" />
+            <line x1="275" y1="854" x2="302" y2="854" class="fig-line" stroke-width="4" />
+            <path d="M 270 864 C 280 860 297 860 307 864" class="fig-fold" stroke-width="4" />
+          </g>
+
+          <g id="shorts">
+            <path class="fig-pants" d="M 158 555 L 155 708 L 233 708 L 230 625 L 246 702 L 326 696 L 305 545 Z" />
+            <path class="fig-pants-shadow" d="M 216 708 L 233 708 L 230 625 L 218 625 Z" />
+            <path class="fig-pants-shadow" d="M 230 625 L 246 702 L 263 700 L 241 625 Z" />
+            <path d="M 228 575 L 228 625" class="fig-fold" stroke-width="4.5" />
+            <path d="M 234 578 L 234 612 C 234 622 228 625 222 624" class="fig-fold" stroke-width="4.5" />
+            <path d="M 224 628 C 216 638 204 646 194 650" class="fig-fold" stroke-width="3.5" />
+            <path d="M 232 631 C 240 641 252 648 262 650" class="fig-fold" stroke-width="3.5" />
+            <line x1="162" y1="580" x2="160" y2="708" class="fig-line" stroke-width="3.5" />
+            <line x1="298" y1="570" x2="320" y2="698" class="fig-line" stroke-width="3.5" />
+            <path class="fig-cuff" d="M 152 702 L 236 702 C 235 717 234 724 233 730 L 154 730 C 153 724 152 717 152 702 Z" />
+            <line x1="153" y1="716" x2="235" y2="716" class="fig-line" stroke-width="2.5" opacity="0.4" />
+            <path class="fig-cuff" d="M 243 695 L 329 690 C 328 705 327 714 325 721 L 245 726 C 244 717 243 707 243 695 Z" />
+            <line x1="244" y1="710" x2="327" y2="705" class="fig-line" stroke-width="2.5" opacity="0.4" />
+          </g>
+
+          <g id="torso">
+            <rect class="fig-skin" x="226" y="240" width="18" height="48" />
+            <g id="shirt">
+              <path class="fig-shirt" d="M 218 283 C 204 292 188 300 172 308 L 142 442 L 194 412 C 180 460 172 505 168 545 C 192 574 225 584 260 578 C 285 572 302 555 310 528 C 300 480 296 440 294 416 L 338 428 L 290 296 C 278 288 266 284 254 283 C 246 292 226 292 218 283 Z" />
+              <path d="M 218 283 C 224 293 248 293 254 283" class="fig-fold" stroke-width="5" />
+              <path d="M 252 425 C 242 465 228 498 208 528" class="fig-fold" stroke-width="4.5" />
+              <path d="M 284 450 C 274 490 270 525 284 550" class="fig-fold" stroke-width="4" />
+              <path d="M 185 548 C 220 575 255 570 280 540" class="fig-fold" stroke-width="5" />
+              <path d="M 168 335 C 163 370 160 400 154 425" class="fig-fold" stroke-width="4" />
+              <path d="M 302 330 C 310 365 318 395 325 418" class="fig-fold" stroke-width="4" />
+            </g>
+          </g>
+
+          <!-- 手臂必须压在衬衫之上：衬衫右摆在 y≈500 外扩到 x=300，
+               而右臂外沿只有 x=292，压在下面时整条右臂会消失 -->
+          <g id="arm-l"><path class="fig-skin" d="M 166 436 L 157 566 L 172 566 L 180 436 Z" /></g>
+          <g id="arm-r"><path class="fig-skin" d="M 296 424 L 264 572 L 278 574 L 310 424 Z" /></g>
+
+          <!-- 口袋沿回压手臂，手腕才像真的插进袋子 -->
+          <g id="pocket-lip">
+            <path d="M 158 565 C 164 585 178 600 196 602" class="fig-fold" stroke-width="5" />
+            <path d="M 258 562 C 262 582 278 595 296 595" class="fig-fold" stroke-width="5" />
+          </g>
+
+          <g id="head-g">
+            <circle class="fig-skin" cx="236" cy="168" r="86" />
+            <path d="M 222 86 C 208 76 192 68 182 62" class="fig-line" stroke-width="6.5" fill="none" />
+            <path d="M 233 83 C 228 55 218 38 206 24" class="fig-line" stroke-width="6.5" fill="none" />
+            <path d="M 242 84 C 246 64 246 48 245 38" class="fig-line" stroke-width="6.5" fill="none" />
+            <path d="M 178 152 C 186 148 200 135 210 133" class="fig-line" stroke-width="6" fill="none" />
+            <path d="M 244 135 C 253 127 268 128 278 135" class="fig-line" stroke-width="6" fill="none" />
+            <g class="eye-wrap"><ellipse cx="202" cy="174" rx="10" ry="14.5" transform="rotate(-14 202 174)" class="fig-flat" /></g>
+            <g class="eye-wrap"><ellipse cx="262" cy="163" rx="10" ry="14" transform="rotate(4 262 163)" class="fig-flat" /></g>
+            <path d="M 228 226 C 246 226 262 217 272 203" class="fig-line" stroke-width="6" fill="none" />
+            <path d="M 268 198 C 274 202 278 207 276 212" class="fig-line" stroke-width="5" fill="none" />
+          </g>
+        </g>
+      </svg>
+    </div>
+  </section>
+
+  <section class="section">
+    <span class="mono section-index">01</span>
+    <h2 class="section-title">About</h2>
+    <div class="prose">
+      <p>I spent years making pixels behave — interfaces, motion, the small delights that make a page feel alive. Then I met large language models and never looked back. Now I build <em>AI applications</em>: agents that plan, retrieve and act — still wrapped in interfaces that feel considered.</p>
+    </div>
+  </section>
+</main>
+
+<nav class="dock">
+  <a class="dock-btn is-active"><svg viewBox="0 0 24 24"><path d="M4 11 L12 4 L20 11 M6 10 V20 H18 V10" /></svg></a>
+  <a class="dock-btn"><svg viewBox="0 0 24 24"><circle cx="12" cy="8" r="4" /><path d="M4 20 c0 -5 4 -7 8 -7 c4 0 8 2 8 7" /></svg></a>
+  <a class="dock-btn"><svg viewBox="0 0 24 24"><path d="M3 7 h7 l2 3 h9 v10 H3 z" /></svg></a>
+  <a class="dock-btn"><svg viewBox="0 0 24 24"><path d="M12 3 l2 6 l6 2 l-6 2 l-2 -6 l-2 -6 l-6 -2 l6 -2 z" /></svg></a>
+  <a class="dock-btn"><svg viewBox="0 0 24 24"><rect x="3" y="6" width="18" height="12" rx="2" /><path d="M4 7 l8 6 l8 -6" /></svg></a>
+</nav>
+
+<script>
+  document.getElementById('toggle').addEventListener('click', () => {
+    const h = document.documentElement;
+    h.dataset.theme = h.dataset.theme === 'dark' ? 'light' : 'dark';
+  });
+</script>
+</body>
+</html>

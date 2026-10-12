@@ -1,0 +1,259 @@
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"
+  viewBox="0 0 1122 1402" width="1122" height="1402"
+  role="img" aria-labelledby="art-title art-desc">
+<title id="art-title">月夜里坐在窗台上望星星的白猫</title>
+<desc id="art-desc">暖白色手工纸上，黑色粗线条勾勒窗台；深蓝夜空中有金色新月和星星，灰绿色灌木前坐着一只背对观众的白猫，尾巴垂在窗台下。</desc>
+<defs>
+  <linearGradient id="paperLight" x1="0" y1="0" x2="1" y2="1">
+    <stop offset="0" stop-color="#fffcf7"/>
+    <stop offset=".53" stop-color="#faf6ef"/>
+    <stop offset="1" stop-color="#fcf7ef"/>
+  </linearGradient>
+  <radialGradient id="skyGradient" cx=".48" cy=".48" r=".83">
+    <stop offset="0" stop-color="#304861"/>
+    <stop offset=".67" stop-color="#2a425b"/>
+    <stop offset="1" stop-color="#24394e"/>
+  </radialGradient>
+  <linearGradient id="catCoat" x1="0" y1="0" x2="1" y2=".95">
+    <stop offset="0" stop-color="#fcf7ed"/>
+    <stop offset=".57" stop-color="#faf1e6"/>
+    <stop offset="1" stop-color="#fcf5e9"/>
+  </linearGradient>
+  <linearGradient id="moonGlow" x1="0" y1="0" x2="1" y2="1">
+    <stop offset="0" stop-color="#ffe6b3"/>
+    <stop offset="1" stop-color="#f9d69a"/>
+  </linearGradient>
+  <!-- Overlaid fractal fibers give every colored area a handmade paper grain. -->
+  <filter id="broadFibers" x="-2%" y="-2%" width="104%" height="104%" color-interpolation-filters="sRGB">
+    <feTurbulence type="fractalNoise" baseFrequency=".016 .033" numOctaves="3" seed="14" stitchTiles="stitch" result="n"/>
+    <feColorMatrix in="n" type="saturate" values="0"/>
+    <feComponentTransfer><feFuncR type="linear" slope=".85" intercept=".12"/><feFuncG type="linear" slope=".85" intercept=".12"/><feFuncB type="linear" slope=".85" intercept=".12"/><feFuncA type="linear" slope=".14"/></feComponentTransfer>
+  </filter>
+  <filter id="fineGrain" x="-2%" y="-2%" width="104%" height="104%" color-interpolation-filters="sRGB">
+    <feTurbulence type="fractalNoise" baseFrequency=".33 .45" numOctaves="3" seed="6" stitchTiles="stitch" result="n"/>
+    <feColorMatrix in="n" type="saturate" values="0"/>
+    <feComponentTransfer><feFuncA type="linear" slope=".13"/></feComponentTransfer>
+  </filter>
+  <filter id="inkWobble" x="-3%" y="-3%" width="106%" height="106%" color-interpolation-filters="sRGB">
+    <feTurbulence type="fractalNoise" baseFrequency=".043" numOctaves="2" seed="9" result="warp"/>
+    <feDisplacementMap in="SourceGraphic" in2="warp" scale="3.1" xChannelSelector="R" yChannelSelector="G"/>
+  </filter>
+  <filter id="paperSpeckles" color-interpolation-filters="sRGB">
+    <feTurbulence type="fractalNoise" baseFrequency=".19 .28" numOctaves="4" seed="22" stitchTiles="stitch"/>
+    <feColorMatrix type="saturate" values="0"/>
+  </filter>
+  <filter id="catPaperTexture" color-interpolation-filters="sRGB">
+    <feTurbulence type="fractalNoise" baseFrequency=".29 .37" numOctaves="4" seed="31" stitchTiles="stitch"/>
+    <feColorMatrix type="saturate" values="0"/>
+    <feComponentTransfer>
+      <feFuncR type="linear" slope=".42" intercept=".76"/>
+      <feFuncG type="linear" slope=".42" intercept=".735"/>
+      <feFuncB type="linear" slope=".42" intercept=".70"/>
+      <feFuncA type="linear" slope=".90"/>
+    </feComponentTransfer>
+  </filter>
+  <filter id="bushPaperTexture" color-interpolation-filters="sRGB">
+    <feTurbulence type="fractalNoise" baseFrequency=".24 .3" numOctaves="4" seed="4" stitchTiles="stitch"/>
+    <feColorMatrix type="saturate" values="0"/>
+    <feComponentTransfer>
+      <feFuncR type="linear" slope=".58" intercept=".32"/>
+      <feFuncG type="linear" slope=".58" intercept=".35"/>
+      <feFuncB type="linear" slope=".58" intercept=".25"/>
+      <feFuncA type="linear" slope=".94"/>
+    </feComponentTransfer>
+  </filter>
+  <clipPath id="nightWindow"><path d="M194 230 L906 231 L907 964 L196 963 Z"/></clipPath>
+  <clipPath id="outerPaper"><rect width="1122" height="1402"/></clipPath>
+  <path id="spark" d="M0 -19 Q4 -19 4 -13 L5 -5 L14 -4 Q19 -4 19 0 Q19 4 13 4 L5 5 L4 14 Q3 19 0 19 Q-4 19 -4 14 L-5 5 L-14 4 Q-19 3 -19 0 Q-19 -4 -14 -4 L-5 -5 L-4 -14 Q-4 -19 0 -19 Z"/>
+</defs>
+
+<!-- 01. Off-white textured sheet -->
+<g id="paper">
+  <rect width="1122" height="1402" fill="url(#paperLight)"/>
+  <rect width="1122" height="1402" filter="url(#broadFibers)" opacity=".34"/>
+  <rect width="1122" height="1402" filter="url(#fineGrain)" opacity=".39"/>
+  <rect width="1122" height="1402" filter="url(#paperSpeckles)" opacity=".58" style="mix-blend-mode:soft-light"/>
+</g>
+
+<!-- 02. The night beyond the opening -->
+<g id="night" clip-path="url(#nightWindow)">
+  <rect x="192" y="225" width="719" height="746" fill="url(#skyGradient)"/>
+  <rect x="192" y="225" width="719" height="746" fill="#1a293c" opacity=".055"/>
+  <rect x="192" y="225" width="719" height="746" filter="url(#broadFibers)" opacity=".95"/>
+  <rect x="192" y="225" width="719" height="746" filter="url(#fineGrain)" opacity=".55"/>
+  <rect x="192" y="225" width="719" height="746" filter="url(#paperSpeckles)" opacity=".65" style="mix-blend-mode:soft-light"/>
+
+  <!-- 03. Pale crescent moon -->
+  <path id="crescent" d="M439 316
+    C397 314 362 341 346 374
+    C333 400 338 434 350 452
+    C366 476 393 483 414 479
+    C439 476 459 463 475 451
+    C442 448 426 438 415 420
+    C399 394 402 357 417 333
+    Q429 319 439 316 Z"
+    fill="url(#moonGlow)" stroke="#151410" stroke-width="10.8"
+    stroke-linecap="round" stroke-linejoin="round"/>
+
+  <!-- 04. Fine star points -->
+  <g id="star-dots" fill="#ffdda5">
+    <circle cx="268" cy="310" r="5.35"/>
+    <circle cx="591" cy="305" r="5.15"/>
+    <circle cx="664" cy="415" r="5.25"/>
+    <circle cx="844" cy="452" r="5.15"/>
+    <circle cx="255" cy="507" r="5.2"/>
+    <circle cx="589" cy="501" r="5.3"/>
+    <circle cx="453" cy="579" r="5.3"/>
+    <circle cx="858" cy="634" r="5.15"/>
+    <circle cx="256" cy="665" r="5.2"/>
+    <circle cx="419" cy="834" r="5.2"/>
+  </g>
+  <!-- 05. Rounded, freehand four-point stars -->
+  <g id="star-crosses" fill="#ffdda5" stroke="#ffdda5" stroke-linejoin="round" stroke-width="1.3">
+    <use xlink:href="#spark" transform="translate(768 350) rotate(2) scale(1.01 1.14)"/>
+    <use xlink:href="#spark" transform="translate(790 550) rotate(-1) scale(.78 1.0)"/>
+    <use xlink:href="#spark" transform="translate(305 578) rotate(1) scale(1 1.16)"/>
+    <use xlink:href="#spark" transform="translate(379 704) rotate(-1) scale(.70 .79)"/>
+  </g>
+
+  <!-- 06. Rounded sage green foliage, left -->
+  <path id="left-bush" d="M191 799
+    C207 778 223 769 245 770
+    C275 768 300 784 313 809
+    C325 833 317 863 306 879
+    Q314 884 321 893
+    C338 874 359 872 374 881
+    C393 893 392 912 386 925
+    C410 924 424 938 428 965
+    L191 970 Z"
+    fill="#9ca78e" stroke="#172019" stroke-width="10.5" stroke-linecap="round" stroke-linejoin="round"/>
+  <!-- 07. Right bush; front partially hidden by cat -->
+  <path id="right-bush" d="M913 757
+    C895 739 875 734 856 749
+    C837 763 826 789 842 807
+    C820 799 808 811 810 837
+    C791 831 781 845 783 870
+    L777 969 L916 970 Z"
+    fill="#899984" stroke="#172019" stroke-width="10.5" stroke-linecap="round" stroke-linejoin="round"/>
+  <clipPath id="bushTextureClip">
+    <use xlink:href="#left-bush"/>
+    <use xlink:href="#right-bush"/>
+  </clipPath>
+  <rect x="192" y="733" width="721" height="235" clip-path="url(#bushTextureClip)" filter="url(#bushPaperTexture)" opacity=".55"/>
+  <!-- 08. Tiny irregular dark spots on leaves -->
+  <g id="foliage-dots" fill="#18221c">
+    <circle cx="241" cy="805" r="5.1"/>
+    <circle cx="270" cy="817" r="5.3"/>
+    <circle cx="228" cy="846" r="5.1"/>
+    <circle cx="282" cy="861" r="5.1"/>
+    <circle cx="290" cy="912" r="5.1"/>
+    <circle cx="351" cy="917" r="5.2"/>
+    <circle cx="879" cy="781" r="5.0"/>
+    <circle cx="838" cy="859" r="5.2"/>
+  </g>
+  <rect x="192" y="766" width="719" height="204" filter="url(#fineGrain)" opacity=".37"/>
+</g>
+
+<!-- 09. White structural frame: cut corners and perspective lines -->
+<g id="window-frame" stroke="#15120f" stroke-width="11.4" stroke-linejoin="round" stroke-linecap="round">
+  <!-- top angled reveal -->
+  <path d="M151 190 L947 187 L906 230 L195 229 Z" fill="#faf5ec"/>
+  <!-- side reveals -->
+  <path d="M151 190 L195 229 L195 967 L149 995 Z" fill="#faf5ec"/>
+  <path d="M947 187 L907 230 L907 966 L947 995 Z" fill="#f9f4eb"/>
+  <!-- lower inner rail -->
+  <path d="M195 965 L906 965 L946 995 L150 995 Z" fill="#faf6ef"/>
+  <!-- the flat shelf, visible in perspective -->
+  <path d="M149 994 L947 994 L1003 1036 L99 1037 Z" fill="#fbf7ef"/>
+  <!-- front face of the sill -->
+  <path d="M99 1037 L1003 1036 L1001 1091 L102 1090 Z" fill="#f8f4ed"/>
+</g>
+<!-- 10. Ink reinforcing individual hand-drawn contour lines -->
+<g id="window-ink" fill="none" stroke="#100e0c" stroke-width="10.7" stroke-linejoin="round" stroke-linecap="round" filter="url(#inkWobble)">
+  <path d="M149 189 L947 187 L947 995"/>
+  <path d="M149 190 L149 995"/>
+  <path d="M196 230 L906 229 L907 966 L195 965 Z"/>
+  <path d="M151 191 L195 229 M947 188 L906 230"/>
+  <path d="M149 993 L195 965 M906 965 L947 995"/>
+  <path d="M149 995 L946 994"/>
+  <path d="M99 1037 L1004 1037"/>
+  <path d="M102 1091 L1001 1090"/>
+</g>
+
+<!-- 11. The small haunch / paw at the left, tucked behind the body -->
+<path id="rear-paw" d="M526 954
+  C509 959 496 978 498 997
+  C499 1008 511 1017 525 1018
+  C538 1018 544 1013 549 1006"
+  fill="none" stroke="#131310" stroke-width="10.5" stroke-linecap="round" stroke-linejoin="round"/>
+
+<!-- 12. Whiskers behind the head -->
+<g id="whiskers" fill="none" stroke="#12110e" stroke-width="8.6" stroke-linecap="round" stroke-linejoin="round">
+  <path d="M509 716 Q483 714 458 710"/>
+  <path d="M503 744 Q477 748 459 758"/>
+  <path d="M743 716 Q769 715 791 719"/>
+  <path d="M742 739 Q766 745 784 754"/>
+</g>
+
+<!-- 13. Cat ears, head, neck, and rounded back in one continuous silhouette -->
+<path id="white-cat" d="M548 580
+  C566 582 587 604 601 624
+  C614 618 639 617 655 622
+  C670 604 690 585 707 579
+  C724 594 732 634 737 665
+  C749 677 755 699 755 724
+  C755 748 747 762 730 777
+  C761 813 786 850 800 890
+  C819 945 813 988 783 1017
+  C761 1038 725 1046 691 1047
+  C645 1050 601 1047 573 1034
+  C537 1018 519 992 515 953
+  C510 917 519 861 529 823
+  Q534 804 541 790
+  C509 779 490 756 490 728
+  C488 702 501 679 516 665
+  C518 626 535 594 548 580 Z"
+  fill="url(#catCoat)" stroke="#100f0c" stroke-width="10.7"
+  stroke-linecap="round" stroke-linejoin="round"/>
+
+<!-- 14. Inner fur texture subtly sits on the off-white cat shape -->
+<use xlink:href="#white-cat" fill="none" stroke="none"/>
+<path d="M548 580
+  C566 582 587 604 601 624 C614 618 639 617 655 622
+  C670 604 690 585 707 579 C724 594 732 634 737 665
+  C749 677 755 699 755 724 C755 748 747 762 730 777
+  C761 813 786 850 800 890 C819 945 813 988 783 1017
+  C761 1038 725 1046 691 1047 C645 1050 601 1047 573 1034
+  C537 1018 519 992 515 953 C510 917 519 861 529 823
+  Q534 804 541 790 C509 779 490 756 490 728
+  C488 702 501 679 516 665 C518 626 535 594 548 580 Z"
+  fill="none" stroke="#352b22" stroke-opacity=".16" stroke-width="3.2"/>
+
+<!-- 15. Folded left front paw / side contour -->
+<g id="paw-details" fill="none" stroke="#151310" stroke-width="9.3" stroke-linecap="round" stroke-linejoin="round">
+  <path d="M547 898 Q540 908 545 925"/>
+  <path d="M565 914 Q535 921 527 945 Q522 963 527 979"/>
+</g>
+
+<!-- 16. Long white tail hangs in front of the window sill -->
+<path id="tail" d="M693 1042
+  C714 1061 723 1092 721 1120
+  C719 1148 709 1165 687 1181
+  C674 1191 666 1208 679 1217
+  C689 1226 705 1221 718 1214
+  C744 1200 762 1174 768 1142
+  C778 1097 763 1055 746 1029"
+  fill="url(#catCoat)" stroke="#11100d" stroke-width="11.6"
+  stroke-linejoin="round" stroke-linecap="round"/>
+<!-- 17. Colored-pencil grain, kept within the cat contour -->
+<clipPath id="catTextureClip">
+  <path d="M548 580 C566 582 587 604 601 624 C614 618 639 617 655 622 C670 604 690 585 707 579 C724 594 732 634 737 665 C749 677 755 699 755 724 C755 748 747 762 730 777 C761 813 786 850 800 890 C819 945 813 988 783 1017 C761 1038 725 1046 691 1047 C645 1050 601 1047 573 1034 C537 1018 519 992 515 953 C510 917 519 861 529 823 Q534 804 541 790 C509 779 490 756 490 728 C488 702 501 679 516 665 C518 626 535 594 548 580 Z"/>
+</clipPath>
+<g clip-path="url(#catTextureClip)">
+  <rect x="475" y="566" width="350" height="487" filter="url(#catPaperTexture)" opacity=".60"/>
+</g>
+<!-- 18. Final grain on white fur and ink -->
+<g opacity=".14" style="pointer-events:none">
+  <path d="M548 580 C566 582 587 604 601 624 C614 618 639 617 655 622 C670 604 690 585 707 579 C724 594 732 634 737 665 C749 677 755 699 755 724 C755 748 747 762 730 777 C761 813 786 850 800 890 C819 945 813 988 783 1017 C761 1038 725 1046 691 1047 C645 1050 601 1047 573 1034 C537 1018 519 992 515 953 C510 917 519 861 529 823 Q534 804 541 790 C509 779 490 756 490 728 C488 702 501 679 516 665 C518 626 535 594 548 580 Z" fill="#fff" filter="url(#fineGrain)"/>
+</g>
+</svg>

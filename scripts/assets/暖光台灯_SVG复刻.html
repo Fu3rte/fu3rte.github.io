@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="theme-color" content="#ffffff" />
+  <title>暖光台灯 · SVG 矢量复刻</title>
+  <style>
+    html, body {
+      width: 100%;
+      min-height: 100%;
+      margin: 0;
+      background: #ffffff;
+    }
+    body { display: grid; place-items: center; }
+    svg {
+      display: block;
+      width: min(100vw, 100vh, 1254px);
+      height: auto;
+      overflow: visible;
+    }
+  </style>
+</head>
+<body>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1254 1254" role="img" aria-labelledby="lamp-title lamp-desc">
+  <title id="lamp-title">极简黑白台灯与左下方的暖黄色灯光</title>
+  <desc id="lamp-desc">圆弧灯罩、两根铰接支臂、圆形转轴、半圆形底座和柔和的暖光。所有结构都由独立 SVG 路径绘制。</desc>
+
+  <defs>
+    <radialGradient id="paper" cx="50%" cy="42%" r="73%">
+      <stop offset="0%" stop-color="#ffffff"/>
+      <stop offset="80%" stop-color="#ffffff"/>
+      <stop offset="100%" stop-color="#fcfcfc"/>
+    </radialGradient>
+
+    <!-- 从灯口向左下散开的黄色光晕 -->
+    <linearGradient id="beamDown" x1="0" y1="0" x2="0.12" y2="1">
+      <stop offset="0%" stop-color="#ffe284" stop-opacity=".75"/>
+      <stop offset="24%" stop-color="#ffe78b" stop-opacity=".52"/>
+      <stop offset="58%" stop-color="#ffe9a4" stop-opacity=".28"/>
+      <stop offset="86%" stop-color="#ffeec0" stop-opacity=".08"/>
+      <stop offset="100%" stop-color="#fff9e4" stop-opacity="0"/>
+    </linearGradient>
+    <radialGradient id="beamSpread" cx="41%" cy="22%" r="74%">
+      <stop offset="0%" stop-color="#ffe18a" stop-opacity=".37"/>
+      <stop offset="58%" stop-color="#fff0b5" stop-opacity=".21"/>
+      <stop offset="100%" stop-color="#fff5d0" stop-opacity="0"/>
+    </radialGradient>
+    <linearGradient id="innerShade" x1=".16" y1="0" x2=".74" y2="1">
+      <stop offset="0%" stop-color="#fff1b5"/>
+      <stop offset="37%" stop-color="#ffe9a0"/>
+      <stop offset="72%" stop-color="#fff5c8"/>
+      <stop offset="100%" stop-color="#fff9df"/>
+    </linearGradient>
+    <linearGradient id="rimWarm" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#141009"/>
+      <stop offset="47%" stop-color="#39240b"/>
+      <stop offset="80%" stop-color="#a36b0a"/>
+      <stop offset="100%" stop-color="#080808"/>
+    </linearGradient>
+    <filter id="softBeam" x="-30%" y="-25%" width="170%" height="160%" color-interpolation-filters="sRGB">
+      <feGaussianBlur stdDeviation="17"/>
+    </filter>
+    <filter id="gentleGlow" x="-80%" y="-90%" width="270%" height="280%" color-interpolation-filters="sRGB">
+      <feGaussianBlur stdDeviation="12"/>
+    </filter>
+    <clipPath id="bulbOpening">
+      <path d="M 246 347 C 321 351 474 448 541 521 Q 563 545 571 553 C 538 565 462 517 383 461 C 301 404 253 384 243 362 Q 236 350 246 347 Z"/>
+    </clipPath>
+  </defs>
+
+  <!-- 白纸背景 -->
+  <rect width="1254" height="1254" fill="url(#paper)"/>
+
+  <!-- 光从灯口整条面上发散：近底就是灯口那条面，两侧按物理散角外扩成梯形台，长度收在人物右侧之外 -->
+  <g aria-label="暖光光束" transform="rotate(30 641.5 248) rotate(32.6 407.5 449) translate(161.5 99)">
+    <path d="M 53 350 L 439 350 L 530.69 870 L -38.69 870 Z"
+          fill="url(#beamDown)" filter="url(#softBeam)" opacity=".5"/>
+    <path d="M 53 350 L 439 350 L 556.898 790 L -64.898 790 Z"
+          fill="url(#beamSpread)" opacity=".42"/>
+    <path d="M 126 350 L 366 350 L 410.202 710 L 81.798 710 Z"
+          fill="#ffe49a" opacity=".1" filter="url(#softBeam)"/>
+  </g>
+
+  <!-- 下臂：一对平行描边组成的细长金属杆，按底座铰链与肘部重新排布 -->
+  <path d="M 649.573 963.911 L 849.117 570.336 L 884.972 588.514 L 685.427 982.089 Z"
+        fill="#fff" stroke="#050505" stroke-width="11.5" stroke-linejoin="round"/>
+
+  <!-- 上臂 -->
+  <path d="M 853.817 588.427 L 628.272 257.002 L 654.728 238.998 L 880.272 570.423 Z"
+        fill="#fff" stroke="#050505" stroke-width="11.5" stroke-linejoin="round"/>
+
+  <!-- 灯罩整组绕灯头铰链顺时针抬起 30 度，灯口对准笔记本 -->
+  <g transform="rotate(30 641.5 248)">
+  <!-- 灯头与上臂的上端活动铰链 -->
+  <path d="M 619 220 C 639 211 659 218 675 241 C 690 261 682 280 665 285 C 644 290 628 275 618 256 Z"
+        fill="#fff" stroke="#050505" stroke-width="11.5" stroke-linejoin="round"/>
+
+  <!-- 灯罩上方的斜置长弧形连接座 -->
+  <path d="M 486 225 L 563 131 C 582 107 603 108 619 115 C 654 126 674 155 665 187 C 662 198 657 205 648 218 L 590 301 Z"
+        fill="#fff" stroke="#050505" stroke-width="11.5" stroke-linejoin="round"/>
+
+  <!-- 灯罩里的暖白色反射面，沿弯曲椭圆口单独描绘 -->
+  <path d="M 246 347 C 321 351 474 448 541 521 Q 563 545 571 553 C 538 565 462 517 383 461 C 301 404 253 384 243 362 Q 236 350 246 347 Z"
+        fill="url(#innerShade)"/>
+  <g clip-path="url(#bulbOpening)">
+    <!-- 灯泡照射在内壁形成的柔和暖白色光斑 -->
+    <path d="M 342 358 C 343 410 385 454 449 480 C 471 489 491 490 503 480 C 451 436 390 394 342 358 Z"
+          fill="#fffdf0" opacity=".82"/>
+    <path d="M 258 367 C 299 389 375 440 442 482 C 494 516 539 546 574 556"
+          fill="none" stroke="#ffd665" stroke-width="22" opacity=".22" filter="url(#gentleGlow)"/>
+  </g>
+
+  <!-- 主灯罩：圆弧外轮廓与正面开口的上缘 -->
+  <path d="M 244 343 C 283 269 356 219 420 215 C 511 202 577 254 607 330 C 636 406 607 502 574 552 C 569 560 565 558 559 548 C 521 489 383 401 300 362 C 274 350 253 341 244 343 Z"
+        fill="#fff" stroke="#050505" stroke-width="12.5" stroke-linecap="round" stroke-linejoin="round"/>
+
+  <!-- 灯口正面的黄色椭圆切面：下缘清晰，内部有照射区域 -->
+  <path d="M 244 345 C 279 341 354 380 433 434 C 500 480 552 524 570 551 C 560 577 495 537 407 481 C 311 418 250 381 243 359 Q 238 351 244 345 Z"
+        fill="url(#innerShade)" stroke="url(#rimWarm)" stroke-width="10.5" stroke-linejoin="round"/>
+  <path d="M 344 375 C 358 424 399 457 445 475 C 466 483 484 488 495 483 C 446 444 393 408 344 375 Z"
+        fill="#fffdf0" opacity=".70" clip-path="url(#bulbOpening)"/>
+  </g>
+
+  <!-- 中部大圆形铰链，遮住两根支臂的交汇端 -->
+  <circle cx="867.044" cy="579.425" r="47.5" fill="#fff" stroke="#050505" stroke-width="12"/>
+
+  <!-- 下端支臂和底座的活动铰链 -->
+  <path d="M 628 1022 L 628 968 C 628 941 644 924 668 924 C 689 924 707 941 707 969 L 707 1022 Z"
+        fill="#fff" stroke="#050505" stroke-width="12" stroke-linejoin="round"/>
+
+  <!-- 稳定底座：圆肩、平顶、直底、四角圆滑 -->
+  <path d="M 428 1136 L 429 1115 C 430 1061 466 1024 507 1022 L 801 1022 C 854 1022 890 1060 893 1109 L 895 1136 Z"
+        fill="#fff" stroke="#050505" stroke-width="12" stroke-linecap="round" stroke-linejoin="round"/>
+</svg>
+</body>
+</html>

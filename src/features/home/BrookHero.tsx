@@ -4,8 +4,13 @@ import lottie from 'lottie-web/build/player/lottie_light';
 import type { Rive } from '@rive-app/canvas';
 import { t } from '../../shared/i18n';
 import { onLoaderDone } from '../../shared/loader';
+import { currentTheme, subscribeTheme, type Theme } from '../../shared/theme';
+import Tooltip from '../../shared/Tooltip';
+import ThemeToggle from '../../app/ThemeToggle';
 import hoodedSkull from './assets/hooded-skull.svg?raw';
 import deskLamp from './assets/desk-lamp.svg?raw';
+import catWindow from './assets/cat-window.svg?raw';
+import catWindowNight from './assets/cat-window-night.svg?raw';
 
 // 只取 <svg> 内的图元，根标签上的 fill="none" 由承接的 <g> 补上，
 // 否则原稿里未写 fill 的描边路径会被填成黑块
@@ -15,6 +20,18 @@ const lamp = deskLamp
   .replace(/^<svg[^>]*>|<\/svg>\s*$/g, '')
   .replace('id="paper"', 'id="lamp-paper"')
   .replace('url(#paper)', 'url(#lamp-paper)');
+// 两张窗各自带一份 #paper，夜窗的 art-title/art-desc 与骷髅画稿同名，注入时逐张改名，图元路径照原稿不动
+const dayWindow = catWindow
+  .replace(/^<svg[^>]*>|<\/svg>\s*$/g, '')
+  .replace('id="paper"', 'id="day-window-paper"')
+  .replace('url(#paper)', 'url(#day-window-paper)');
+const nightWindow = catWindowNight
+  .replace(/^<svg[^>]*>|<\/svg>\s*$/g, '')
+  .replace('id="paper"', 'id="night-window-paper"')
+  .replace('id="art-title"', 'id="night-window-title"')
+  .replace('id="art-desc"', 'id="night-window-desc"');
+// 两张窗共用一份裁切：窗台两耳 93..1021、窗框顶 189、尾梢 1262，换主题时窗子不挪位
+const WINDOW_VIEW = '88 176 940 1092';
 // 降低动效偏好下停在这一帧：三缕各自摊出杯口新生、途中上行、顶部稀释三种状态
 const STEAM_HOLD = 45;
 
@@ -59,24 +76,67 @@ const BLINK_GAP: [number, number] = [2.4, 6.2];
 
 export default function BrookHero() {
   const scene = useRef<HTMLDivElement>(null);
+  const speaker = useRef<HTMLDivElement>(null);
   const steam = useRef<HTMLDivElement>(null);
+  const rays = useRef<HTMLDivElement>(null);
+  const stars = useRef<HTMLDivElement>(null);
   const eyes = useRef<HTMLCanvasElement>(null);
 
   useEffect(() => {
     const reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-    const anim = lottie.loadAnimation({
-      container: steam.current!,
-      renderer: 'svg',
-      loop: true,
-      autoplay: !reduced,
-      path: '/lottie/steam.json',
-    });
+    // 深色主题下热气换用反相的变体，浅色与无脚本环境共用原始素材
+    const steamPath = (theme: Theme) => `/lottie/steam${theme === 'dark' ? '.dark' : ''}.json`;
+    const load = (theme: Theme) =>
+      lottie.loadAnimation({
+        container: steam.current!,
+        renderer: 'svg',
+        loop: true,
+        autoplay: !reduced,
+        path: steamPath(theme),
+      });
+    let anim = load(currentTheme());
     if (reduced) {
       // 素材到位之前的 seek 会被丢掉，静态帧只能等 data_ready 再落
       anim.addEventListener('data_ready', () => anim.goToAndStop(STEAM_HOLD, true));
     }
-    return () => {
+    const unsubscribe = subscribeTheme(theme => {
       anim.destroy();
+      anim = load(theme);
+      if (reduced) anim.addEventListener('data_ready', () => anim.goToAndStop(STEAM_HOLD, true));
+    });
+    return () => {
+      unsubscribe();
+      anim.destroy();
+    };
+  }, []);
+
+  // 窗里的日光与星光由 lottie 承接：日间只挂光芒层，夜里只挂星星层，
+  // 与热气同一套换法——主题切换时销毁重建，同一时刻全站只有该动的在动
+  useEffect(() => {
+    const reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    const layers = {
+      light: { node: rays, path: '/lottie/window-sun.json' },
+      dark: { node: stars, path: '/lottie/window-stars.json' },
+    };
+    let anim: ReturnType<typeof lottie.loadAnimation> | null = null;
+    const load = (theme: Theme) => {
+      anim?.destroy();
+      const { node, path } = layers[theme];
+      anim = lottie.loadAnimation({
+        container: node.current!,
+        renderer: 'svg',
+        loop: true,
+        autoplay: !reduced,
+        path,
+      });
+      // 降动效下钉在首帧：光芒与画稿逐字重合，星星全部满亮
+      if (reduced) anim.addEventListener('data_ready', () => anim?.goToAndStop(0, true));
+    };
+    load(currentTheme());
+    const unsubscribe = subscribeTheme(load);
+    return () => {
+      unsubscribe();
+      anim?.destroy();
     };
   }, []);
 
@@ -198,6 +258,24 @@ export default function BrookHero() {
         </svg>
         <canvas className="brook-eyes" ref={eyes} aria-hidden="true" />
         <div className="brook-steam" ref={steam} aria-hidden="true" />
+        {/* 说话位：三处悬停共用头顶这一处落位，气泡始终由人物开口 */}
+        <div className="brook-speaker" ref={speaker} aria-hidden="true" />
+        {/* 悬停区罩在杯口以下，热气层落在杯口上缘，两层不重叠 */}
+        <Tooltip label={t('tooltip.coffee')} anchor={speaker} fit={false}>
+          <div className="brook-coffee" aria-hidden="true" />
+        </Tooltip>
+        {/* 左墙上的窗：日间是蓝天太阳与黑猫，夜里换成同一扇窗的月夜版 */}
+        <Tooltip label={t('tooltip.window')} anchor={speaker} fit={false}>
+          <div className="brook-window" aria-hidden="true">
+            <svg className="brook-window-day" viewBox={WINDOW_VIEW} dangerouslySetInnerHTML={{ __html: dayWindow }} />
+            <svg className="brook-window-night" viewBox={WINDOW_VIEW} dangerouslySetInnerHTML={{ __html: nightWindow }} />
+            <div className="brook-window-lottie brook-window-rays" ref={rays} />
+            <div className="brook-window-lottie brook-window-stars" ref={stars} />
+          </div>
+        </Tooltip>
+        <Tooltip label={t('tooltip.theme')} anchor={speaker} fit={false}>
+          <ThemeToggle className="hero-theme" />
+        </Tooltip>
       </div>
     </section>
   );

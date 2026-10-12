@@ -1,7 +1,12 @@
 import gsap from 'gsap';
 import lottie, { type AnimationItem } from 'lottie-web/build/player/lottie_light';
+import { currentTheme, subscribeTheme, type Theme } from './theme';
 
-const SOURCE = '/lottie/brook-load.json';
+// 深色主题下压场的是另一份纸色反相的变体，两份素材除墨色外逐帧相同
+const SOURCE: Record<Theme, string> = {
+  light: '/lottie/brook-load.json',
+  dark: '/lottie/brook-load.dark.json',
+};
 // brook-load.json 的组装段落在 0-66 帧，66-222 帧是首尾同值的无缝循环
 const INTRO_END = 66;
 const INTRO_MS = 1500;
@@ -50,7 +55,8 @@ export function bootLoader(): void {
     // 降低动效偏好下连动画素材都不必下载
     markSettled = true;
   } else {
-    loadMark(mark);
+    loadMark(mark, currentTheme());
+    subscribeTheme(reloadMark);
   }
   watchContent();
   window.addEventListener('pageshow', onPageRestore);
@@ -71,13 +77,13 @@ export function bootLoader(): void {
   gsap.ticker.add(tick);
 }
 
-function loadMark(mark: HTMLElement): void {
+function loadMark(mark: HTMLElement, theme: Theme): void {
   anim = lottie.loadAnimation({
     container: mark,
     renderer: 'svg',
     loop: true,
     autoplay: false,
-    path: SOURCE,
+    path: SOURCE[theme],
   });
   anim.addEventListener('data_ready', () => {
     jsonReady = true;
@@ -90,6 +96,17 @@ function loadMark(mark: HTMLElement): void {
   anim.addEventListener('data_failed', () => {
     markSettled = true;
   });
+}
+
+// 主题开关落在覆盖层眼皮底下：换素材重放一次，节奏与状态一律不动
+function reloadMark(theme: Theme): void {
+  if (!markEl || reduced) return;
+  const loopingWas = looping;
+  looping = false;
+  anim?.destroy();
+  anim = null;
+  loadMark(markEl, theme);
+  if (loopingWas) startLoop();
 }
 
 // 正文挂载与页面用哪个组件无关，盯 #root 的第一个子节点即可

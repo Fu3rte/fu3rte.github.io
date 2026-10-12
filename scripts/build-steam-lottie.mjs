@@ -8,6 +8,7 @@ import { fileURLToPath } from 'node:url';
 
 const root = dirname(dirname(fileURLToPath(import.meta.url)));
 const outFile = join(root, 'public', 'lottie', 'steam.json');
+const darkOutFile = join(root, 'public', 'lottie', 'steam.dark.json');
 
 const FPS = 60;
 const W = 150;
@@ -21,6 +22,8 @@ const FADE_HOLD = 0.42; // 从这里开始稀释
 const FADE_OUT = 0.72; // 归零点：段整体还在画布内就散完，顶部不留硬切
 
 const ink = [0x14 / 255, 0x14 / 255, 0x14 / 255, 1];
+// 深色主题的 --ink：#ecebe7
+const night = [0xec / 255, 0xeb / 255, 0xe7 / 255, 1];
 const linear = { i: { x: [0.833, 0.833], y: [0.833, 0.833] }, o: { x: [0.167, 0.167], y: [0.167, 0.167] } };
 
 // 把沿 y 参数化的正弦按 Hermite 转三次贝塞尔采样，得到一段自身带波浪的短弧
@@ -182,4 +185,10 @@ const animation = {
 
 mkdirSync(dirname(outFile), { recursive: true });
 writeFileSync(outFile, `${JSON.stringify(animation, null, 2)}\n`, 'utf8');
+// 深色主题下热气改用反相墨色的变体，轨迹与节奏逐帧相同
+const darkAnimation = JSON.parse(
+  JSON.stringify(animation).replaceAll(JSON.stringify(ink), JSON.stringify(night)),
+);
+writeFileSync(darkOutFile, `${JSON.stringify(darkAnimation, null, 2)}\n`, 'utf8');
 console.log(`wrote ${outFile}: ${(CYCLE / FPS).toFixed(2)}s cycle, ${WISPS.length} wisps x ${PIECES} pieces, ${W}x${H}`);
+console.log(`wrote ${darkOutFile}`);

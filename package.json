@@ -9,11 +9,8 @@
     "preview": "vite preview",
     "lottie": "node scripts/build-brook-lottie.mjs",
     "steam": "node scripts/build-steam-lottie.mjs",
-    "rive:eyes": "node scripts/build-hero-eyes-rml.mjs",
-    "test": "node scripts/check-hero.mjs",
-    "test:lottie": "node scripts/check-lottie.mjs",
-    "test:blink": "node scripts/check-blink.mjs",
-    "test:typing": "node scripts/check-typing.mjs"
+    "window": "node scripts/build-window-lottie.mjs",
+    "rive:eyes": "node scripts/build-hero-eyes-rml.mjs"
   },
   "dependencies": {
     "@rive-app/canvas": "^2.44.1",
@@ -29,7 +26,6 @@
     "@types/react": "^19.2.0",
     "@types/react-dom": "^19.2.0",
     "@vitejs/plugin-react": "^4.7.0",
-    "playwright": "^1.63.0",
     "svg-path-parser": "^1.1.0",
     "tailwindcss": "^4.1.0",
     "typescript": "~5.6.3",

@@ -1,4 +1,5 @@
 import { t, useLanguage } from '../../shared/i18n';
+import CopyValue from '../../shared/CopyValue';
 
 const CHANNELS = [
   { key: 'email', value: '2575716528cqh@gmail.com', href: 'mailto:2575716528cqh@gmail.com' },
@@ -18,7 +19,7 @@ export default function ContactWall() {
             <b className="mono">{t(`contact.channel.${channel.key}`)}</b>
             {channel.href
               ? <a href={channel.href} target={channel.href.startsWith('http') ? '_blank' : undefined} rel="noreferrer">{channel.value}</a>
-              : <span>{channel.value}</span>}
+              : <CopyValue value={channel.value} />}
           </li>
         ))}
       </ul>
