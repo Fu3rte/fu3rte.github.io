@@ -42,9 +42,10 @@ export function useRouter(): RouterValue {
   return useContext(RouterContext);
 }
 
-export function Link({ to, ...rest }: AnchorHTMLAttributes<HTMLAnchorElement> & { to: string }) {
+export function Link({ to, onClick, ...rest }: AnchorHTMLAttributes<HTMLAnchorElement> & { to: string }) {
   const { navigate } = useRouter();
   const handleClick = (event: MouseEvent<HTMLAnchorElement>): void => {
+    onClick?.(event);
     // 修饰键与中键交还浏览器，新标签页、复制链接归它们
     if (
       event.defaultPrevented
@@ -59,5 +60,5 @@ export function Link({ to, ...rest }: AnchorHTMLAttributes<HTMLAnchorElement> & 
     event.preventDefault();
     navigate(to);
   };
-  return <a href={to} onClick={handleClick} {...rest} />;
+  return <a href={to} {...rest} onClick={handleClick} />;
 }

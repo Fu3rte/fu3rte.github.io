@@ -141,6 +141,7 @@ export default function MenuOrb() {
             <li className="orb-cell" key={item.key}>
               <Link
                 to={item.path}
+                onClick={collapse}
                 className={'orb-item' + (current ? ' is-current' : '')}
                 aria-label={label}
                 title={label}
