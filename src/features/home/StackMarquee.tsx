@@ -29,12 +29,15 @@ const TRACKS = [
 type PointerType = 'pointerenter' | 'pointerleave' | 'pointerdown' | 'pointermove' | 'pointerup' | 'pointercancel';
 
 export default function StackMarquee() {
+  const stage = useRef<HTMLElement>(null);
   const band = useRef<HTMLDivElement>(null);
+  const ring = useRef<HTMLSpanElement>(null);
   const [copies, setCopies] = useState(MIN_COPIES);
 
   useEffect(() => {
     const host = band.current;
-    if (!host) return;
+    const section = stage.current;
+    if (!host || !section) return;
 
     const rails = [...host.querySelectorAll<HTMLElement>('.stack-row')].map((row, index) => {
       const track = row.querySelector<HTMLElement>('.stack-track')!;
@@ -55,7 +58,21 @@ export default function StackMarquee() {
     });
 
     let base = window.innerWidth < NARROW_VP ? BASE_NARROW : BASE_WIDE;
+    const reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
     let timer = 0;
+
+    // 圆环落在 section 上而非带子里：带子自带 translateX，fixed 会跟着它的变换找参照
+    const halo = ring.current!;
+    let overStage = false;
+
+    // 拖出板块时指针捕获仍在跑，圆环跟着手走才算握着这条胶带
+    const visible = () => overStage || rails.some(rail => rail.dragging);
+    const showHalo = () => halo.classList.toggle('is-on', visible());
+
+    // 落位写在 translate 上：scale 与它同属变换属性链，写在 transform 里会被按压缩一起缩走
+    const moveHalo = (event: PointerEvent) => {
+      if (visible()) halo.style.translate = `calc(${event.clientX}px - 50%) calc(${event.clientY}px - 50%)`;
+    };
 
     // 位移只在 [-period, 0) 里循环，接缝处整组回卷，视觉上接得上
     const apply = (rail: (typeof rails)[number]) => {
@@ -76,17 +93,32 @@ export default function StackMarquee() {
       }
     };
 
-    const reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
     if (!reduced) gsap.ticker.add(step);
     else rails.forEach(apply);
 
     const offs: (() => void)[] = [];
+    const on = (el: EventTarget, type: PointerType, fn: (event: PointerEvent) => void) => {
+      const handler = (event: Event) => fn(event as PointerEvent);
+      el.addEventListener(type, handler);
+      offs.push(() => el.removeEventListener(type, handler));
+    };
+
+    on(section, 'pointerenter', event => {
+      overStage = true;
+      moveHalo(event);
+      showHalo();
+    });
+    on(section, 'pointerleave', () => {
+      overStage = false;
+      showHalo();
+    });
+    on(section, 'pointerdown', () => halo.classList.add('is-pressed'));
+    // 松手点落在板块外也要收势：指针捕获把 up 送回行元素，只有挂在窗口上才接得住所有终点
+    for (const type of ['pointerup', 'pointercancel'] as const) on(window, type, () => halo.classList.remove('is-pressed'));
+    on(window, 'pointermove', moveHalo);
+
     for (const rail of rails) {
       const el = rail.row;
-      const on = (type: PointerType, fn: (event: PointerEvent) => void) => {
-        el.addEventListener(type, fn);
-        offs.push(() => el.removeEventListener(type, fn));
-      };
       const down = (event: PointerEvent) => {
         rail.dragging = true;
         rail.pointerX = event.clientX;
@@ -113,14 +145,15 @@ export default function StackMarquee() {
         if (el.hasPointerCapture(event.pointerId)) el.releasePointerCapture(event.pointerId);
         el.classList.remove('is-grabbing');
         rail.momentum = rail.flick;
+        showHalo();
       };
 
-      on('pointerenter', () => { rail.hover = true; });
-      on('pointerleave', () => { rail.hover = false; });
-      on('pointerdown', down);
-      on('pointermove', move);
-      on('pointerup', up);
-      on('pointercancel', up);
+      on(el, 'pointerenter', () => { rail.hover = true; });
+      on(el, 'pointerleave', () => { rail.hover = false; });
+      on(el, 'pointerdown', down);
+      on(el, 'pointermove', move);
+      on(el, 'pointerup', up);
+      on(el, 'pointercancel', up);
     }
 
     // 组宽与副本数一起重算：窄了就退回三组，超宽屏按各自组宽取最缺的那条补到铺满视口再多留一组
@@ -151,8 +184,11 @@ export default function StackMarquee() {
   }, [copies]);
 
   return (
-    <section id="stack" className="section stack">
-      <h2 className="section-title">{t('stack.title')}</h2>
+    <section id="stack" className="section stack" ref={stage}>
+      <header className="stack-head">
+        <h2 className="section-title">{t('stack.title')}</h2>
+        <span className="stack-note" aria-hidden="true">{t('stack.drag')}</span>
+      </header>
       <div className="stack-band" ref={band}>
         {TRACKS.map(track => (
           <div className="stack-row" key={track.key}>
@@ -168,6 +204,11 @@ export default function StackMarquee() {
           </div>
         ))}
       </div>
+      <span className="stack-halo" ref={ring} aria-hidden="true">
+        <svg viewBox="0 0 20 20">
+          <path d="M2.5 10h15M6 6.5 2.5 10 6 13.5M14 6.5 17.5 10 14 13.5" />
+        </svg>
+      </span>
     </section>
   );
 }

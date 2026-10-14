@@ -48,7 +48,8 @@
     "title": "Works"
   },
   "stack": {
-    "title": "Stack"
+    "title": "Stack",
+    "drag": "DRAG"
   },
   "contact": {
     "title": "Contact",

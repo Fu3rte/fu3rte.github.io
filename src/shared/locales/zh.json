@@ -43,7 +43,8 @@
     "title": "作品"
   },
   "stack": {
-    "title": "技术栈"
+    "title": "技术栈",
+    "drag": "拖拽"
   },
   "contact": {
     "title": "联系",
