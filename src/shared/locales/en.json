@@ -31,8 +31,18 @@
   },
   "about": {
     "title": "About",
-    "p1": "I'm Finnian. Frontend background, now focused on AI applications and interaction, based in Dongguan. This site doubles as my motion lab — GSAP, Rive and Lottie all show up here.",
-    "p2": "Away from work I write, rarely publish. I take animation mechanics apart for fun and collect odd, useful open-source tools. Come say hi."
+    "lead": "These days the hours go into AI applications.",
+    "leadSub": "How agents finish real work, and how interfaces talk.",
+    "p1": "Most of it is business-facing agents: how context gets handed over, how tools get wired in, how a run pulls itself back onto the rails. That whole job outside the model has a name — harness — and it takes up most of my time. Retrieval too, from chunking and recall to an answer that can actually ship.",
+    "p2": "This site is the motion lab I keep on the side: GSAP, Rive, Lottie, whatever the mood asks for. Even the blink and the steam off the cup are running real animation.",
+    "meta": {
+      "now": "Now",
+      "here": "Here",
+      "off": "Off work",
+      "nowValue": "Business agents · harness · RAG",
+      "hereValue": "Dongguan · UTC+8",
+      "offValue": "A cat · coffee · street workout"
+    }
   },
   "works": {
     "title": "Works"
@@ -49,7 +59,7 @@
       "instagram": "Instagram",
       "wechat": "WeChat"
     },
-    "p": "I check my inbox twice a day, with the same hands-in-pockets patience this page is drawn with. Write to me about agents, interfaces, a role you think fits — or just to say hi.",
+    "p": "Taking projects, and open to the right role: agent applications, interfaces and motion, or something that has to go from nothing to a working demo — tell me the scope before either of us does the math. I check my inbox twice a day, patient the way this page is drawn: hands in pockets, ready to wait.",
     "github": "github / Fu3rte",
     "instagram": "instagram / cq777h",
     "wechat": "wechat / F1nnian_",

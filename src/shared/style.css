@@ -91,6 +91,15 @@ html[lang="zh-CN"] .prose p {
   line-height: 1.95;
 }
 
+/* 汉字吃不下负字距，元信息标签只有两个字，紧一档免得住处吊着空 */
+html[lang="zh-CN"] .about-lead {
+  letter-spacing: 0;
+}
+
+html[lang="zh-CN"] .about-meta dt {
+  letter-spacing: 0.05em;
+}
+
 html[lang="zh-CN"] .contact-list a.contact-big {
   letter-spacing: 0;
 }
@@ -444,6 +453,54 @@ p.prose {
 
 .keepcase {
   text-transform: none;
+}
+
+/* ---------- about: 一句身份 + 两段自述 + 一行可扫读的元信息 ---------- */
+.about-lead {
+  font-family: var(--type-display);
+  font-weight: 700;
+  font-size: clamp(1.4rem, 2.7vw, 2rem);
+  line-height: 1.34;
+  letter-spacing: -0.015em;
+  max-width: 46ch;
+  margin: 0 0 1.9rem;
+  text-wrap: balance;
+}
+
+/* 身份句两行落位，第二行是它的注脚 */
+.about-lead-sub {
+  display: block;
+}
+
+/* 窄屏上让身份句的两行各自成行，汉字不在词中间断 */
+@media (max-width: 520px) {
+  .about-lead {
+    font-size: 1.2rem;
+  }
+}
+
+.about-meta {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(190px, 1fr));
+  gap: 1.4rem 1.6rem;
+  margin: 2.4rem 0 0;
+  padding-top: 1.6rem;
+  border-top: 2px dashed color-mix(in srgb, var(--ink) 18%, transparent);
+}
+
+.about-meta dt {
+  font-family: var(--type-mono);
+  font-size: 0.7rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--muted);
+  margin-bottom: 0.45rem;
+}
+
+.about-meta dd {
+  margin: 0;
+  font-size: 1rem;
+  line-height: 1.5;
 }
 
 /* ---------- works: 方格纸上用胶带贴住的仓库贴纸 ---------- */
