@@ -2,9 +2,10 @@ import { useEffect, useRef } from 'react';
 import gsap from 'gsap';
 import lottie from 'lottie-web/build/player/lottie_light';
 import type { Rive } from '@rive-app/canvas';
-import { t } from '../../shared/i18n';
+import { setLang, t, useLanguage } from '../../shared/i18n';
 import { onLoaderDone } from '../../shared/loader';
 import { currentTheme, subscribeTheme, type Theme } from '../../shared/theme';
+import StickyNoteLangSwitch from '../../shared/StickyNoteLangSwitch';
 import Tooltip from '../../shared/Tooltip';
 import ThemeToggle from '../../app/ThemeToggle';
 import hoodedSkull from './assets/hooded-skull.svg?raw';
@@ -75,6 +76,7 @@ const BLINK_HOLD = 0.3;
 const BLINK_GAP: [number, number] = [2.4, 6.2];
 
 export default function BrookHero() {
+  const language = useLanguage();
   const scene = useRef<HTMLDivElement>(null);
   const speaker = useRef<HTMLDivElement>(null);
   const steam = useRef<HTMLDivElement>(null);
@@ -276,6 +278,7 @@ export default function BrookHero() {
         <Tooltip label={t('tooltip.theme')} anchor={speaker} fit={false}>
           <ThemeToggle className="hero-theme" />
         </Tooltip>
+        <StickyNoteLangSwitch lang={language} onToggle={setLang} className="hero-sticky" />
       </div>
     </section>
   );

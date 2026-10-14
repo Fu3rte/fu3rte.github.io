@@ -28,6 +28,11 @@ export function currentLang(): Lang {
   return (i18next.resolvedLanguage ?? 'en').toLowerCase().startsWith('zh') ? 'zh' : 'en';
 }
 
+export function setLang(next: Lang): void {
+  localStorage.setItem(LANG_KEY, next);
+  void i18next.changeLanguage(next);
+}
+
 function subscribeLanguage(onChange: () => void): () => void {
   i18next.on('languageChanged', onChange);
   return () => { i18next.off('languageChanged', onChange); };
