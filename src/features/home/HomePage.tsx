@@ -16,10 +16,6 @@ function About() {
         {t('about.lead')}
         <span className="about-lead-sub">{t('about.leadSub')}</span>
       </p>
-      <div className="prose reveal">
-        <p>{t('about.p1')}</p>
-        <p>{t('about.p2')}</p>
-      </div>
       <dl className="about-meta reveal">
         {META.map(key => (
           <div key={key}>

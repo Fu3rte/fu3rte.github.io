@@ -18,9 +18,9 @@
     "aria": "Dark mode"
   },
   "tooltip": {
-    "theme": "Two shifts. This switch picks tonight's.",
-    "window": "That's my cat. She watches the weather, I watch her.",
-    "coffee": "Third cup tonight. The steam is the only thing still moving here."
+    "theme": "Switch between light and dark themes. Pick whichever feels comfortable.",
+    "window": "I like cats, so I saved a spot for one by the window",
+    "coffee": "I like drinking coffee"
   },
   "photos": {
     "title": "Photos",
@@ -31,10 +31,8 @@
   },
   "about": {
     "title": "About",
-    "lead": "These days the hours go into AI applications.",
-    "leadSub": "How agents finish real work, and how interfaces talk.",
-    "p1": "Most of it is business-facing agents: how context gets handed over, how tools get wired in, how a run pulls itself back onto the rails. That whole job outside the model has a name — harness — and it takes up most of my time. Retrieval too, from chunking and recall to an answer that can actually ship.",
-    "p2": "This site is the motion lab I keep on the side: GSAP, Rive, Lottie, whatever the mood asks for. Even the blink and the steam off the cup are running real animation.",
+    "lead": "I'm Finnian, a developer focused on AI applications.",
+    "leadSub": "I like turning ideas into things people can use, and exploring interaction and motion on the web.",
     "meta": {
       "now": "Now",
       "here": "Here",
