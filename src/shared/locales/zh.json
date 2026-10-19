@@ -18,16 +18,16 @@
     "aria": "深色模式"
   },
   "tooltip": {
-    "theme": "切换明亮或深色主题，选一个看着舒服的。",
+    "theme": "切换浅色或深色主题",
     "window": "我喜欢猫，所以在窗边给它留了个位置",
-    "coffee": "我喜欢喝咖啡"
+    "coffee": "咖啡给我力量"
   },
   "photos": {
     "title": "照片",
     "alt": "照片"
   },
   "hero": {
-    "aria": "黑色兜帽骷髅坐在深灰苹果笔记本后，桌面左侧一杯咖啡正冒热气，右手边一盏台灯"
+    "aria": ""
   },
   "about": {
     "title": "关于我",
@@ -36,7 +36,7 @@
     "meta": {
       "now": "在做",
       "here": "坐标",
-      "off": "下班",
+      "off": "喜欢",
       "nowValue": "业务型 agent · harness · RAG",
       "hereValue": "东莞 · UTC+8",
       "offValue": "猫 · 咖啡 · 街健"
@@ -47,7 +47,7 @@
   },
   "stack": {
     "title": "技术栈",
-    "drag": "拖拽"
+    "drag": "DRAG"
   },
   "contact": {
     "title": "联系",
@@ -58,7 +58,7 @@
       "instagram": "Instagram",
       "wechat": "微信"
     },
-    "p": "接项目，也听合适的岗位：智能体应用、界面与动效，或者从零到能演示的原型，都能谈；规模、周期、远程先聊一句再算。我每天检查两次收件箱，耐心就像这页画的样子 —— 双手插袋，等得起。",
+    "p": "欢迎合作联系。",
     "github": "GitHub / Fu3rte",
     "instagram": "Instagram / cq777h",
     "wechat": "微信 / F1nnian_",
