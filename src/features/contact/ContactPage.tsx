@@ -1,9 +1,12 @@
+import { useEffect } from 'react';
 import { t, useLanguage } from '../../shared/i18n';
+import { initMotion } from '../../shared/motion';
 import CopyValue from '../../shared/CopyValue';
 import { Link } from '../../shared/router';
 
 export default function ContactPage() {
   useLanguage();
+  useEffect(initMotion, []);
   return (
     <main className="contact-page">
       <Link className="mono wordmark" to="/">{t('brand')}</Link>

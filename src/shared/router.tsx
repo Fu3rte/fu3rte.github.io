@@ -29,7 +29,8 @@ export function RouterProvider({ children }: { children: ReactNode }) {
     withTransition(() => {
       window.history.pushState(null, '', next);
       setPath(next);
-      window.scrollTo(0, 0);
+      // 覆盖层压住的那一拍按瞬时归位，新正文的滚动锚点才量得准
+      window.scrollTo({ top: 0, left: 0, behavior: 'instant' });
     });
   };
 
