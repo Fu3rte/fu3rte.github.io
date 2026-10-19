@@ -323,11 +323,24 @@ body {
   display: block;
 }
 
-/* 800 以下画框缩到窗子要压上人物左肩、左缘也贴不住 hero 的 16px 内衬，墙上的装饰随墙一起收起；
-   开关是控件，照旧留在原位 */
-@media (max-width: 800px) {
-  .brook-window {
+/* 窄屏与矮屏（横过来的手机）：画框按 0.8 缩放只剩不到 300，墙上这两件挂不住位置——
+   窗子要压上人物左肩、开关的左缘贴不住 hero 的内衬，索性随墙一起收起，只留画稿与灯上的便签。
+   画幅本身按视口宽放开（--hero-scale 收到 1），整幅比收起挂件前更大。
+   开关是主题的唯一入口，窄屏访客因此只看 head 里定下的那套底色。 */
+@media (max-width: 800px), (max-height: 520px) {
+  :root {
+    --hero-scale: 1;
+  }
+
+  .brook-window,
+  .brook-scene .hero-theme {
     display: none;
+  }
+
+  /* 便签按画框等比缩到八成，缩放围绕底沿展开，灯罩顶缘那 15px 的缝隙不会跟着挪 */
+  .brook-scene .hero-sticky {
+    scale: 0.8;
+    transform-origin: bottom center;
   }
 }
 

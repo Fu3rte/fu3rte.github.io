@@ -96,6 +96,8 @@ export default function Works() {
     const media = gsap.matchMedia();
 
     media.add('(prefers-reduced-motion: no-preference)', () => {
+      // 窄屏上贴纸几乎满宽，摆角的包围盒会顶出视口右缘，掉落只留位移与淡入
+      const swing = window.matchMedia('(min-width: 801px)').matches;
       const tl = gsap.timeline({
         scrollTrigger: { trigger: wall.current, start: 'top 82%', once: true },
       });
@@ -104,8 +106,8 @@ export default function Works() {
         tl.from(card, {
           opacity: 0,
           y: -52,
-          rotation: TILTS[index] - 9,
-          scale: 1.06,
+          rotation: swing ? TILTS[index] - 9 : TILTS[index],
+          scale: swing ? 1.06 : 1,
           duration: 0.5,
           ease: 'power3.out',
         }, at).from(tapes[index], { scale: 0.25, opacity: 0, duration: 0.3, ease: 'power4.out' }, at + 0.34);
