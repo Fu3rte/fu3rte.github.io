@@ -3,6 +3,7 @@ import { copyFileSync, mkdirSync } from 'node:fs'
 import path from 'node:path'
 import { defineConfig, type Plugin } from 'vite'
 import react from '@vitejs/plugin-react'
+import tailwindcss from '@tailwindcss/vite'
 
 const here = (rel: string) => fileURLToPath(new URL(rel, import.meta.url))
 
@@ -36,5 +37,10 @@ const CASE_PATHS = [
 ]
 
 export default defineConfig({
-  plugins: [react(), spaRoutes(['photos', 'contact', ...CASE_PATHS])],
+  plugins: [react(), tailwindcss(), spaRoutes(['photos', 'contact', ...CASE_PATHS])],
+  resolve: {
+    alias: {
+      '@': here('./src'),
+    },
+  },
 })
