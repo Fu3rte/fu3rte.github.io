@@ -16,8 +16,6 @@
         var saved = localStorage.getItem('lang');
         var zh = saved ? saved === 'zh' : /^zh/i.test(navigator.language);
         document.documentElement.lang = zh ? 'zh-CN' : 'en';
-        // Lattice 的正式主世界固定为 Night，首屏与 loading 共用同一底色
-        document.documentElement.dataset.theme = 'dark';
         // 覆盖层只在 JS 可用时出现，无脚本环境直接露出正文
         document.documentElement.classList.add('js');
       })();
@@ -33,7 +31,7 @@
         justify-items: center;
         gap: clamp(10px, 2.2vmin, 16px);
         /* 底色与正文共用主题令牌，head 内联早于样式表时按亮色兜底 */
-        background: var(--paper, #07080b);
+        background: var(--paper, #eceae4);
       }
       .js .brook-loader { display: grid; }
       .brook-loader.is-hidden { display: none; }
@@ -42,20 +40,20 @@
       .brook-mark svg { width: 100%; height: 100%; display: block; overflow: visible; }
       .brook-caption {
         margin: 0;
-        font-family: "Doto", ui-monospace, monospace;
-        font-weight: 900;
+        font-family: "IBM Plex Mono", ui-monospace, monospace;
+        font-weight: 500;
         font-size: clamp(10px, 1.5vmin, 12px);
         letter-spacing: 0.18em;
         /* 字距会在末尾多留一格，起首补等宽把视觉中线挪回徽标轴上 */
         text-indent: 0.18em;
         text-transform: uppercase;
-        color: var(--muted, #a4a39f);
+        color: var(--muted, #5a554e);
       }
     </style>
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
-      href="https://fonts.googleapis.com/css2?family=Atkinson+Hyperlegible+Next:wght@400;700&family=Doto:wght@900&family=Noto+Sans+SC:wght@400;500;700&display=swap"
+      href="https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@400;500;700&display=swap"
       rel="stylesheet"
     />
   </head>

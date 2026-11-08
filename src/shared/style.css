@@ -1,19 +1,19 @@
 :root {
-  color-scheme: dark;
-  --paper: #07080b;
-  --surface: #0d0f14;
-  --surface-raised: #12151b;
-  --ink: #ece7da;
-  --muted: #a4a39f;
-  --orange: #ff5a1f;
-  --ice: #7fd8ff;
-  --line: rgb(236 231 218 / 0.14);
-  --line-strong: rgb(236 231 218 / 0.28);
-  --grid: rgb(236 231 218 / 0.05);
-  --grid-fine: rgb(236 231 218 / 0.025);
+  color-scheme: light;
+  --paper: #eceae4;
+  --surface: #f8f5ee;
+  --surface-raised: #fbfaf7;
+  --ink: #2a2420;
+  --muted: #5a554e;
+  --orange: #2a2420;
+  --ice: #6b6660;
+  --line: rgb(42 36 32 / 0.14);
+  --line-strong: rgb(42 36 32 / 0.28);
+  --grid: rgb(42 36 32 / 0.05);
+  --grid-fine: rgb(42 36 32 / 0.025);
   --grain: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='180' height='180'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='2' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 1 0 0 0 0 1 0 0 0 0 1 0 0 0 .55 0'/%3E%3C/filter%3E%3Crect width='180' height='180' filter='url(%23n)' opacity='.07'/%3E%3C/svg%3E");
-  --type-body: "Atkinson Hyperlegible Next", "Noto Sans SC", system-ui, sans-serif;
-  --type-dot: "Doto", "Noto Sans SC", monospace;
+  --type-body: "Kevin Sans Hand", "Noto Sans SC", "Bradley Hand", cursive;
+  --type-dot: "IBM Plex Mono", "Noto Sans SC", ui-monospace, monospace;
   font-family: var(--type-body);
   font-synthesis: none;
 }
@@ -34,7 +34,7 @@ body {
   background-color: var(--paper);
   background-image:
     var(--grain),
-    radial-gradient(circle, rgb(236 231 218 / 0.11) 1px, transparent 1.2px),
+    radial-gradient(circle, rgb(42 36 32 / 0.11) 1px, transparent 1.2px),
     linear-gradient(var(--grid) 1px, transparent 1px),
     linear-gradient(90deg, var(--grid) 1px, transparent 1px),
     linear-gradient(var(--grid-fine) 1px, transparent 1px),
@@ -108,7 +108,7 @@ img {
   align-items: center;
   gap: 32px;
   padding: 0 32px;
-  background: rgb(7 8 11 / 0.94);
+  background: rgb(236 234 228 / 0.94);
   border-bottom: 1px solid var(--line);
 }
 
@@ -288,7 +288,7 @@ html[lang="zh-CN"] .hero-copy h1 {
 .button-primary {
   border-color: var(--orange);
   background: var(--orange);
-  color: #07080b;
+  color: #f8f5ee;
   font-weight: 700;
 }
 
@@ -552,7 +552,7 @@ html[lang="zh-CN"] .section-title {
 }
 
 .capability-node.is-input {
-  border-color: rgb(255 90 31 / 0.55);
+  border-color: rgb(42 36 32 / 0.55);
 }
 
 .capability-node.is-input .node-dots {
@@ -560,7 +560,7 @@ html[lang="zh-CN"] .section-title {
 }
 
 .capability-node.is-output {
-  border-color: rgb(127 216 255 / 0.55);
+  border-color: rgb(107 102 96 / 0.55);
 }
 
 .capability-node.is-output .node-dots {
@@ -621,7 +621,7 @@ html[lang="zh-CN"] .section-title {
   aspect-ratio: 4 / 3;
   overflow: hidden;
   border-bottom: 1px solid var(--line);
-  background: #090b10;
+  background: #f8f5ee;
   color: var(--ink);
 }
 
@@ -897,12 +897,12 @@ html[lang="zh-CN"] .section-title {
 
 .contact-orbit span:nth-child(2) {
   inset: 16%;
-  border-color: rgb(255 90 31 / 0.35);
+  border-color: rgb(42 36 32 / 0.35);
 }
 
 .contact-orbit span:nth-child(3) {
   inset: 32%;
-  border-color: rgb(127 216 255 / 0.35);
+  border-color: rgb(107 102 96 / 0.35);
 }
 
 .contact-me {

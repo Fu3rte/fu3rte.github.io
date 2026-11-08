@@ -1,6 +1,7 @@
 import { useEffect } from 'react';
 import { RouterProvider, useRouter } from '../shared/router';
 import { bindHead, useLanguage } from '../shared/i18n';
+import { InkProvider } from '../lib/ink/react';
 import SiteHeader from './SiteHeader';
 import { matchRoute } from './routes';
 
@@ -25,8 +26,10 @@ function Shell() {
 
 export default function App() {
   return (
-    <RouterProvider>
-      <Shell />
-    </RouterProvider>
+    <InkProvider>
+      <RouterProvider>
+        <Shell />
+      </RouterProvider>
+    </InkProvider>
   );
 }

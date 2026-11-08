@@ -1,0 +1,87 @@
+@font-face {
+  font-family: "Kevin Sans";
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+  src: url("./assets/fonts/KevinSans-Regular.woff2") format("woff2");
+}
+
+@font-face {
+  font-family: "Kevin Sans";
+  font-style: normal;
+  font-weight: 700;
+  font-display: swap;
+  src: url("./assets/fonts/KevinSans-Bold.woff2") format("woff2");
+}
+
+@font-face {
+  font-family: "Kevin Sans Hand";
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+  src: url("./assets/fonts/KevinSans-Regular.woff2") format("woff2");
+  size-adjust: 88%;
+  ascent-override: 120.45%;
+  descent-override: 60.23%;
+  line-gap-override: 0%;
+}
+
+@font-face {
+  font-family: "Kevin Sans Hand";
+  font-style: normal;
+  font-weight: 700;
+  font-display: swap;
+  src: url("./assets/fonts/KevinSans-Bold.woff2") format("woff2");
+  size-adjust: 88%;
+  ascent-override: 120.45%;
+  descent-override: 60.23%;
+  line-gap-override: 0%;
+}
+
+@font-face {
+  font-family: "Kevin Sans Script";
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+  src: url("./assets/fonts/KevinSans-Regular.woff2") format("woff2");
+  size-adjust: 75%;
+  ascent-override: 128.0%;
+  descent-override: 40.0%;
+  line-gap-override: 0%;
+}
+
+@font-face {
+  font-family: "Kevin Sans Script";
+  font-style: normal;
+  font-weight: 700;
+  font-display: swap;
+  src: url("./assets/fonts/KevinSans-Bold.woff2") format("woff2");
+  size-adjust: 75%;
+  ascent-override: 128.0%;
+  descent-override: 40.0%;
+  line-gap-override: 0%;
+}
+
+@font-face {
+  font-family: "Kevin Sans Type";
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+  src: url("./assets/fonts/KevinSans-Regular.woff2") format("woff2");
+  size-adjust: 82%;
+  ascent-override: 85.37%;
+  descent-override: 36.59%;
+  line-gap-override: 0%;
+}
+
+@font-face {
+  font-family: "Kevin Sans Type";
+  font-style: normal;
+  font-weight: 700;
+  font-display: swap;
+  src: url("./assets/fonts/KevinSans-Bold.woff2") format("woff2");
+  size-adjust: 82%;
+  ascent-override: 85.37%;
+  descent-override: 36.59%;
+  line-gap-override: 0%;
+}
