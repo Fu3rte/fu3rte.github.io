@@ -1,4 +1,4 @@
-import { createContext, useContext, useEffect, useState } from 'react';
+import { createContext, useContext, useEffect, useRef, useState } from 'react';
 import type { AnchorHTMLAttributes, MouseEvent, ReactNode } from 'react';
 import { withTransition } from './loader';
 
@@ -16,9 +16,20 @@ const RouterContext = createContext<RouterValue>({ path: '/', navigate: () => {}
 
 export function RouterProvider({ children }: { children: ReactNode }) {
   const [path, setPath] = useState(() => normalizePath(window.location.pathname));
+  const settled = useRef(path);
 
   useEffect(() => {
-    const onPopState = (): void => setPath(normalizePath(window.location.pathname));
+    const onPopState = (): void => {
+      const next = normalizePath(window.location.pathname);
+      // 只换锚点的前进后退同样会派发 popstate，路径没变就交给浏览器自己落位，
+      // 否则这里归零会把锚点跳转打回页首
+      if (next === settled.current) return;
+      settled.current = next;
+      withTransition(() => {
+        setPath(next);
+        window.scrollTo({ top: 0, left: 0, behavior: 'instant' });
+      });
+    };
     window.addEventListener('popstate', onPopState);
     return () => window.removeEventListener('popstate', onPopState);
   }, []);
@@ -26,6 +37,7 @@ export function RouterProvider({ children }: { children: ReactNode }) {
   const navigate = (to: string): void => {
     const next = normalizePath(to);
     if (next === path) return;
+    settled.current = next;
     withTransition(() => {
       window.history.pushState(null, '', next);
       setPath(next);

@@ -21,6 +21,7 @@ export default function PhotosPage() {
   return (
     <main className="photos-page">
       <section id="photos" className="section photos">
+        <p className="section-eyebrow"><span>01</span>PHOTOGRAPHS</p>
         <h1 className="section-title">{t('photos.title')}</h1>
         <div className="photos-grid reveal">
           {photos.map((src, index) => (

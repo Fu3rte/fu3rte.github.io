@@ -1,36 +1,38 @@
 {
   "meta": {
-    "title": "Finnian — Animation & Interaction Portfolio",
+    "title": "Finnian — AI Applications & Interaction",
     "contactTitle": "Contact — Finnian",
     "photosTitle": "Photos — Finnian",
-    "description": "Animation and interaction portfolio of Finnian — GSAP, Rive and Lottie driven experiments, based in Dongguan, China.",
+    "projectTitle": "Project case — Finnian",
+    "description": "Finnian's AI application and interaction portfolio: practical agents, harnesses, RAG, and experiments with Three.js, GSAP, Rive and Lottie.",
     "photosDescription": "Photographs by Finnian.",
-    "contactDescription": "Write to Finnian about motion, interfaces or a hello — email, GitHub, Instagram."
+    "projectDescription": "Case study of an agent, retrieval or interaction project: the problem, the decisions, the scope owned and the result.",
+    "contactDescription": "Contact Finnian about AI applications, interaction and collaboration."
   },
   "brand": "FINNIAN",
   "nav": {
-    "aria": "Site menu",
+    "aria": "Site navigation",
+    "menu": "Open navigation",
+    "close": "Close navigation",
     "home": "Home",
     "photos": "Photos",
     "contact": "Contact"
   },
-  "theme": {
-    "aria": "Dark mode"
-  },
-  "tooltip": {
-    "theme": "Switch between light and dark themes. Pick whichever feels comfortable.",
-    "window": "I like cats, so I saved a spot for one by the window",
-    "coffee": "I like drinking coffee"
-  },
   "photos": {
-    "title": "Photos",
-    "alt": "Photo"
+    "title": "Photographs",
+    "alt": "Photograph",
+    "open": "View all photographs"
   },
   "hero": {
-    "aria": "Skull in a black hood seated behind a dark grey Apple laptop, a cup of coffee steaming on the left of the desk and a desk lamp on the right"
+    "aria": "A hooded skull seated at a laptop with a cup of steaming coffee",
+    "kicker": "AI APPLICATIONS · INTERACTION",
+    "title": "Turning ideas into usable intelligent systems.",
+    "intro": "I'm Finnian. I build practical agents, harnesses and RAG systems, with a lasting focus on web interaction and motion.",
+    "primary": "View works",
+    "secondary": "Contact me"
   },
   "about": {
-    "title": "About",
+    "title": "Profile",
     "lead": "I'm Finnian, a developer focused on AI applications.",
     "leadSub": "I like turning ideas into things people can use, and exploring interaction and motion on the web.",
     "meta": {
@@ -42,12 +44,38 @@
       "offValue": "A cat · coffee · street workout"
     }
   },
+  "capabilities": {
+    "title": "Capability map",
+    "intro": "Real project pipelines, from input to application output.",
+    "aria": "Choose a project capability map"
+  },
   "works": {
-    "title": "Works"
+    "title": "Selected works",
+    "intro": "Agent workflows, retrieval and multimodal systems, each with a concrete engineering path.",
+    "aria": "Project cases",
+    "tech": "Related technologies",
+    "detail": "Read the case",
+    "open": "Open repository"
+  },
+  "case": {
+    "role": "Role",
+    "period": "Period",
+    "status": "Status",
+    "repository": "Open repository",
+    "back": "All works",
+    "toc": "Case contents",
+    "problem": "Problem",
+    "decisions": "Key decisions",
+    "contribution": "Scope owned",
+    "outcomes": "Outcome",
+    "switch": "Move between cases",
+    "previous": "Previous",
+    "next": "Next"
   },
   "stack": {
-    "title": "Stack",
-    "drag": "DRAG"
+    "title": "Instruments",
+    "intro": "Application engineering and interaction share one workbench. Select a technology to locate related work.",
+    "noMatch": "No linked project in the selected works"
   },
   "contact": {
     "title": "Contact",
@@ -58,11 +86,11 @@
       "instagram": "Instagram",
       "wechat": "WeChat"
     },
-    "p": "Taking projects, and open to the right role: agent applications or something that has to go from nothing to a working demo, welcome to text me.",
-    "github": "github / Fu3rte",
-    "instagram": "instagram / cq777h",
-    "wechat": "wechat / F1nnian_",
+    "p": "Let's talk about agent applications, interaction prototypes, or an idea that needs to become a working demo.",
+    "github": "GitHub / Fu3rte",
+    "instagram": "Instagram / cq777h",
+    "wechat": "WeChat / F1nnian_",
     "copy": "Copy",
-    "copied": "copied"
+    "copied": "Copied"
   }
 }

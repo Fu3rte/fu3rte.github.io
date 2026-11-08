@@ -3,11 +3,12 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Finnian — Animation & Interaction Portfolio</title>
+    <title>Finnian — AI Applications & Interaction</title>
     <meta name="author" content="Finnian" />
-    <meta name="description" content="Animation and interaction portfolio of Finnian — GSAP, Rive and Lottie driven experiments, based in Dongguan, China." />
-    <meta property="og:title" content="Finnian — Animation &amp; Interaction Portfolio" />
-    <meta property="og:description" content="GSAP, Rive, Lottie. Motion experiments from Dongguan." />
+    <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+    <meta name="description" content="Finnian's AI application and interaction portfolio: practical agents, harnesses, RAG, and real-time point-set experiments." />
+    <meta property="og:title" content="Finnian — AI Applications &amp; Interaction" />
+    <meta property="og:description" content="Practical agents, RAG systems and real-time point-set experiments from Dongguan." />
     <meta property="og:type" content="website" />
     <script>
       // 首屏前定语言：只决定 <html lang> 与其中文字体族，文案由 src/shared/i18n.ts 接管
@@ -15,12 +16,8 @@
         var saved = localStorage.getItem('lang');
         var zh = saved ? saved === 'zh' : /^zh/i.test(navigator.language);
         document.documentElement.lang = zh ? 'zh-CN' : 'en';
-        // 主题在样式表生效前就定下，深色访客的首屏与 loading 层都按夜色压住
-        var theme = localStorage.getItem('theme');
-        if (theme !== 'light' && theme !== 'dark') {
-          theme = window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
-        }
-        document.documentElement.dataset.theme = theme;
+        // Lattice 的正式主世界固定为 Night，首屏与 loading 共用同一底色
+        document.documentElement.dataset.theme = 'dark';
         // 覆盖层只在 JS 可用时出现，无脚本环境直接露出正文
         document.documentElement.classList.add('js');
       })();
@@ -36,7 +33,7 @@
         justify-items: center;
         gap: clamp(10px, 2.2vmin, 16px);
         /* 底色与正文共用主题令牌，head 内联早于样式表时按亮色兜底 */
-        background: var(--paper, #fafaf9);
+        background: var(--paper, #07080b);
       }
       .js .brook-loader { display: grid; }
       .brook-loader.is-hidden { display: none; }
@@ -45,19 +42,20 @@
       .brook-mark svg { width: 100%; height: 100%; display: block; overflow: visible; }
       .brook-caption {
         margin: 0;
-        font-family: "Space Mono", ui-monospace, monospace;
+        font-family: "Doto", ui-monospace, monospace;
+        font-weight: 900;
         font-size: clamp(10px, 1.5vmin, 12px);
         letter-spacing: 0.18em;
         /* 字距会在末尾多留一格，起首补等宽把视觉中线挪回徽标轴上 */
         text-indent: 0.18em;
         text-transform: uppercase;
-        color: var(--muted, rgba(20, 20, 20, 0.42));
+        color: var(--muted, #a4a39f);
       }
     </style>
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
-      href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,300..900&family=Space+Grotesk:wght@300..700&family=Space+Mono:wght@400;700&family=Noto+Serif+SC:wght@300..900&family=Noto+Sans+SC:wght@300..700&display=swap"
+      href="https://fonts.googleapis.com/css2?family=Atkinson+Hyperlegible+Next:wght@400;700&family=Doto:wght@900&family=Noto+Sans+SC:wght@400;500;700&display=swap"
       rel="stylesheet"
     />
   </head>

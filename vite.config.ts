@@ -2,7 +2,6 @@ import { fileURLToPath } from 'node:url'
 import { copyFileSync, mkdirSync } from 'node:fs'
 import path from 'node:path'
 import { defineConfig, type Plugin } from 'vite'
-import tailwindcss from '@tailwindcss/vite'
 import react from '@vitejs/plugin-react'
 
 const here = (rel: string) => fileURLToPath(new URL(rel, import.meta.url))
@@ -27,6 +26,15 @@ function spaRoutes(routes: string[]): Plugin {
   }
 }
 
+// 新增案例要同时在这里登记：GitHub Pages 只认静态路径，少一条就少一份目录索引
+const CASE_PATHS = [
+  'projects/fit-agent',
+  'projects/contextus',
+  'projects/dsh-sight',
+  'projects/nl2sql-agent',
+  'projects/calisthenics-log',
+]
+
 export default defineConfig({
-  plugins: [react(), tailwindcss(), spaRoutes(['photos', 'contact'])],
+  plugins: [react(), spaRoutes(['photos', 'contact', ...CASE_PATHS])],
 })

@@ -1,5 +1,6 @@
 import { t, useLanguage } from '../../shared/i18n';
 import CopyValue from '../../shared/CopyValue';
+import SectionHeading from './SectionHeading';
 
 const CHANNELS = [
   { key: 'email', value: '2575716528cqh@gmail.com', href: 'mailto:2575716528cqh@gmail.com' },
@@ -11,9 +12,11 @@ const CHANNELS = [
 export default function ContactWall() {
   useLanguage();
   return (
-    <section id="contact" className="section">
-      <h2 className="contact-me">{t('contact.me')}</h2>
-      <ul className="contact-rows">
+    <section id="contact" className="section contact-wall">
+      <SectionHeading index="06" eyebrow="CONTACT" title={t('contact.title')} />
+      <div className="contact-orbit" aria-hidden="true"><span /><span /><span /></div>
+      <h2 className="contact-me reveal">{t('contact.me')}</h2>
+      <ul className="contact-rows reveal">
         {CHANNELS.map(channel => (
           <li key={channel.key}>
             <b className="mono">{t(`contact.channel.${channel.key}`)}</b>
@@ -23,6 +26,7 @@ export default function ContactWall() {
           </li>
         ))}
       </ul>
+      <p className="site-signature mono">FINNIAN · DONGGUAN · UTC+8</p>
     </section>
   );
 }

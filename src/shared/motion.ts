@@ -28,9 +28,9 @@ function createProgressBar(): HTMLDivElement {
 }
 
 function playIntro(): void {
-  const scene = document.querySelector('.brook-scene');
-  if (!scene) return;
-  gsap.from(scene, { opacity: 0, scale: 0.96, duration: 1, delay: 0.1, ease: 'power4.out' });
+  const header = document.querySelector('.site-header');
+  if (!header) return;
+  gsap.from(header, { opacity: 0, y: -16, duration: 0.65, ease: 'power3.out' });
 }
 
 function setupSectionReveals(): void {
