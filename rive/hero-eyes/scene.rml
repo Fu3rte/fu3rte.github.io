@@ -10,7 +10,7 @@
               <CubicDetachedVertex x="489" y="533" inRotation="-0.938047" inDistance="18.601" outRotation="0" outDistance="0"/>
             </PointsPath>
             <Fill name="Fill" id="0:5">
-            <SolidColor name="Color" id="0:6" colorValue="FF090909"/>
+            <SolidColor name="Color" id="0:6" colorValue="FF221E1B"/>
             </Fill>
           </Shape>
           <Shape name="socket-part" id="0:7" x="0" y="0">
@@ -21,7 +21,7 @@
               <CubicDetachedVertex x="546" y="620" inRotation="-0.165149" inDistance="12.166" outRotation="0" outDistance="0"/>
             </PointsPath>
             <Fill name="Fill" id="0:9">
-            <SolidColor name="Color" id="0:10" colorValue="FF656564"/>
+            <SolidColor name="Color" id="0:10" colorValue="FF6F6C67"/>
             </Fill>
           </Shape>
           <Shape name="socket-part" id="0:11" x="0" y="0">
@@ -33,7 +33,7 @@
               <CubicDetachedVertex x="479" y="591" inRotation="1.325818" inDistance="8.246" outRotation="0" outDistance="0"/>
             </PointsPath>
             <Fill name="Fill" id="0:13">
-            <SolidColor name="Color" id="0:14" colorValue="FF323232"/>
+            <SolidColor name="Color" id="0:14" colorValue="FF44413D"/>
             </Fill>
           </Shape>
           <Shape name="socket-part" id="0:15" x="0" y="0">
@@ -45,7 +45,7 @@
               <CubicDetachedVertex x="474" y="565" inRotation="1.465919" inDistance="19.105" outRotation="0" outDistance="0"/>
             </PointsPath>
             <Fill name="Fill" id="0:17">
-            <SolidColor name="Color" id="0:18" colorValue="FFBCBCBC"/>
+            <SolidColor name="Color" id="0:18" colorValue="FFB9B6B0"/>
             </Fill>
           </Shape>
           <Shape name="socket-part" id="0:19" x="0" y="0">
@@ -66,8 +66,8 @@
             </PointsPath>
             <Fill name="Fill" id="0:21">
             <RadialGradient name="Gradient" id="0:22" startX="520.033" startY="548.09" endX="608.465" endY="548.09">
-                <GradientStop name="Stop" id="0:23" colorValue="FF050505" position="0"/>
-                <GradientStop name="Stop" id="0:24" colorValue="FF090909" position="1"/>
+                <GradientStop name="Stop" id="0:23" colorValue="FF1E1A17" position="0"/>
+                <GradientStop name="Stop" id="0:24" colorValue="FF221E1B" position="1"/>
             </RadialGradient>
             </Fill>
           </Shape>
@@ -82,7 +82,7 @@
               <CubicDetachedVertex x="774" y="587" inRotation="2.089942" inDistance="8.062" outRotation="0" outDistance="0"/>
             </PointsPath>
             <Fill name="Fill" id="0:29">
-            <SolidColor name="Color" id="0:30" colorValue="FF363636"/>
+            <SolidColor name="Color" id="0:30" colorValue="FF484440"/>
             </Fill>
           </Shape>
           <Shape name="socket-part" id="0:31" x="0" y="0">
@@ -93,7 +93,7 @@
               <CubicDetachedVertex x="679" y="598" inRotation="1.107149" inDistance="8.944" outRotation="0" outDistance="0"/>
             </PointsPath>
             <Fill name="Fill" id="0:33">
-            <SolidColor name="Color" id="0:34" colorValue="FF9B9B9A"/>
+            <SolidColor name="Color" id="0:34" colorValue="FF9D9A94"/>
             </Fill>
           </Shape>
           <Shape name="socket-part" id="0:35" x="0" y="0">
@@ -105,7 +105,7 @@
               <CubicDetachedVertex x="669" y="590" inRotation="0.876058" inDistance="7.81" outRotation="0" outDistance="0"/>
             </PointsPath>
             <Fill name="Fill" id="0:37">
-            <SolidColor name="Color" id="0:38" colorValue="FF656565"/>
+            <SolidColor name="Color" id="0:38" colorValue="FF706C67"/>
             </Fill>
           </Shape>
           <Shape name="socket-part" id="0:39" x="0" y="0">
@@ -117,7 +117,7 @@
               <CubicDetachedVertex x="781" y="557" inRotation="1.647568" inDistance="13.038" outRotation="0" outDistance="0"/>
             </PointsPath>
             <Fill name="Fill" id="0:41">
-            <SolidColor name="Color" id="0:42" colorValue="FFCACACA"/>
+            <SolidColor name="Color" id="0:42" colorValue="FFC5C2BC"/>
             </Fill>
           </Shape>
           <Shape name="socket-part" id="0:43" x="0" y="0">
@@ -137,8 +137,8 @@
             </PointsPath>
             <Fill name="Fill" id="0:45">
             <RadialGradient name="Gradient" id="0:46" startX="722.264" startY="542.38" endX="810.766" endY="542.38">
-                <GradientStop name="Stop" id="0:47" colorValue="FF050505" position="0"/>
-                <GradientStop name="Stop" id="0:48" colorValue="FF090909" position="1"/>
+                <GradientStop name="Stop" id="0:47" colorValue="FF1E1A17" position="0"/>
+                <GradientStop name="Stop" id="0:48" colorValue="FF221E1B" position="1"/>
             </RadialGradient>
             </Fill>
           </Shape>

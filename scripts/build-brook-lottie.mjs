@@ -9,19 +9,15 @@ import parsePath from 'svg-path-parser';
 const root = dirname(dirname(fileURLToPath(import.meta.url)));
 const sourceFile = join(root, 'scripts', 'assets', 'brook-logo.html');
 const outFile = join(root, 'public', 'lottie', 'brook-load.json');
-// 深色主题下压场的是同一支动画的墨色反相变体，帧数与关键帧逐字相同
-const darkOutFile = join(root, 'public', 'lottie', 'brook-load.dark.json');
 
 const FPS = 60;
 const OUT_POINT = 222;
 const SAMPLES = 240; // 每条三次贝塞尔的采样点数，>= 200
 
 // 站点令牌色，RGB 归一化浮点
-const ink = [0x14 / 255, 0x14 / 255, 0x14 / 255];
-// 深色主题的 --ink：#ecebe7
-const night = [0xec / 255, 0xeb / 255, 0xe7 / 255];
-const bone = [1, 1, 1];
-const purple = [0xa2 / 255, 0x60 / 255, 0xcc / 255];
+const ink = [0x2a / 255, 0x24 / 255, 0x20 / 255];
+const bone = [0xfb / 255, 0xfa / 255, 0xf7 / 255];
+const cane = [0x6b / 255, 0x66 / 255, 0x60 / 255];
 
 const round = (value, digits = 3) => {
   const factor = 10 ** digits;
@@ -29,21 +25,6 @@ const round = (value, digits = 3) => {
 };
 
 const colorOf = (rgb) => ({ a: 0, k: rgb.map((channel) => round(channel, 6)).concat([1]) });
-
-// 夜色下的骨白颅骨沉进底色 #141414，靠浅色描边与眶留形，与亮色下的明暗关系镜像
-const NIGHT_COLORS = new Map([
-  [colorOf(ink), colorOf(night)],
-  [colorOf(bone), colorOf(ink)],
-]);
-
-// 颜色序列化后是可整串替换的字面量
-const withNight = (animation) => {
-  let source = JSON.stringify(animation);
-  for (const [from, to] of NIGHT_COLORS) {
-    source = source.replaceAll(JSON.stringify(from), JSON.stringify(to));
-  }
-  return JSON.parse(source);
-};
 
 // 逐 id 抓取 path 的 d 属性，缺一条即崩溃
 const extractPathData = (html, id) => {
@@ -176,7 +157,7 @@ const LAYERS = [
   { nm: 'nose', ids: ['nose'], fill: ink, stroke: ink, draw: [36, 54] },
   { nm: 'skull', ids: ['skull'], fill: bone, stroke: ink, draw: [16, 42], breathe: true },
   { nm: 'hair-hat', ids: ['top-hat-and-curly-hair'], fill: ink, stroke: ink, draw: [6, 30], tilt: true },
-  { nm: 'cane', ids: ['cane-hook', 'cane-tip'], fill: purple, stroke: purple, draw: [2, 20], spin: [24, 58], swing: true },
+  { nm: 'cane', ids: ['cane-hook', 'cane-tip'], fill: cane, stroke: cane, draw: [2, 20], spin: [24, 58], swing: true },
 ];
 
 const buildGroup = (layer) => {
@@ -317,7 +298,6 @@ const animation = buildAnimation();
 
 mkdirSync(dirname(outFile), { recursive: true });
 writeFileSync(outFile, `${JSON.stringify(animation, null, 2)}\n`, 'utf8');
-writeFileSync(darkOutFile, `${JSON.stringify(withNight(animation), null, 2)}\n`, 'utf8');
 
 const report = LAYERS.map((layer) => {
   const [start, end] = layer.draw;
@@ -331,4 +311,3 @@ const report = LAYERS.map((layer) => {
 });
 console.log(report.join('\n'));
 console.log(`\nwrote ${outFile}`);
-console.log(`wrote ${darkOutFile}`);

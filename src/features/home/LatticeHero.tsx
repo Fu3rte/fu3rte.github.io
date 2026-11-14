@@ -39,9 +39,9 @@ const FRAGMENT = `
     float distanceToCenter = length(gl_PointCoord - vec2(0.5));
     if (distanceToCenter > 0.5) discard;
     float alpha = (1.0 - smoothstep(0.12, 0.5, distanceToCenter)) * 0.9;
-    vec3 bone = vec3(0.925, 0.906, 0.855);
-    vec3 orange = vec3(1.0, 0.353, 0.122);
-    vec3 ice = vec3(0.498, 0.847, 1.0);
+    vec3 bone = vec3(0.290, 0.259, 0.231);
+    vec3 orange = vec3(0.165, 0.141, 0.125);
+    vec3 ice = vec3(0.557, 0.533, 0.498);
     vec3 signal = vSignal < 1.5 ? orange : ice;
     vec3 color = mix(bone, signal, step(0.5, vSignal) * vProgress);
     gl_FragColor = vec4(color, alpha);
@@ -59,7 +59,7 @@ function makePointSets(aspect: number) {
   source.height = 260;
   const context = source.getContext('2d', { willReadFrequently: true })!;
   context.fillStyle = '#fff';
-  context.font = '900 218px Atkinson Hyperlegible Next, sans-serif';
+  context.font = '700 218px "Kevin Sans", "Noto Sans SC", sans-serif';
   context.textAlign = 'center';
   context.textBaseline = 'middle';
   context.fillText('FINNIAN', 700, 138);
@@ -122,10 +122,13 @@ export default function LatticeHero() {
     let disposed = false;
     let cleanup = () => {};
 
-    void import('three').then(THREE => {
+    void import('three').then(async THREE => {
+      if (disposed) return;
+      // 离屏采样吃的是 Kevin Sans 的字形，字体就位前起建会采到 fallback 轮廓
+      await document.fonts.load('700 218px "Kevin Sans"');
       if (disposed) return;
       const renderer = new THREE.WebGLRenderer({ canvas: surface, context, alpha: true, antialias: false });
-      renderer.setClearColor(0x07080b, 0);
+      renderer.setClearColor(0xeceae4, 0);
       renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, 1.75));
       const camera = new THREE.OrthographicCamera(-1, 1, 1, -1, 0.1, 10);
       camera.position.z = 3;

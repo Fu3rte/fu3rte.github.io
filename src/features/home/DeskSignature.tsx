@@ -21,7 +21,7 @@ export default function DeskSignature() {
       renderer: 'svg',
       loop: true,
       autoplay: !reduced,
-      path: '/lottie/steam.dark.json',
+      path: '/lottie/steam.json',
     });
     if (reduced) animation.addEventListener('data_ready', () => animation.goToAndStop(45, true));
     return () => animation.destroy();
@@ -69,7 +69,7 @@ export default function DeskSignature() {
         <svg className="signature-art" viewBox="0 0 2198 1254" aria-hidden="true">
           <g transform="translate(472 0)" fill="none" dangerouslySetInnerHTML={{ __html: art }} />
           <g transform="translate(174 0)" fill="none" stroke="currentColor" strokeWidth="8" strokeLinecap="round" strokeLinejoin="round">
-            <path d="M110 1000V1074C110 1121 145 1150 200 1150C255 1150 290 1121 290 1074V997" fill="#0d0f14" />
+            <path d="M110 1000V1074C110 1121 145 1150 200 1150C255 1150 290 1121 290 1074V997" fill="var(--surface)" />
             <path d="M128 983H268C281 983 290 989 290 997" />
             <path d="M290 1018C327 1021 356 1040 356 1061C356 1086 332 1102 290 1102" />
           </g>

@@ -1,6 +1,6 @@
 import gsap from 'gsap';
 import lottie, { type AnimationItem } from 'lottie-web/build/player/lottie_light';
-const SOURCE = '/lottie/brook-load.dark.json';
+const SOURCE = '/lottie/brook-load.json';
 // brook-load.json 的组装段落在 0-66 帧：描边逐笔勾出五官、随后落成实心，66-222 帧是首尾同值的无缝循环
 const INTRO_END = 66;
 const LOOP_SEGMENT: [number, number] = [66, 222];
