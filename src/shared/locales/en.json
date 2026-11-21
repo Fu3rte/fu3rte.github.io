@@ -1,13 +1,13 @@
 {
   "meta": {
-    "title": "Finnian — AI Applications & Interaction",
+    "title": "Finnian — Handmade Notebooks & Small Tools",
     "contactTitle": "Contact — Finnian",
     "photosTitle": "Photos — Finnian",
-    "projectTitle": "Project case — Finnian",
-    "description": "Finnian's AI application and interaction portfolio: practical agents, harnesses, RAG, and experiments with Three.js, GSAP, Rive and Lottie.",
-    "photosDescription": "Photographs by Finnian.",
-    "projectDescription": "Case study of an agent, retrieval or interaction project: the problem, the decisions, the scope owned and the result.",
-    "contactDescription": "Contact Finnian about AI applications, interaction and collaboration."
+    "projectTitle": "Project Note — Finnian",
+    "description": "An ordinary maker in Dongguan tinkering on small everyday tools, street-workout logs, and handmade web experiments.",
+    "photosDescription": "Casual everyday snapshots by Finnian.",
+    "projectDescription": "Notes on a small personal project: what annoyed me, the simple choices I made, and how it turned out.",
+    "contactDescription": "Say hi to Finnian — happy to chat about small tools, web toys, cats, coffee, or street workout."
   },
   "brand": "FINNIAN",
   "nav": {
@@ -18,75 +18,156 @@
     "photos": "Photos",
     "contact": "Contact"
   },
-  "photos": {
-    "title": "Photographs",
-    "alt": "Photograph",
-    "open": "View all photographs"
-  },
   "hero": {
-    "aria": "A hooded skull seated at a laptop with a cup of steaming coffee",
-    "kicker": "AI APPLICATIONS · INTERACTION",
-    "title": "Turning ideas into usable intelligent systems.",
-    "intro": "I'm Finnian. I build practical agents, harnesses and RAG systems, with a lasting focus on web interaction and motion.",
-    "primary": "View works",
-    "secondary": "Contact me"
+    "kicker": "HANDMADE SKETCHBOOK · 2026",
+    "titlePrefix": "Graph Paper, Ink & ",
+    "titleHighlight": "Handmade Craft",
+    "titleSuffix": ".",
+    "motif": "A3 grid · mint rules · sticky notes · polaroids",
+    "primary": "My Project",
+    "secondary": "Contact",
+    "stampLabel": "DESK EDITION",
+    "swatches": [
+      { "code": "01", "label": "Graph Sheet", "tag": "#FCFDFD / #88CFBA" },
+      { "code": "02", "label": "Sticky Notes", "tag": "#FFF18F / #C8F0C0" },
+      { "code": "03", "label": "Hand Ink", "tag": "#1D242C / #EE6C3B" },
+      { "code": "04", "label": "Washi & Film", "tag": "POLAROID / WASHI" }
+    ]
   },
   "about": {
-    "title": "Profile",
-    "lead": "I'm Finnian, a developer focused on AI applications.",
-    "leadSub": "I like turning ideas into things people can use, and exploring interaction and motion on the web.",
-    "meta": {
-      "now": "Now",
-      "here": "Here",
-      "off": "Off work",
-      "nowValue": "Agents · harness · RAG",
-      "hereValue": "Dongguan · UTC+8",
-      "offValue": "A cat · coffee · street workout"
-    }
-  },
-  "capabilities": {
-    "title": "Capability map",
-    "intro": "Real project pipelines, from input to application output.",
-    "aria": "Choose a project capability map"
+    "eyebrow": "NOTEBOOK PROFILE",
+    "title": "About me",
+    "lead": "Just a regular person who likes fiddling with code and gets a real kick out of making small things that work.",
+    "p1": "I don't build giant enterprise platforms. Most things I code start from a tiny personal annoyance — wanting to change a workout split without editing three files, or logging reps without staring at a phone screen.",
+    "p2": "That is also why this site looks like graph paper, sticky notes, and hand-inked borders instead of a sleek sci-fi dashboard. Slightly crooked lines feel warmer and closer to how I actually sketch ideas on a desk.",
+    "habitsTitle": "Three simple habits",
+    "habits": [
+      {
+        "title": "01 · Keep it small enough to finish",
+        "body": "If one loop or one JSON file solves it, skip the fancy distributed plumbing."
+      },
+      {
+        "title": "02 · Keep the files on my own drive",
+        "body": "SQLite or plain JSON text means I can always read, diff, and back up my own data."
+      },
+      {
+        "title": "03 · Make it fun to poke at",
+        "body": "If a side project isn't a little bit playful, it rarely survives past the first weekend."
+      }
+    ],
+    "nowTitle": "On the desk lately",
+    "nowItems": [
+      "Smoothing out Fit-Agent's everyday natural-language tweaks",
+      "Keeping weekly dip & pull-up numbers in calisthenics-log",
+      "Tinkering with springy paper-craft web toys"
+    ],
+    "offTitle": "Away from the keyboard",
+    "off": [
+      {
+        "tag": "CAT",
+        "title": "Cat",
+        "body": "Full-time desk supervisor making sure there is always room near the laptop."
+      },
+      {
+        "tag": "COFFEE",
+        "title": "Coffee",
+        "body": "Morning fuel before opening the editor — nothing fancy, just warm or iced and steady."
+      },
+      {
+        "tag": "BAR",
+        "title": "Street workout",
+        "body": "Pull-up bars outside are the quickest reset whenever code stops making sense."
+      }
+    ]
   },
   "works": {
-    "title": "Selected works",
-    "intro": "Agent workflows, retrieval and multimodal systems, each with a concrete engineering path.",
-    "aria": "Project cases",
-    "tech": "Related technologies",
-    "detail": "Read the case",
-    "open": "Open repository"
+    "eyebrow": "MY PROJECT",
+    "title": "My Project",
+    "intro": "Two small tools on the shelf that grew out of everyday routines.",
+    "aria": "Selected projects",
+    "tech": "Built with",
+    "detail": "Read full notes",
+    "open": "Open GitHub",
+    "accDecisions": "Simple trade-offs made along the way",
+    "accOutcomes": "How it actually feels to use",
+    "filterPrefix": "Selected sticker",
+    "clearFilter": "Show both",
+    "matchedBadge": "Sticker match"
+  },
+  "lab": {
+    "eyebrow": "PLAYGROUND",
+    "title": "Desk Playground",
+    "intro": "Tech stack stickers on a springy desk mat.",
+    "stackTitle": "Elastic Sticker Pile",
+    "stackShake": "Scatter",
+    "stackFloat": "Float",
+    "stackDrop": "Drop",
+    "noMatch": "Used in the playground rather than the two projects above"
+  },
+  "photos": {
+    "eyebrow": "POLAROIDS",
+    "title": "Snapshots",
+    "intro": "Casual Polaroids from walks, coffee stops, and quiet corners — nothing staged, just moments worth taping down.",
+    "alt": "Photograph",
+    "open": "View all 10 Polaroids",
+    "back": "Back home",
+    "rollLabel": "ROLL 01 · 35MM",
+    "flip": "Back",
+    "front": "Front",
+    "prev": "Prev",
+    "next": "Next",
+    "close": "Close",
+    "notes": [
+      "01 · good light",
+      "02 · street corner",
+      "03 · afternoon",
+      "04 · walk log",
+      "05 · slow pace",
+      "06 · by the window",
+      "07 · quiet spot",
+      "08 · evening breeze",
+      "09 · small frame",
+      "10 · heading home"
+    ],
+    "details": [
+      { "place": "Dongguan · 4 PM", "mood": "Clear slant light", "note": "Grabbed an iced americano downstairs and caught this clean patch of afternoon light on the wall." },
+      { "place": "Street Crossing", "mood": "On a walk", "note": "Snapped while waiting at a red light — liked how the tree shadows blended with the old brick." },
+      { "place": "Desk Windowsill", "mood": "Taking a breather", "note": "Looked up after hours of coding just as a breeze lifted the corner of the curtain." },
+      { "place": "Park Path", "mood": "Slow stroll", "note": "Wandered for half an hour with nowhere to be; keeping the phone pocketed lets you notice more." },
+      { "place": "After the Rain", "mood": "Cool air", "note": "Pavement still held a soft glare right after the shower stopped, stretching the streetlamp shadows." },
+      { "place": "South Desk Window", "mood": "Cat & coffee", "note": "My mug had just cooled down while sunlight sliced across one corner of the notebook." },
+      { "place": "Old Alley Entrance", "mood": "Quiet", "note": "Tucked off the main road — just a few potted plants and weathered shop signs." },
+      { "place": "Evening Rooftop", "mood": "Night breeze", "note": "Those five minutes when the sky shifts from pale blue to peach are always worth watching." },
+      { "place": "By the Pull-Up Bars", "mood": "Post-set rest", "note": "Still had chalk on my hands, sitting on the bench to cool off and snapped one." },
+      { "place": "Walk Back", "mood": "Calling it a day", "note": "Warm roadside lamps flicked on after dusk on a slow walk back home." }
+    ]
   },
   "case": {
     "role": "Role",
-    "period": "Period",
+    "period": "Timeline",
     "status": "Status",
-    "repository": "Open repository",
+    "repository": "Open GitHub repo",
     "back": "All works",
-    "toc": "Case contents",
-    "problem": "Problem",
-    "decisions": "Key decisions",
-    "contribution": "Scope owned",
-    "outcomes": "Outcome",
-    "switch": "Move between cases",
-    "previous": "Previous",
-    "next": "Next"
-  },
-  "stack": {
-    "title": "Instruments",
-    "intro": "Application engineering and interaction share one workbench. Select a technology to locate related work.",
-    "noMatch": "No linked project in the selected works"
+    "toc": "In these notes",
+    "problem": "What bugged me",
+    "decisions": "Choices & trade-offs",
+    "contribution": "What I built",
+    "outcomes": "How it turned out",
+    "switch": "Read the other project note",
+    "next": "Other project"
   },
   "contact": {
+    "eyebrow": "POSTCARD",
     "title": "Contact",
-    "me": "Contact me",
+    "me": "Leave a quick note",
+    "lead": "If you enjoy tinkering with small tools, sketchy UIs, or happen to like cats, coffee, and pull-up bars too, feel free to write.",
     "channel": {
       "email": "Email",
       "github": "GitHub",
       "instagram": "Instagram",
       "wechat": "WeChat"
     },
-    "p": "Let's talk about agent applications, interaction prototypes, or an idea that needs to become a working demo.",
+    "p": "No formal pitch needed — happy to trade notes on small side projects, playful web experiments, or a good coffee spot.",
     "github": "GitHub / Fu3rte",
     "instagram": "Instagram / cq777h",
     "wechat": "WeChat / F1nnian_",

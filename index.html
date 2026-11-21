@@ -3,12 +3,12 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Finnian — AI Applications & Interaction</title>
+    <title>Finnian — Handmade Notebooks &amp; Small Tools</title>
     <meta name="author" content="Finnian" />
     <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
-    <meta name="description" content="Finnian's AI application and interaction portfolio: practical agents, harnesses, RAG, and real-time point-set experiments." />
-    <meta property="og:title" content="Finnian — AI Applications &amp; Interaction" />
-    <meta property="og:description" content="Practical agents, RAG systems and real-time point-set experiments from Dongguan." />
+    <meta name="description" content="Finnian's handmade sketchbook portfolio: small tools I actually use (Fit-Agent, calisthenics-log) and playful web experiments." />
+    <meta property="og:title" content="Finnian — Handmade Notebooks &amp; Small Tools" />
+    <meta property="og:description" content="An ordinary maker tinkering with small tools, cats, coffee, street workout, and tactile web experiments from Dongguan." />
     <meta property="og:type" content="website" />
     <script>
       // 首屏前定语言：只决定 <html lang> 与其中文字体族，文案由 src/shared/i18n.ts 接管
@@ -29,38 +29,19 @@
         display: none;
         place-content: center;
         justify-items: center;
-        gap: clamp(10px, 2.2vmin, 16px);
         /* 底色与正文共用主题令牌，head 内联早于样式表时按亮色兜底 */
-        background: var(--paper, #eceae4);
+        background: var(--ll-desk, #fcfdfd);
       }
       .js .brook-loader { display: grid; }
       .brook-loader.is-hidden { display: none; }
       .brook-mark { width: clamp(150px, 26vmin, 240px); aspect-ratio: 1; }
       /* overflow 放行组装段拐杖自转时扫出方形画框的那一瞬 */
       .brook-mark svg { width: 100%; height: 100%; display: block; overflow: visible; }
-      .brook-caption {
-        margin: 0;
-        font-family: "IBM Plex Mono", ui-monospace, monospace;
-        font-weight: 500;
-        font-size: clamp(10px, 1.5vmin, 12px);
-        letter-spacing: 0.18em;
-        /* 字距会在末尾多留一格，起首补等宽把视觉中线挪回徽标轴上 */
-        text-indent: 0.18em;
-        text-transform: uppercase;
-        color: var(--muted, #5a554e);
-      }
     </style>
-    <link rel="preconnect" href="https://fonts.googleapis.com" />
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link
-      href="https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@400;500;700&display=swap"
-      rel="stylesheet"
-    />
   </head>
   <body>
     <div class="brook-loader" id="brook-loader" aria-hidden="true">
       <div class="brook-mark" id="brook-mark"></div>
-      <p class="brook-caption" id="brook-caption">loading</p>
     </div>
     <div id="root"></div>
     <script type="module" src="/src/app/main.tsx"></script>

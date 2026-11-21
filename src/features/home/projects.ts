@@ -8,6 +8,8 @@ export type Project = {
   id: string;
   name: string;
   href: string;
+  accent: 'sky' | 'grass';
+  stickyStock: 'sticky-blue' | 'sticky-green';
   category: Text;
   summary: Text;
   role: Text;
@@ -15,6 +17,7 @@ export type Project = {
   status: Text;
   tech: string[];
   nodes: string[];
+  highlights: Text[];
   blocks: Record<CaseBlockKey, Text[]>;
 };
 
@@ -23,239 +26,77 @@ export const CASE_BLOCK_KEYS: CaseBlockKey[] = ['problem', 'decisions', 'contrib
 export function pick(text: Text): string {
   return currentLang() === 'zh' ? text.zh : text.en;
 }
+
 export const PROJECTS: Project[] = [
   {
     id: 'fit-agent',
     name: 'Fit-Agent',
     href: 'https://github.com/Fu3rte/Fit-Agent',
-    category: { zh: 'AI 训练助手', en: 'AI Training Assistant' },
+    accent: 'sky',
+    stickyStock: 'sticky-blue',
+    category: { zh: '自己用的训练小助手', en: 'Personal Training Helper' },
     summary: {
-      zh: '通过自然语言维护训练档案、计划与课程日志，由单个 ReAct Agent 循环驱动的个人力量训练助手。',
-      en: 'A personal strength-training assistant that keeps profile, plan and session logs in shape through natural language, running on a single ReAct agent loop.',
+      zh: '平时自己健身常改计划，嫌手改表格太麻烦，就拿一个 ReAct 循环做了这个小工具：跟它说一句今天怎么练，它帮我把档案、课表和本地日志对上。',
+      en: 'I tweak my training split a lot and got tired of updating sheets by hand, so I built a small helper around one ReAct loop to update my profile, plan, and local logs from plain text.',
     },
-    role: { zh: '独立设计与开发', en: 'Sole designer and developer' },
+    role: { zh: '从头自己摸索着写', en: 'Built solo from scratch' },
     period: '2026.03 —',
-    status: { zh: '持续迭代', en: 'Actively maintained' },
+    status: { zh: '一边练一边改', en: 'Still tinkering' },
     tech: ['Python', 'FastAPI', 'ReAct', 'SQLite'],
-    nodes: ['Profile + Plan + Logs', 'ReAct Agent', 'Training Assistant'],
+    nodes: ['Plain Words', 'Tool Guard', 'Local SQLite'],
+    highlights: [
+      {
+        zh: '改一次课表不用顺手改三张表，跨表同步靠预设好的工具一次做完。',
+        en: 'Changing a split updates the schedule without manually editing three separate files.',
+      },
+      {
+        zh: '全部记录存本地 SQLite，不绑任何云端 App，随时导得出、查得到。',
+        en: 'All logs stay in local SQLite with zero cloud lock-in — easy to inspect or back up anytime.',
+      },
+    ],
     blocks: {
       problem: [
         {
-          zh: '训练记录的真实成本不在记，而在改：计划调整一次，档案、课表和历史口径就要跟着手改一遍，多数人的记录因此停在第三周。',
-          en: 'The real cost of training logs is not writing them but amending them. Change the plan once and the profile, the schedule and the history all need a manual edit, which is where most people stop by week three.',
+          zh: '平时自己记训练，最劝退的其实不是练完写两组数字，而是每次一换计划，档案、课表和旧记录就得跟着手改一遍，经常改烦了就不记了。',
+          en: 'The annoying part of keeping workout notes is not logging sets — it is rewriting your profile, split, and old sheets every time you tweak your routine.',
         },
         {
-          zh: '要解决的问题是：让一次自然语言表达的意图，直接落到结构化的档案与日志上，同时保持数据可核验。',
-          en: 'The problem to solve: let one natural-language intention land directly on structured profile and log data, while keeping that data auditable.',
+          zh: '我当时就想做一个自己顺手的小工具：随手打一句话，它就能把对应那几块本地数据更新好，而且不能随便乱改写坏旧记录。',
+          en: 'I wanted a simple personal helper where a short sentence updates the right local records without scrambling past sessions.',
         },
       ],
       decisions: [
         {
-          zh: '单个 ReAct 循环而不是多智能体编排。训练域的工具数量有限，多智能体带来的调度成本与不可解释的中间态，收益远低于代价。',
-          en: 'One ReAct loop instead of multi-agent orchestration. The tool surface in this domain is small, and scheduling cost plus opaque intermediate states cost more than they return.',
+          zh: '只用一个 ReAct 循环，不硬上多智能体。训练这件小事一共没几个动作，简单一点反而容易排查哪一步出了问题。',
+          en: 'Stuck to a single ReAct loop instead of multi-agent orchestration. For a handful of training actions, simpler means far easier to debug.',
         },
         {
-          zh: '工具层只暴露结构化写入接口，模型不直接拼 SQL。模型负责理解意图，事务与校验留在代码侧。',
-          en: 'Tools expose structured writes only; the model never composes SQL. Intent understanding belongs to the model, transactions and validation stay in code.',
+          zh: '模型不碰 SQL，只准调我提前写死结构的写入函数。理解人话交给模型，校验和事务老老实实写在 Python 里。',
+          en: 'The model never generates SQL — it only calls typed Python functions. Language goes to the model; validation stays in plain code.',
         },
         {
-          zh: '档案与计划分离存储，计划可被追溯地重排，历史日志保持不可变。',
-          en: 'Profile and plan are stored separately so a plan can be resequenced with history intact, and past sessions stay immutable.',
-        },
-      ],
-      contribution: [
-        {
-          zh: '从零完成领域模型、工具注册表、Agent 循环与后端接口的全部设计与实现。',
-          en: 'Designed and implemented the domain model, tool registry, agent loop and backend API from scratch.',
-        },
-        {
-          zh: '为工具调用定义了参数校验与失败即中止的约定，模型幻觉出的字段名在入口就被拒绝。',
-          en: 'Defined argument validation and fail-fast behaviour for tool calls, so field names invented by the model are rejected at the boundary.',
-        },
-      ],
-      outcomes: [
-        {
-          zh: '一次对话即可完成「这周换成推拉腿分化，把上次的记录留住」这类跨表修改。',
-          en: 'One conversation can carry out a cross-table change such as "switch this week to push-pull-legs and keep last session\'s record".',
-        },
-        {
-          zh: '全部数据留在本地 SQLite，随时可用 SQL 核验，不依赖任何第三方存储。',
-          en: 'All data stays in local SQLite and can be verified with SQL at any time, with no third-party storage dependency.',
-        },
-      ],
-    },
-  },
-  {
-    id: 'contextus',
-    name: 'contextus',
-    href: 'https://github.com/Fu3rte/contextus',
-    category: { zh: 'RAG 文档问答', en: 'RAG Document Q&A' },
-    summary: {
-      zh: '最小可运行的 RAG 文档问答：分块、pgvector 余弦检索与生成，并配有 React + shadcn 调试台。',
-      en: 'The smallest working RAG document Q&A: chunk, pgvector cosine retrieval and generation, with a React + shadcn debug console.',
-    },
-    role: { zh: '独立设计与开发', en: 'Sole designer and developer' },
-    period: '2026.05 — 2026.08',
-    status: { zh: '已完成', en: 'Completed' },
-    tech: ['React', 'TypeScript', 'pgvector', 'RAG', 'FastAPI'],
-    nodes: ['Documents', 'Chunking', 'pgvector Retrieval', 'RAG Answer'],
-    blocks: {
-      problem: [
-        {
-          zh: '市面上的 RAG 示例把检索质量藏在答案后面：看不出错了一整条链路里的哪一步，也就无法判断该改分块还是改召回。',
-          en: 'Typical RAG demos hide retrieval quality behind the answer. When something is wrong you cannot tell which stage failed, so you cannot decide whether to fix chunking or recall.',
-        },
-        {
-          zh: '要做一套链路全部摊开、每一步都可复现的最小实现。',
-          en: 'Build the smallest implementation where every stage of the chain is laid out and reproducible.',
-        },
-      ],
-      decisions: [
-        {
-          zh: '调试台与问答共用同一份请求体，检索命中片段、相似度分数与最终 prompt 同屏可见。',
-          en: 'The debug console and the Q&A path share one request body, so matched chunks, similarity scores and the final prompt appear on the same screen.',
-        },
-        {
-          zh: '分块参数、Top-K、相似度阈值全部外置为可改配置，不做自动调优黑箱。',
-          en: 'Chunking parameters, top-K and the similarity threshold stay external configuration; no auto-tuning black box.',
-        },
-        {
-          zh: '检索直接用 pgvector 余弦距离，不引入独立向量库，减少一个需要解释的变量。',
-          en: 'Retrieval uses pgvector cosine distance directly, with no separate vector store, removing one more variable to explain.',
+          zh: '把「当前计划」和「练过的历史」拆开存，计划怎么调整，过去已经练完的账都不动。',
+          en: 'Separated active plans from completed logs so reshuffling next week never rewrites what already happened.',
         },
       ],
       contribution: [
         {
-          zh: '独立完成分块与向量化管线、pgvector 检索层、生成接口与前端调试台。',
-          en: 'Owned the chunking and embedding pipeline, the pgvector retrieval layer, the generation endpoint and the frontend console.',
+          zh: '一边查资料一边从零搭起了数据表结构、工具函数、Agent 循环和 FastAPI 接口。',
+          en: 'Built the SQLite schema, tool functions, loop, and FastAPI endpoints myself as I learned.',
         },
         {
-          zh: '为每个命中片段补上了来源页与原文偏移，答案可以逐句回溯到文档位置。',
-          en: 'Added source page and character offset to every matched chunk so each sentence can be traced back into the document.',
-        },
-      ],
-      outcomes: [
-        {
-          zh: '整链路可在一条命令内本地复现，含数据库迁移与示例文档。',
-          en: 'The whole chain reproduces locally in one command, migrations and sample documents included.',
-        },
-        {
-          zh: '调试台可直接对比两组分块参数的召回差异，改参数前后的差别肉眼可判。',
-          en: 'The console lets two chunking settings be compared side by side, so the difference shows up without instrumentation.',
-        },
-      ],
-    },
-  },
-  {
-    id: 'dsh-sight',
-    name: 'dsh-sight',
-    href: 'https://github.com/Fu3rte/dsh-sight',
-    category: { zh: '多模态扩展', en: 'Multimodal Extension' },
-    summary: {
-      zh: '为纯文本 DeepSeek Harness 模型加入视觉能力，内置免费与低成本 VLM 预设，支持多图批量分析。',
-      en: 'Plug-in vision for text-only DeepSeek Harness models, with free and low-cost VLM presets plus multi-image batch analysis.',
-    },
-    role: { zh: '独立设计与开发', en: 'Sole designer and developer' },
-    period: '2026.07 —',
-    status: { zh: '持续迭代', en: 'Actively maintained' },
-    tech: ['VLM', 'Python', 'FastAPI'],
-    nodes: ['Text + Images', 'VLM Presets', 'Batch Analysis'],
-    blocks: {
-      problem: [
-        {
-          zh: '宿主模型的上下文里塞不进图，而一次截图问一句话的需求每天都在发生。',
-          en: 'The host model cannot take images in its context, yet the need to screenshot something and ask one question about it happens every day.',
-        },
-        {
-          zh: '需要在不改动宿主调用链的前提下外挂一层视觉，且这层可以按预算换模型。',
-          en: 'Add a vision layer outside the host call chain, leaving that chain untouched and letting the layer be swapped by budget.',
-        },
-      ],
-      decisions: [
-        {
-          zh: '视觉侧只做转述：把图转成结构化描述再交回宿主，不让第二个模型参与最终推理。',
-          en: 'The vision side only paraphrases: turn the image into a structured description and hand it back, never let a second model do the final reasoning.',
-        },
-        {
-          zh: 'VLM 以预设集合提供，免费档与低价档可切换，调用方按任务量选档。',
-          en: 'VLMs ship as preset bundles with free and low-cost tiers, so the caller picks a tier by workload.',
-        },
-        {
-          zh: '多图走批量接口而不是逐图请求，把往返次数压到一次。',
-          en: 'Multiple images go through one batch call rather than per-image requests, cutting round trips to one.',
-        },
-      ],
-      contribution: [
-        {
-          zh: '设计与实现外挂层的全部代码：预设管理、图片规范化、批量编排与结果回填。',
-          en: 'Designed and built the entire plug-in layer: preset management, image normalisation, batch orchestration and result back-filling.',
-        },
-        {
-          zh: '把宿主侧改动压到零，扩展只通过已有的文本输入通道进入。',
-          en: 'Kept host-side changes at zero; the extension enters only through the existing text input channel.',
+          zh: '在入口加了参数检查，模型偶尔编出不存在的字段名时直接退回重试，不往数据库里写脏东西。',
+          en: 'Added strict argument checks at the boundary so hallucinated field names bounce before touching storage.',
         },
       ],
       outcomes: [
         {
-          zh: '纯文本宿主模型可以直接接住多图提问，无需替换宿主或改其提示词。',
-          en: 'A text-only host can answer multi-image questions without being replaced or having its prompt edited.',
+          zh: '现在「这周改推拉腿，留住上周记录」这种随口交代的话，跑一轮就能改稳。',
+          en: 'A single message handles cross-table tweaks like switching splits while keeping older entries intact.',
         },
         {
-          zh: '批量路径把同一批图片的调用数收敛到一次，成本随预设档位可预测。',
-          en: 'The batch path collapses one set of images into a single call, and cost stays predictable per preset tier.',
-        },
-      ],
-    },
-  },
-  {
-    id: 'nl2sql-agent',
-    name: 'nl2sql-agent',
-    href: 'https://github.com/Fu3rte/nl2sql-agent',
-    category: { zh: '数据查询 Agent', en: 'Data Query Agent' },
-    summary: {
-      zh: '把自然语言问题翻译成 SQL 并执行取数的 Agent，带 schema 注入与结果校验。',
-      en: 'An agent that turns natural-language questions into SQL, runs them and checks what comes back, with schema injection and result validation.',
-    },
-    role: { zh: '独立设计与开发', en: 'Sole designer and developer' },
-    period: '2026.02 — 2026.04',
-    status: { zh: '已完成', en: 'Completed' },
-    tech: ['LangChain', 'LangGraph', 'Python', 'SQL'],
-    nodes: ['Question', 'Schema', 'Generated SQL', 'Result Check'],
-    blocks: {
-      problem: [
-        {
-          zh: '业务侧提问题的方式和写 SQL 的人不在同一张表上：一句话的取数需求要排一次队。',
-          en: 'The people asking the question and the people writing SQL never share a table: one sentence of data need costs a round of queuing.',
-        },
-        {
-          zh: '要解决的不是「能不能生成 SQL」，而是生成的 SQL 敢不敢直接执行。',
-          en: 'The problem is not whether SQL can be generated but whether the generated SQL is safe to execute directly.',
-        },
-      ],
-      decisions: [
-        {
-          zh: '只读事务加表白名单，写操作与越权表在数据库层就被挡住，不依赖提示词约束。',
-          en: 'Read-only transactions and a table allowlist block writes and out-of-scope tables at the database layer instead of trusting prompt instructions.',
-        },
-        {
-          zh: 'schema 以结构化形式注入而不是塞满上下文窗口，模型只在必要字段上做判断。',
-          en: 'Inject schema as structured data rather than flooding the context window, so the model only reasons over the fields it needs.',
-        },
-        {
-          zh: '生成的 SQL 先做语法与列名校验，失败则带错误信息回炉一次。',
-          en: 'Generated SQL passes syntax and column validation first, and on failure is retried once with the error attached.',
-        },
-      ],
-      contribution: [
-        {
-          zh: '独立完成 schema 抽取、图编排、校验回路与执行层。',
-          en: 'Owned schema extraction, graph orchestration, the validation loop and the execution layer.',
-        },
-      ],
-      outcomes: [
-        {
-          zh: '一次失败重试后仍不合格的语句直接拒答，不返回看似合理实则错位的数字。',
-          en: 'Statements still failing after one retry are refused outright, so no plausible-looking wrong number gets returned.',
+          zh: '数据全留在自己电脑的 SQLite 里，踏实、好备份，也随时能用简单的 SQL 核对。',
+          en: 'Everything sits right in a local SQLite file — easy to back up and easy to sanity-check.',
         },
       ],
     },
@@ -264,43 +105,63 @@ export const PROJECTS: Project[] = [
     id: 'calisthenics-log',
     name: 'calisthenics-log',
     href: 'https://github.com/Fu3rte/calisthenics-log',
-    category: { zh: '数据可视化', en: 'Data Visualisation' },
+    accent: 'grass',
+    stickyStock: 'sticky-green',
+    category: { zh: '街健打卡小看板', en: 'Bodyweight Record Board' },
     summary: {
-      zh: '纯自重训练记录看板：JSON 存数据，React 渲染，命令行逐组录入。',
-      en: 'A bodyweight-training record board: JSON for data, React for rendering, set-by-set entry from the command line.',
+      zh: '练单杠双杠时不想一直低头点手机表单，就写了个命令行小脚本配纯 JSON 文件：喘口气的工夫敲一行字，回家再用 React 看板看进步曲线。',
+      en: 'I hated tapping tiny phone forms with chalky hands by the pull-up bar, so I paired a one-line CLI logger with a plain JSON file and a React board to watch numbers climb.',
     },
-    role: { zh: '独立设计与开发', en: 'Sole designer and developer' },
+    role: { zh: '自己写着玩兼自用', en: 'Solo hobby build' },
     period: '2026.01 — 2026.03',
-    status: { zh: '已完成', en: 'Completed' },
+    status: { zh: '够用且稳定', en: 'Done & in daily use' },
     tech: ['React', 'TypeScript', 'JSON'],
-    nodes: ['CLI Entry', 'JSON Store', 'React Board'],
+    nodes: ['CLI One-Liner', 'Plain JSON', 'React Board'],
+    highlights: [
+      {
+        zh: '录一组动作只需要几秒钟，不会把组间休息变成刷手机时间。',
+        en: 'Logging a set takes seconds, so rest time stays for catching breath instead of scrolling.',
+      },
+      {
+        zh: '数据文件跟着代码仓库走，换电脑直接 git pull 就能接着看。',
+        en: 'Data lives right in git — moving to another machine is just a git pull away.',
+      },
+    ],
     blocks: {
       problem: [
         {
-          zh: '训练现场只有手机和一身汗，任何需要点选表单的记录方式都会被打断。',
-          en: 'At the bar you have a phone and sweat; any record flow that needs form tapping gets abandoned.',
+          zh: '在户外单杠区练街健的时候，手里经常有汗或镁粉，用常规健身 App 一层层点进去填数字特别打断节奏。',
+          en: 'Out by the bars with sweaty hands, tapping through multi-screen fitness apps breaks the flow of a session.',
+        },
+        {
+          zh: '同时我也不想把几年的训练数存在不知道哪天会关停的第三方云笔记里。',
+          en: 'I also wanted my training history in a format I own forever instead of locked inside someone else\'s app.',
         },
       ],
       decisions: [
         {
-          zh: '录入走命令行，一行一组，手不离杠也能记完。',
-          en: 'Entry happens in the command line, one line per set, so the bar never needs to be let go.',
+          zh: '把「记」和「看」拆开：记的时候只走命令行，一行打完就继续吊杠；看的时候回电脑打开 React 页面慢慢复盘。',
+          en: 'Split logging from reviewing: fast one-line CLI at workout time, calm React dashboard back at the desk.',
         },
         {
-          zh: '数据是纯 JSON 文本文件，可用 git 追踪，不绑任何服务与账号。',
-          en: 'Data is a plain JSON text file, tracked by git and bound to no service or account.',
+          zh: '数据只用一个纯 JSON 文本，直接用 git 版本管理，零运维零依赖。',
+          en: 'Chose a single plain JSON file versioned with git — zero servers, zero accounts, zero fuss.',
         },
       ],
       contribution: [
         {
-          zh: '独立完成录入脚本、数据格式设计与看板渲染。',
-          en: 'Owned the entry script, the data format and the board rendering.',
+          zh: '自己定了 JSON 数据结构、写了录入脚本和前端数据展示看板。',
+          en: 'Designed the JSON format, wrote the quick CLI script, and built the React board.',
         },
       ],
       outcomes: [
         {
-          zh: '录入成本压到一行一次，历史曲线随文件版本自然增长。',
-          en: 'Entry cost drops to one line per record, and the history curve grows with the file version.',
+          zh: '记录成本降到最低，反而真的能坚持每周记完每一组引体和双杠。',
+          en: 'Because logging takes almost zero effort, it actually stuck as a weekly habit.',
+        },
+        {
+          zh: '看着纯文本文件慢慢变长、曲线往上走，比花哨的徽章系统更有成就感。',
+          en: 'Watching that plain file grow alongside steady rep gains feels better than any gamified streak.',
         },
       ],
     },

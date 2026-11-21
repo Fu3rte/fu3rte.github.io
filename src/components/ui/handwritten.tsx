@@ -63,6 +63,10 @@ function Handwritten({
   const id = useInkSeed(seed)
   const density = useDensity()
   const k = Math.max(0, strength) * (density === "compact" ? 0.7 : 1)
+  const walked = React.useMemo(
+    () => (k > 0 ? walk(children, { n: 0, seed: `hw|${id}`, k }) : children),
+    [children, id, k]
+  )
   return (
     <Comp data-slot="handwritten" data-written={k > 0 ? "" : undefined} className={cn(k > 0 && "ll-hand-jitter", className)} {...props}>
       {k > 0 ? (
@@ -70,7 +74,7 @@ function Handwritten({
           {CSS}
         </style>
       ) : null}
-      {k > 0 ? walk(children, { n: 0, seed: `hw|${id}`, k }) : children}
+      {walked}
     </Comp>
   )
 }

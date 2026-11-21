@@ -1,15 +1,16 @@
 @import "tailwindcss";
 @import "tw-animate-css";
-@import "@fontsource/ibm-plex-mono/500.css";
-@import "@fontsource/ibm-plex-mono";
+@import "@fontsource/ibm-plex-mono/latin-400.css";
+@import "@fontsource/ibm-plex-mono/latin-500.css";
 @import "./fonts.css";
 
 @custom-variant dark (&:is(.dark *));
 
 @theme inline {
-    --font-hand: "Kevin Sans Hand", "Noto Sans SC", "Bradley Hand", cursive;
-    --font-script: "Kevin Sans Script", "Noto Sans SC", "Bradley Hand", cursive;
-    --font-type: "Kevin Sans Type", "Noto Sans SC", "Bradley Hand", cursive;
+    --font-cjk-hand: "Custom CJK Hand", "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", cursive;
+    --font-hand: "Kevin Sans Hand", var(--font-cjk-hand), "Bradley Hand", cursive;
+    --font-script: "Kevin Sans Script", var(--font-cjk-hand), "Bradley Hand", cursive;
+    --font-type: "Kevin Sans Type", var(--font-cjk-hand), "Bradley Hand", cursive;
     --color-background: var(--background);
     --color-foreground: var(--foreground);
     --color-card: var(--card);
@@ -354,54 +355,54 @@
 }
 
 :root {
-    --ll-desk: #eceae4;
-    --ll-desk-deep: #dedbd3;
-    --ll-paper: #f8f5ee;
-    --ll-paper-shade: #ece6da;
-    --ll-slip: #fbfaf7;
-    --ll-card: #faf8f3;
-    --ll-graph: #f4f2ec;
-    --ll-kraft: #e0d8c8;
-    --ll-check: #eeece5;
-    --ll-pad: #f5f1e6;
-    --ll-photo: #fdfcf9;
-    --ll-rule-blue: #c9c4b8;
-    --ll-rule-red: #b3a99c;
-    --ll-pad-rule: #d5d0c5;
-    --ll-check-rule: #a9a49a;
-    --ll-sticky-yellow: #f2efe6;
-    --ll-sticky-green: #eae7dd;
-    --ll-sticky-orange: #e2ded3;
-    --ll-sticky-pink: #dad5c9;
-    --ll-sticky-blue: #d2cdc1;
-    --ll-ink: #2a2420;
-    --ll-ink-soft: #4a423b;
-    --ll-ink-muted: #4a433c;
-    --ll-ink-you: #2a2420;
-    --ll-pencil: #6b6660;
-    --ll-pencil-text: #5a554e;
-    --ll-pencil-mark: #8e887f;
-    --ll-red: #191512;
-    --ll-green: #57514a;
-    --ll-marker: #2a2420;
-    --ll-orange-text: #4a423b;
-    --ll-hi: #ddd7c8;
-    --ll-hi-deep: #6b6660;
-    --ll-focus: #2a2420;
-    --ll-link-hover: #0f0d0b;
-    --ll-check-ink: #4a423b;
-    --ll-check-no: #191512;
-    --ll-tomato: #2a2420;
-    --ll-tangerine: #4a423b;
-    --ll-lemon: #6b6660;
-    --ll-grass: #8e887f;
-    --ll-teal: #a9a49a;
-    --ll-sky: #c9c4b8;
-    --ll-grape: #dedbd3;
-    --ll-bubblegum: #eceae4;
-    --ll-tape: rgb(246 244 236 / 0.5);
-    --ll-tape-edge: rgb(140 135 120 / 0.35);
-    --ll-wet-ink-from: #15110e;
+    --ll-desk: #fcfdfd;
+    --ll-desk-deep: #eef3f7;
+    --ll-paper: #ffffff;
+    --ll-paper-shade: #edf2f7;
+    --ll-slip: #ffffff;
+    --ll-card: #ffffff;
+    --ll-graph: #f8fbfd;
+    --ll-kraft: #dde5ee;
+    --ll-check: #eef8f2;
+    --ll-pad: #f6f9fc;
+    --ll-photo: #ffffff;
+    --ll-rule-blue: #88cfba;
+    --ll-rule-red: #e36d6a;
+    --ll-pad-rule: #a7dfd0;
+    --ll-check-rule: #7bc8b3;
+    --ll-sticky-yellow: #fff18f;
+    --ll-sticky-green: #c8f0c0;
+    --ll-sticky-orange: #ffd09b;
+    --ll-sticky-pink: #ffc7d4;
+    --ll-sticky-blue: #bde2ff;
+    --ll-ink: #1d242c;
+    --ll-ink-soft: #36414d;
+    --ll-ink-muted: #52606e;
+    --ll-ink-you: #2558b8;
+    --ll-pencil: #647282;
+    --ll-pencil-text: #566473;
+    --ll-pencil-mark: #8b99a8;
+    --ll-red: #c9372c;
+    --ll-green: #3ea889;
+    --ll-marker: #ee6c3b;
+    --ll-orange-text: #b84418;
+    --ll-hi: #fff05a;
+    --ll-hi-deep: #a37b00;
+    --ll-focus: #2558b8;
+    --ll-link-hover: #193f8a;
+    --ll-check-ink: #277348;
+    --ll-check-no: #c9372c;
+    --ll-tomato: #e8483a;
+    --ll-tangerine: #f59a2f;
+    --ll-lemon: #fde047;
+    --ll-grass: #4eba65;
+    --ll-teal: #23b5a7;
+    --ll-sky: #3fa6ec;
+    --ll-grape: #8b6cd9;
+    --ll-bubblegum: #f47cb2;
+    --ll-tape: rgb(232 242 252 / 0.65);
+    --ll-tape-edge: rgb(135 162 188 / 0.42);
+    --ll-wet-ink-from: #11161c;
     --background: var(--ll-desk);
     --foreground: var(--ll-ink);
     --card: var(--ll-paper);
@@ -409,15 +410,15 @@
     --popover: var(--ll-slip);
     --popover-foreground: var(--ll-ink);
     --primary: var(--ll-marker);
-    --primary-foreground: var(--ll-slip);
-    --secondary: color-mix(in srgb, var(--ll-hi) 35%, var(--ll-paper));
+    --primary-foreground: var(--ll-ink);
+    --secondary: color-mix(in srgb, var(--ll-hi) 42%, var(--ll-paper));
     --secondary-foreground: var(--ll-ink);
     --muted: var(--ll-paper-shade);
     --muted-foreground: var(--ll-ink-muted);
-    --accent: color-mix(in srgb, var(--ll-hi) 62%, var(--ll-paper));
+    --accent: color-mix(in srgb, var(--ll-hi) 64%, var(--ll-paper));
     --accent-foreground: var(--ll-ink);
     --destructive: var(--ll-red);
-    --destructive-foreground: var(--ll-slip);
+    --destructive-foreground: #ffffff;
     --border: var(--ll-pencil-mark);
     --input: var(--ll-pencil-mark);
     --ring: var(--ll-focus);
@@ -429,8 +430,8 @@
     --sidebar: var(--ll-pad);
     --sidebar-foreground: var(--ll-ink);
     --sidebar-primary: var(--ll-marker);
-    --sidebar-primary-foreground: var(--ll-slip);
-    --sidebar-accent: color-mix(in srgb, var(--ll-hi) 40%, var(--ll-pad));
+    --sidebar-primary-foreground: var(--ll-ink);
+    --sidebar-accent: color-mix(in srgb, var(--ll-hi) 42%, var(--ll-pad));
     --sidebar-accent-foreground: var(--ll-ink);
     --sidebar-border: var(--ll-pad-rule);
     --sidebar-ring: var(--ll-focus);
@@ -441,7 +442,7 @@
     --ll-input-ink: var(--ll-ink-you);
     --ll-caret: var(--ll-ink-you);
     --ll-placeholder: var(--ll-pencil-text);
-    --ll-hi-select: color-mix(in srgb, var(--ll-hi) 62%, transparent);
+    --ll-hi-select: color-mix(in srgb, var(--ll-hi) 68%, transparent);
     --ll-selection-text: var(--ll-ink);
     --ll-riso: var(--ll-marker);
     --ll-stamp-fill: color-mix(in srgb, var(--ll-marker) 50%, transparent);
@@ -467,7 +468,7 @@
     --ll-code-variable: var(--ll-ink);
     --ll-code-punct: var(--ll-ink-muted);
     color-scheme: light;
-    --ll-shade: 58 44 30;
+    --ll-shade: 30 41 59;
     --ll-wobble: 1;
     --ll-stroke-fine: 1.7;
     --ll-stroke-brush: 3.2;
@@ -546,15 +547,15 @@
     --popover: var(--ll-slip);
     --popover-foreground: var(--ll-ink);
     --primary: var(--ll-marker);
-    --primary-foreground: var(--ll-slip);
-    --secondary: color-mix(in srgb, var(--ll-hi) 35%, var(--ll-paper));
+    --primary-foreground: var(--ll-ink);
+    --secondary: color-mix(in srgb, var(--ll-hi) 42%, var(--ll-paper));
     --secondary-foreground: var(--ll-ink);
     --muted: var(--ll-paper-shade);
     --muted-foreground: var(--ll-ink-muted);
-    --accent: color-mix(in srgb, var(--ll-hi) 62%, var(--ll-paper));
+    --accent: color-mix(in srgb, var(--ll-hi) 64%, var(--ll-paper));
     --accent-foreground: var(--ll-ink);
     --destructive: var(--ll-red);
-    --destructive-foreground: var(--ll-slip);
+    --destructive-foreground: #ffffff;
     --border: var(--ll-pencil-mark);
     --input: var(--ll-pencil-mark);
     --ring: var(--ll-focus);
@@ -566,8 +567,8 @@
     --sidebar: var(--ll-pad);
     --sidebar-foreground: var(--ll-ink);
     --sidebar-primary: var(--ll-marker);
-    --sidebar-primary-foreground: var(--ll-slip);
-    --sidebar-accent: color-mix(in srgb, var(--ll-hi) 40%, var(--ll-pad));
+    --sidebar-primary-foreground: var(--ll-ink);
+    --sidebar-accent: color-mix(in srgb, var(--ll-hi) 42%, var(--ll-pad));
     --sidebar-accent-foreground: var(--ll-ink);
     --sidebar-border: var(--ll-pad-rule);
     --sidebar-ring: var(--ll-focus);
@@ -578,7 +579,7 @@
     --ll-input-ink: var(--ll-ink-you);
     --ll-caret: var(--ll-ink-you);
     --ll-placeholder: var(--ll-pencil-text);
-    --ll-hi-select: color-mix(in srgb, var(--ll-hi) 62%, transparent);
+    --ll-hi-select: color-mix(in srgb, var(--ll-hi) 68%, transparent);
     --ll-selection-text: var(--ll-ink);
     --ll-riso: var(--ll-marker);
     --ll-stamp-fill: color-mix(in srgb, var(--ll-marker) 50%, transparent);
@@ -607,7 +608,7 @@
     --ll-paper-light: linear-gradient(135deg, rgb(255 255 255 / 0.38), rgb(255 255 255 / 0) 42%, rgb(var(--ll-shade) / calc(0.035 * var(--ll-shadow-k))));
     --ll-desk-vignette: radial-gradient(ellipse 120% 100% at 50% 40%, transparent 60%, rgb(var(--ll-shade) / calc(0.05 * var(--ll-shadow-k))));
     --ll-overlay-dim: radial-gradient(ellipse 90% 80% at 50% 38%, rgb(var(--ll-shade) / calc(0.16 * var(--ll-shadow-k))), rgb(var(--ll-shade) / calc(0.23 * var(--ll-shadow-k))) 55%, rgb(var(--ll-shade) / calc(0.34 * var(--ll-shadow-k))));
-    --ll-sticky-sheen: linear-gradient(to bottom, rgb(255 252 235 / 0.14), transparent 30%, transparent 78%, rgb(120 92 20 / 0.07));
+    --ll-sticky-sheen: linear-gradient(to bottom, rgb(255 255 255 / 0.28), transparent 32%, transparent 78%, rgb(30 41 59 / 0.06));
 }
   [dir="rtl"] {
     --ll-wipe-r: -4%;
@@ -647,25 +648,51 @@
   *, ::before, ::after {
     border-color: var(--border);
     }
+  html,
+  body,
   * {
-    scrollbar-width: thin;
-    scrollbar-color: var(--ll-pencil-mark) transparent;
+    scrollbar-width: none;
+    -ms-overflow-style: none;
+    }
+  html::-webkit-scrollbar,
+  body::-webkit-scrollbar,
+  *::-webkit-scrollbar {
+    display: none;
+    width: 0;
+    height: 0;
+    }
+  html,
+  body {
+    user-select: none;
+    -webkit-user-select: none;
+    }
+  input,
+  textarea,
+  .select-text,
+  [data-selectable="true"] {
+    user-select: text;
+    -webkit-user-select: text;
     }
   html {
     background-color: var(--background);
     caret-color: var(--ll-caret);
     accent-color: var(--ll-marker);
+    scroll-behavior: smooth;
+    overflow-x: clip;
     }
   body {
-    background-color: var(--background);
+    background-color: #fcfdfd;
+    background-image: url("data:image/svg+xml,%3Csvg%20xmlns='http://www.w3.org/2000/svg'%20width='120'%20height='120'%20viewBox='0%200%20120%20120'%3E%3Cpath%20d='M24.5%200V120M48.5%200V120M72.5%200V120M96.5%200V120M0%2024.5H120M0%2048.5H120M0%2072.5H120M0%2096.5H120'%20stroke='rgba(122,204,180,0.17)'%20stroke-width='1'%20fill='none'/%3E%3Cpath%20d='M0.5%200V120M0%200.5H120'%20stroke='rgba(96,190,164,0.30)'%20stroke-width='1'%20fill='none'/%3E%3Ccircle%20cx='0.5'%20cy='0.5'%20r='1.3'%20fill='rgba(78,176,149,0.28)'/%3E%3Ccircle%20cx='120.5'%20cy='0.5'%20r='1.3'%20fill='rgba(78,176,149,0.28)'/%3E%3Ccircle%20cx='0.5'%20cy='120.5'%20r='1.3'%20fill='rgba(78,176,149,0.28)'/%3E%3Ccircle%20cx='120.5'%20cy='120.5'%20r='1.3'%20fill='rgba(78,176,149,0.28)'/%3E%3C/svg%3E");
+    background-size: 120px 120px;
+    background-position: 0 0;
     color: var(--foreground);
     font-family: var(--font-hand);
     font-size: 1.0625rem;
     line-height: 1.55;
     text-wrap: pretty;
-    text-rendering: optimizeLegibility;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
+    overflow-x: clip;
     }
   h1, h2, h3, h4 {
     text-wrap: balance;
@@ -698,6 +725,21 @@
     }
   button, [role="button"], a, label, summary, select {
     -webkit-tap-highlight-color: transparent;
+    }
+  a[href],
+  button:not(:disabled),
+  [role="button"]:not([aria-disabled="true"]),
+  [role="tab"]:not([aria-disabled="true"]),
+  summary,
+  label[for],
+  select:not(:disabled),
+  input[type="checkbox"]:not(:disabled),
+  input[type="radio"]:not(:disabled) {
+    cursor: pointer;
+    }
+  button:disabled,
+  [aria-disabled="true"] {
+    cursor: not-allowed;
     }
   :where(.ll-paper) > :where(:not(svg[data-ink="sheet"], [data-slot="paper-face"], [data-slot="paper-shadow"])) {
     --ll-tilt: initial;
@@ -954,9 +996,9 @@
   .ll-paper::before, .ll-face {
     background-color: var(--ll-stock, var(--ll-paper));
     background-image: linear-gradient(color-mix(in srgb, var(--ll-stock, var(--ll-paper)) var(--ll-veil, 0%), transparent), color-mix(in srgb, var(--ll-stock, var(--ll-paper)) var(--ll-veil, 0%), transparent)),
-      var(--ll-tex-paper, var(--ll-tex-fibre), var(--ll-tex-relief), var(--ll-tex-cloud)), var(--ll-paper-light);
-    background-size: 100% 100%, var(--ll-tex-paper-size, 240px 240px, 192px 192px, 720px 720px), 100% 100%;
-    background-position: 0 0, var(--ll-tex-paper-pos, 0 0, 0 0, 0 0), 0 0;
+      var(--ll-tex-paper, var(--ll-tex-relief)), var(--ll-paper-light);
+    background-size: 100% 100%, var(--ll-tex-paper-size, 192px 192px), 100% 100%;
+    background-position: 0 0, var(--ll-tex-paper-pos, 0 0), 0 0;
     rotate: clamp(calc(var(--ll-tilt-max) * -1), var(--ll-tilt, 0deg), var(--ll-tilt-max));
     }
   .ll-face {
@@ -1051,18 +1093,18 @@
 }
 
 @utility ll-tooth-cold {
-    --ll-tex-paper: var(--ll-tex-fibre), var(--ll-tex-relief), var(--ll-tex-cloud);
-    --ll-tex-paper-size: 240px 240px, 192px 192px, 720px 720px;
+    --ll-tex-paper: var(--ll-tex-relief);
+    --ll-tex-paper-size: 192px 192px;
 }
 
 @utility ll-tooth-fine {
-    --ll-tex-paper: var(--ll-tex-fibre), var(--ll-tex-slip), var(--ll-tex-cloud);
-    --ll-tex-paper-size: 240px 240px, 128px 128px, 720px 720px;
+    --ll-tex-paper: var(--ll-tex-slip);
+    --ll-tex-paper-size: 128px 128px;
 }
 
 @utility ll-tooth-kraft {
-    --ll-tex-paper: var(--ll-tex-fibre), var(--ll-tex-kraft), var(--ll-tex-cloud);
-    --ll-tex-paper-size: 240px 240px, 192px 96px, 720px 720px;
+    --ll-tex-paper: var(--ll-tex-kraft);
+    --ll-tex-paper-size: 192px 96px;
 }
 
 @utility ll-sheet-slip {
@@ -1108,6 +1150,12 @@
     rotate: calc(var(--jr, 0deg) * var(--ll-jitter-k));
     opacity: calc(1 - (1 - var(--jo, 1)) * var(--ll-jitter-k));
     }
+}
+
+@utility sketch-card-shadow {
+    border: 2px solid var(--ll-ink);
+    border-radius: 14px 6px 12px 8px / 7px 14px 6px 12px;
+    box-shadow: 3px 3px 0 var(--ll-ink);
 }
 
 @utility ll-boil {
@@ -1198,8 +1246,8 @@
     background: var(--ll-slip);
     color: var(--ll-ink);
     font-family: var(--font-hand);
-    box-shadow: 0 1px 0 rgb(58 44 30 / 0.06),
-      0 16px 32px -12px rgb(58 44 30 / 0.4);
+    box-shadow: 0 1px 0 rgb(30 41 59 / 0.06),
+      0 16px 32px -12px rgb(30 41 59 / 0.25);
     max-block-size: min(22rem, 70vh);
     }
   :is([data-slot="native-select"], [data-slot="calendar-dropdown"] select) option {

@@ -1,56 +1,33 @@
-import { useEffect, useState } from 'react';
-import { t, useLanguage } from '../../shared/i18n';
+import { memo, useCallback, useEffect, useState } from 'react';
+import { useLanguage } from '../../shared/i18n';
 import { initMotion } from '../../shared/motion';
-import CapabilityMap from './CapabilityMap';
+import AboutWorkbench from './AboutWorkbench';
 import ContactWall from './ContactWall';
-import DeskSignature from './DeskSignature';
-import LatticeHero from './LatticeHero';
+import InteractionLab from './InteractionLab';
 import PhotosPreview from './PhotosPreview';
-import SectionHeading from './SectionHeading';
-import StackBench from './StackBench';
+import SketchHero from './SketchHero';
 import Works from './Works';
 
-const META = ['now', 'here', 'off'] as const;
-
-function About() {
-  return (
-    <section id="about" className="section about">
-      <SectionHeading index="01" eyebrow="PROFILE" title={t('about.title')} />
-      <div className="about-layout">
-        <div>
-          <p className="about-lead reveal">
-            {t('about.lead')}
-            <span className="about-lead-sub">{t('about.leadSub')}</span>
-          </p>
-          <dl className="about-meta reveal">
-            {META.map(key => (
-              <div key={key}>
-                <dt>{t(`about.meta.${key}`)}</dt>
-                <dd>{t(`about.meta.${key}Value`)}</dd>
-              </div>
-            ))}
-          </dl>
-        </div>
-        <DeskSignature />
-      </div>
-    </section>
-  );
-}
+const MemoSketchHero = memo(SketchHero);
+const MemoAboutWorkbench = memo(AboutWorkbench);
+const MemoPhotosPreview = memo(PhotosPreview);
+const MemoContactWall = memo(ContactWall);
 
 export default function HomePage() {
   useLanguage();
   const [activeSkill, setActiveSkill] = useState<string | null>(null);
   useEffect(initMotion, []);
 
+  const handleClearFilter = useCallback(() => setActiveSkill(null), []);
+
   return (
-    <main>
-      <LatticeHero />
-      <About />
-      <CapabilityMap />
-      <Works activeSkill={activeSkill} />
-      <StackBench activeSkill={activeSkill} onSelect={setActiveSkill} />
-      <PhotosPreview />
-      <ContactWall />
+    <main className="pb-12">
+      <MemoSketchHero />
+      <MemoAboutWorkbench />
+      <Works activeSkill={activeSkill} onClearFilter={handleClearFilter} />
+      <InteractionLab activeSkill={activeSkill} onSelect={setActiveSkill} />
+      <MemoPhotosPreview />
+      <MemoContactWall />
     </main>
   );
 }

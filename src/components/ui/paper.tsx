@@ -8,9 +8,9 @@ import { faceLook, tilesOf } from "@/lib/ink/paper/faces"
 import { clip, pin, staple, binderClip, type Accent, type TapeKind } from "@/lib/ink/paper/props"
 import { PropSvg } from "@/lib/ink/paper/prop-svg"
 import { useInkFaces } from "@/lib/ink/paper/sheet-layers"
-import { dropShadow, sheetShadow, tiltFor, type SheetShadowKind } from "@/lib/ink/paper/shadows"
+import { sheetShadow, tiltFor, type SheetShadowKind } from "@/lib/ink/paper/shadows"
 import { RULE_OFFSET_VAR, ruleGeometry, rulesLayer, stockOf, type RuleName, type StockName } from "@/lib/ink/paper/stocks"
-import { InkTiles, useDensity, useInk, useInkSeed, useInkTier, useMergedRef } from "@/lib/ink/react"
+import { InkContext, InkTiles, useDensity, useInk, useInkSeed, useInkTier, useMergedRef } from "@/lib/ink/react"
 import { handRulesRecipe, sheetRecipe } from "@/lib/ink/recipes/paper-ink"
 import { cn } from "@/lib/utils"
 import { Tape } from "@/components/ui/tape"
@@ -80,6 +80,7 @@ function Paper({
 }: PaperProps) {
   const Comp = as as React.ElementType
   const S = stockOf(stock)
+  const inkCtx = React.useContext(InkContext)
   const calm = useDensity() === "calm"
   const requested: EdgeSpec = calm ? "cut" : (edge ?? S.edge)
   const drawn = !isCutEdge(requested) || (curl && !calm)
@@ -106,7 +107,7 @@ function Paper({
 
   return (
     <>
-      {cssTiles ? <InkTiles tiles={cssTiles} /> : null}
+      {!inkCtx.hasProvider && cssTiles ? <InkTiles tiles={cssTiles} /> : null}
       <Comp
         data-slot="paper"
         data-stock={S.name}
@@ -129,7 +130,7 @@ function Paper({
           <span
             data-slot="paper-rules"
             aria-hidden="true"
-            className="ll-tilt-layer ll-multiply pointer-events-none absolute z-(--ll-z-sheet)"
+            className="ll-tilt-layer pointer-events-none absolute z-(--ll-z-sheet)"
             style={{ inset, ...layer.style, ...(deg ? { "--ll-tilt": `${deg}deg` } : {}) } as React.CSSProperties}
           />
         ) : null}
@@ -139,7 +140,7 @@ function Paper({
             aria-hidden="true"
             ref={hand.hostRef}
             {...(hand.node ? hand.hostProps : {})}
-            className="ll-tilt-layer ll-multiply pointer-events-none absolute isolate z-(--ll-z-sheet)"
+            className="ll-tilt-layer pointer-events-none absolute isolate z-(--ll-z-sheet)"
             style={{ inset, translate: `0 calc(${handOffset}px - var(${RULE_OFFSET_VAR}, ${handOffset}px))`, ...(deg ? ({ "--ll-tilt": `${deg}deg` } as React.CSSProperties) : {}) }}
           >
             {hand.node}
@@ -191,7 +192,7 @@ function Fastener({ kind = "clip", tone, size, seed: seedProp, className, style,
       data-slot="fastener"
       data-kind={kind}
       className={cn("pointer-events-none relative z-(--ll-z-prop) block shrink-0", className)}
-      style={{ filter: dropShadow("prop"), translate: `${jitter}px 0`, ...style }}
+      style={{ translate: `${jitter}px 0`, ...style }}
       {...props}
     />
   )

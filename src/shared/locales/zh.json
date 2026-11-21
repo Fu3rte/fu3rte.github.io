@@ -1,13 +1,13 @@
 {
   "meta": {
-    "title": "Finnian — AI 应用与交互作品集",
+    "title": "Finnian — 手作笔记本与日常小工具",
     "contactTitle": "联系 — Finnian",
-    "photosTitle": "照片 — Finnian",
-    "projectTitle": "项目案例 — Finnian",
-    "description": "Finnian 的 AI 应用与交互作品集：业务型 Agent、Harness、RAG，以及 Three.js、GSAP、Rive 与 Lottie 实验。",
-    "photosDescription": "Finnian 的照片集。",
-    "projectDescription": "一个 Agent、检索或交互项目的案例：问题、关键决策、自己负责的边界与结果。",
-    "contactDescription": "联系 Finnian，聊聊 AI 应用、交互与合作。"
+    "photosTitle": "随手拍 — Finnian",
+    "projectTitle": "项目小记 — Finnian",
+    "description": "一个普通人在东莞捣鼓 AI 小工具、街健记录板和手作网页实验的个人笔记本。",
+    "photosDescription": "Finnian 平时随手拍的一些照片。",
+    "projectDescription": "一个自己做着用的小项目笔记：当时遇到什么麻烦、怎么做取舍、最后好不好用。",
+    "contactDescription": "来信或者加个好友，随便聊聊小工具、网页交互、猫、咖啡或街健。"
   },
   "brand": "FINNIAN",
   "nav": {
@@ -15,78 +15,159 @@
     "menu": "打开导航",
     "close": "关闭导航",
     "home": "首页",
-    "photos": "照片",
+    "photos": "随手拍",
     "contact": "联系"
   },
-  "photos": {
-    "title": "照片",
-    "alt": "照片",
-    "open": "查看照片集"
-  },
   "hero": {
-    "aria": "兜帽骷髅坐在笔记本电脑前，旁边有一杯冒着热气的咖啡",
-    "kicker": "AI 应用 · 交互实验",
-    "title": "把想法变成可用的智能系统。",
-    "intro": "我是 Finnian，专注业务型 Agent、Harness 与 RAG，也持续打磨网页里的交互和动效。",
-    "primary": "查看作品",
-    "secondary": "联系我"
+    "kicker": "HANDMADE SKETCHBOOK · 2026",
+    "titlePrefix": "方格纸、墨线与",
+    "titleHighlight": "手作小玩意",
+    "titleSuffix": "。",
+    "motif": "A3 方格底 · 薄荷绿格线 · 彩色便利贴 · 拍立得",
+    "primary": "我的作品",
+    "secondary": "联系",
+    "stampLabel": "DESK EDITION",
+    "swatches": [
+      { "code": "01", "label": "方格底纸", "tag": "#FCFDFD / #88CFBA" },
+      { "code": "02", "label": "便利贴色", "tag": "#FFF18F / #C8F0C0" },
+      { "code": "03", "label": "手写墨水", "tag": "#1D242C / #EE6C3B" },
+      { "code": "04", "label": "胶带相纸", "tag": "POLAROID / WASHI" }
+    ]
   },
   "about": {
+    "eyebrow": "NOTEBOOK PROFILE",
     "title": "关于我",
-    "lead": "我是 Finnian，主要做 AI 应用开发。",
-    "leadSub": "喜欢把想法做成可以实际使用的东西，也喜欢琢磨网页里的交互和动效。",
-    "meta": {
-      "now": "在做",
-      "here": "坐标",
-      "off": "喜欢",
-      "nowValue": "业务型 agent · harness · RAG",
-      "hereValue": "东莞 · UTC+8",
-      "offValue": "猫 · 咖啡 · 街健"
-    }
-  },
-  "capabilities": {
-    "title": "能力图谱",
-    "intro": "真实项目流程，呈现从输入到应用结果的完整路径。",
-    "aria": "选择项目能力图谱"
+    "lead": "就是一个爱折腾电脑的普通人，水平有限，但特别享受亲手做出能用小东西的过程。",
+    "p1": "我不擅长搞什么宏大系统，平时写代码大多是因为自己懒或者遇到点小麻烦——比如训练计划老是要改、记组数不想一直点手机，干脆花几个晚上拼一个刚好够自己用的版本。",
+    "p2": "写网页也是同样的心态：比起冷冰冰的科技感面板，我更喜欢纸、笔、便签条和胶带那种带点手作温度的感觉，哪怕线有点歪、字有点笨拙，反而更像真实在桌面上写出来的东西。",
+    "habitsTitle": "三条土办法",
+    "habits": [
+      {
+        "title": "01 · 小一点，真能跑起来就行",
+        "body": "不硬追复杂框架，一个循环或一个纯 JSON 能解决的事，绝不多加一层服务。"
+      },
+      {
+        "title": "02 · 账本留在自己电脑里",
+        "body": "不管是训练记录还是笔记，尽量存成 SQLite 或纯文本，随时打得开、带得走。"
+      },
+      {
+        "title": "03 · 把好玩摆在前面",
+        "body": "做东西如果连自己都不觉得有趣，那大概率写到第三天就坑了。"
+      }
+    ],
+    "nowTitle": "最近桌面上",
+    "nowItems": [
+      "顺手打磨 Fit-Agent 的日常输入体验",
+      "用 calisthenics-log 记着每周双杠和引体进度",
+      "瞎鼓捣带物理碰撞的纸艺交互小玩具"
+    ],
+    "offTitle": "电脑之外",
+    "off": [
+      {
+        "tag": "CAT",
+        "title": "猫",
+        "body": "随时在键盘附近巡逻的室友，负责检验工作台面积够不够大。"
+      },
+      {
+        "tag": "COFFEE",
+        "title": "咖啡",
+        "body": "每天开工前的固定仪式，不讲究太多风味词，顺口提神就好。"
+      },
+      {
+        "tag": "BAR",
+        "title": "街健",
+        "body": "楼下单双杠和地面动作，坐久了出去拉几组最解压。"
+      }
+    ]
   },
   "works": {
-    "title": "精选作品",
-    "intro": "从 Agent 工作流到检索与多模态，每个项目都对应一条可以核验的工程路径。",
-    "aria": "项目案例",
-    "tech": "相关技术",
-    "detail": "看案例",
-    "open": "打开仓库"
+    "eyebrow": "MY PROJECT",
+    "title": "我的作品",
+    "intro": "自己平时真正在用的两个小项目，踩过坑也慢慢改顺手了。",
+    "aria": "项目列表",
+    "tech": "用到的东西",
+    "detail": "翻看完整笔记",
+    "open": "去 GitHub 看代码",
+    "accDecisions": "当时做了哪些妥协与取舍",
+    "accOutcomes": "最后用起来怎么样",
+    "filterPrefix": "已选贴纸",
+    "clearFilter": "看全部",
+    "matchedBadge": "贴纸命中"
+  },
+  "lab": {
+    "eyebrow": "PLAYGROUND",
+    "title": "桌面小玩意",
+    "intro": "技术栈贴纸与物理碰撞桌垫。",
+    "stackTitle": "弹性贴纸堆",
+    "stackShake": "摇散",
+    "stackFloat": "漂浮",
+    "stackDrop": "下落",
+    "noMatch": "主要用于桌面互动实验，不在上面两个项目里"
+  },
+  "photos": {
+    "eyebrow": "POLAROIDS",
+    "title": "随手拍",
+    "intro": "不讲究构图和器材，出门散步、喝咖啡或者路过喜欢的光线时顺手按下的几张拍立得。",
+    "alt": "随手拍照片",
+    "open": "去相册墙看全部 10 张",
+    "back": "回首页",
+    "rollLabel": "胶卷 01 · 35MM",
+    "flip": "翻到背面",
+    "front": "翻回正面",
+    "prev": "上一张",
+    "next": "下一张",
+    "close": "关闭",
+    "notes": [
+      "01 · 光线正好",
+      "02 · 路边一瞥",
+      "03 · 午后",
+      "04 · 散步记录",
+      "05 · 慢下来",
+      "06 · 窗边",
+      "07 · 角落",
+      "08 · 晚风",
+      "09 · 小碎片",
+      "10 · 收工回家"
+    ],
+    "details": [
+      { "place": "东莞 · 下午四点", "mood": "晴天斜照", "note": "下楼买冰美式时刚好撞见墙面上这一块干净的午后光影。" },
+      { "place": "街角十字路口", "mood": "散步", "note": "等红灯顺手按下，喜欢树影和旧墙砖混在一起的纹理。" },
+      { "place": "桌边窗台", "mood": "发呆中", "note": "写了半天代码抬头喘口气，风把窗帘吹起一个小角。" },
+      { "place": "公园步道", "mood": "慢走", "note": "出门不带目的乱逛半小时，手机揣兜里反而看得更细。" },
+      { "place": "雨后路面", "mood": "微凉", "note": "刚停雨的时候地面还会反光，路灯影子拉得老长。" },
+      { "place": "书桌南窗", "mood": "猫和咖啡", "note": "旁边杯子刚凉下来，光线斜着切过笔记本一角。" },
+      { "place": "老街巷口", "mood": "安静", "note": "避开主路拐进来的小角落，只有几盆绿植和旧招牌。" },
+      { "place": "傍晚楼顶", "mood": "晚风", "note": "天色从淡蓝变成橘粉的那五分钟，每次看都觉得值。" },
+      { "place": "单杠区旁", "mood": "练完一组", "note": "手心还有点镁粉味，坐在长椅上吹风顺手拍了一张。" },
+      { "place": "回程路上", "mood": "收工", "note": "天暗下来之后路边的暖色小灯亮起来，慢悠悠走回家。" }
+    ]
   },
   "case": {
     "role": "我的角色",
-    "period": "周期",
-    "status": "状态",
-    "repository": "打开仓库",
-    "back": "全部作品",
-    "toc": "案例目录",
-    "problem": "问题",
-    "decisions": "关键决策",
-    "contribution": "我负责的边界",
-    "outcomes": "结果",
-    "switch": "切换案例",
-    "previous": "上一个",
-    "next": "下一个"
-  },
-  "stack": {
-    "title": "技术筹码",
-    "intro": "应用工程与交互技术共享同一个实验场。选择技术可以定位相关作品。",
-    "noMatch": "未关联到首页展示的项目"
+    "period": "时间",
+    "status": "现在状态",
+    "repository": "打开 GitHub 仓库",
+    "back": "回到全部作品",
+    "toc": "这一页写了啥",
+    "problem": "当时遇到什么麻烦",
+    "decisions": "为什么这么做取舍",
+    "contribution": "自己动手的部分",
+    "outcomes": "最后实际效果",
+    "switch": "翻看另一篇笔记",
+    "next": "另一篇项目笔记"
   },
   "contact": {
+    "eyebrow": "POSTCARD",
     "title": "联系",
-    "me": "联系我",
+    "me": "留一张小纸条",
+    "lead": "如果你也喜欢做点小工具、玩网页交互，或者正好也养猫、喝咖啡、练街健，欢迎随时写信或加个微信随便聊聊。",
     "channel": {
       "email": "邮箱",
       "github": "GitHub",
       "instagram": "Instagram",
       "wechat": "微信"
     },
-    "p": "欢迎聊聊 Agent 应用、交互原型，或一个需要从零做成可用 Demo 的想法。",
+    "p": "不聊太正经的商业宏图也没关系，一个有趣的小点子、一行好玩的动效或者周末去哪喝杯咖啡都可以聊。",
     "github": "GitHub / Fu3rte",
     "instagram": "Instagram / cq777h",
     "wechat": "微信 / F1nnian_",

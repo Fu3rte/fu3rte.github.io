@@ -115,7 +115,7 @@ export class Ink {
     this.seed = this.rng.seed
     this.calm = opts.calm ?? false
     this.tier = this.calm ? 'lo' : (opts.tier ?? 'lo')
-    this.grain = opts.grain ?? true
+    this.grain = opts.grain ?? (this.tier === 'hi')
     this.knobs = { wobble: 1, misreg: 1, bleed: 1, width: 1, ...opts.knobs }
     if (this.calm) {
       this.knobs.wobble *= 0.3

@@ -1,5 +1,6 @@
 import gsap from 'gsap';
-import lottie, { type AnimationItem } from 'lottie-web/build/player/lottie_light';
+import type { AnimationItem } from 'lottie-web/build/player/lottie_light';
+
 const SOURCE = '/lottie/brook-load.json';
 // brook-load.json 的组装段落在 0-66 帧：描边逐笔勾出五官、随后落成实心，66-222 帧是首尾同值的无缝循环
 const INTRO_END = 66;
@@ -12,8 +13,8 @@ type Phase = 'waiting' | 'releasing' | 'released';
 // 冷启动把整张标志从头画完再交场，路由切换在覆盖层压住的那一拍把标志重画一次。
 // draw/hold 以毫秒计（组装段落的绘制时长与落成之后的驻留），wipe 按 gsap 的秒计。
 const RHYTHM: Record<Mode, { draw: number; hold: number; wipe: number }> = {
-  long: { draw: 1500, hold: 1150, wipe: 0.62 },
-  short: { draw: 820, hold: 420, wipe: 0.52 },
+  long: { draw: 1100, hold: 420, wipe: 0.48 },
+  short: { draw: 520, hold: 180, wipe: 0.38 },
 };
 // 幕布擦回满版的那一拍，只有路由切换用得到
 const COVER_S = 0.42;
@@ -25,13 +26,13 @@ const LONG_HOLD_S = 6;
 const CURTAIN = { open: 'inset(0% 0% 0% 0%)', shut: 'inset(0% 0% 0% 100%)' };
 // 字体走第三方 CDN，链路不通时 fonts.ready 永远不 resolve，等满这一档就按已就位处理
 const FONT_WAIT_MS = 1200;
+const ASSET_WAIT_MS = 500;
 
 // 权重取整数百分比，求和恰好 100，浮点相加会永远差一点到不了顶
 const WEIGHTS: Record<Stage, number> = { fonts: 35, content: 35, assets: 30 };
 
 let overlayEl: HTMLElement | null = null;
 let markEl: HTMLElement | null = null;
-let captionEl: HTMLElement | null = null;
 let anim: AnimationItem | null = null;
 let phase: Phase = 'waiting';
 let looping = false;
@@ -52,7 +53,6 @@ export function bootLoader(): void {
   const mark = document.getElementById('brook-mark')!;
   overlayEl = overlay;
   markEl = mark;
-  captionEl = document.getElementById('brook-caption');
   reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
   if (reduced) {
@@ -64,9 +64,7 @@ export function bootLoader(): void {
   }
   watchContent();
   window.addEventListener('pageshow', onPageRestore);
-  // 覆盖层压场期间滚动一律拒收：滚轮一推进页面，正文的 ScrollTrigger 锚点就在无人看见的那一拍被消耗光
-  window.addEventListener('wheel', blockScroll, { passive: false });
-  window.addEventListener('touchmove', blockScroll, { passive: false });
+  lockScroll();
 
   void Promise.race([
     document.fonts.ready,
@@ -74,32 +72,52 @@ export function bootLoader(): void {
       window.setTimeout(resolve, FONT_WAIT_MS);
     }),
   ]).then(() => markStage('fonts'));
-  if (document.readyState === 'complete') markStage('assets');
-  else window.addEventListener('load', () => markStage('assets'), { once: true });
+  if (document.readyState === 'complete') {
+    markStage('assets');
+  } else {
+    void Promise.race([
+      new Promise<void>(resolve => {
+        window.addEventListener('load', () => resolve(), { once: true });
+      }),
+      new Promise<void>(resolve => {
+        window.setTimeout(resolve, ASSET_WAIT_MS);
+      }),
+    ]).then(() => markStage('assets'));
+  }
 
   gsap.delayedCall(LONG_HOLD_S, forceRelease);
   gsap.ticker.add(tick);
 }
 
 function loadMark(mark: HTMLElement): void {
-  anim = lottie.loadAnimation({
-    container: mark,
-    renderer: 'svg',
-    loop: true,
-    autoplay: false,
-    path: SOURCE,
-  });
-  anim.addEventListener('data_ready', () => {
-    jsonReady = true;
-    markSettled = true;
-    // 素材到位才开始起笔，两套节奏都走一遍组装段落
-    drawAt = performance.now();
-  });
-  // 素材取不到也照常放行，loading 页不能把自己锁死
-  anim.addEventListener('data_failed', () => {
-    markSettled = true;
-    heldAt = performance.now();
-  });
+  void import('lottie-web/build/player/lottie_light')
+    .then(({ default: lottie }) => {
+      if (phase === 'released' || overlayEl?.classList.contains('is-hidden')) {
+        return;
+      }
+      anim = lottie.loadAnimation({
+        container: mark,
+        renderer: 'svg',
+        loop: true,
+        autoplay: false,
+        path: SOURCE,
+      });
+      anim.addEventListener('data_ready', () => {
+        jsonReady = true;
+        markSettled = true;
+        // 素材到位才开始起笔，两套节奏都走一遍组装段落
+        drawAt = performance.now();
+      });
+      // 素材取不到也照常放行，loading 页不能把自己锁死
+      anim.addEventListener('data_failed', () => {
+        markSettled = true;
+        heldAt = performance.now();
+      });
+    })
+    .catch(() => {
+      markSettled = true;
+      heldAt = performance.now();
+    });
 }
 
 // 正文挂载与页面用哪个组件无关，盯 #root 的第一个子节点即可
@@ -127,6 +145,17 @@ function markStage(stage: Stage): void {
 
 function blockScroll(event: Event): void {
   if (phase !== 'released') event.preventDefault();
+}
+
+// 覆盖层压场期间滚动一律拒收：滚轮一推进页面，正文的 ScrollTrigger 锚点就在无人看见的那一拍被消耗光
+function lockScroll(): void {
+  window.addEventListener('wheel', blockScroll, { passive: false });
+  window.addEventListener('touchmove', blockScroll, { passive: false });
+}
+
+function unlockScroll(): void {
+  window.removeEventListener('wheel', blockScroll);
+  window.removeEventListener('touchmove', blockScroll);
 }
 
 function tick(): void {
@@ -182,21 +211,22 @@ function release(): void {
   gsap.set(overlay, { clipPath: CURTAIN.open, willChange: 'clip-path' });
   gsap
     .timeline({ onComplete: finish })
-    .to(captionEl, { autoAlpha: 0, y: 6, duration: 0.24, ease: 'power1.in' }, 0)
     .to(markEl, {
       autoAlpha: 0,
       scale: mode === 'long' ? 1.06 : 0.93,
       y: -14,
       duration: 0.36,
       ease: 'power2.in',
-    }, 0.08)
-    .to(overlay, { clipPath: CURTAIN.shut, duration: RHYTHM[mode].wipe, ease: 'power3.inOut' }, 0.14);
+    }, 0.04)
+    .to(overlay, { clipPath: CURTAIN.shut, duration: RHYTHM[mode].wipe, ease: 'power3.inOut' }, 0.12);
 }
 
 function finish(): void {
   phase = 'released';
+  unlockScroll();
+  anim?.pause();
   overlayEl!.classList.add('is-hidden');
-  gsap.set([overlayEl, markEl, captionEl], { clearProps: 'all' });
+  gsap.set([overlayEl, markEl], { clearProps: 'all' });
 }
 
 function announce(): void {
@@ -237,6 +267,7 @@ export function withTransition(swap: () => void): void {
   }
   mode = 'short';
   phase = 'waiting';
+  lockScroll();
   // 素材与正文在上一轮就已就位，切换只剩节奏，就绪度直接给满
   target = 100;
   markSettled = true;
@@ -247,7 +278,7 @@ export function withTransition(swap: () => void): void {
 function replayForDeparture(onCovered: () => void): void {
   const overlay = overlayEl!;
   overlay.classList.remove('is-hidden');
-  gsap.set([markEl, captionEl], { clearProps: 'all' });
+  gsap.set(markEl, { clearProps: 'all' });
   gsap.set(overlay, { clipPath: CURTAIN.shut, willChange: 'clip-path' });
   // 幕布拉回之前先把标志擦回空白画纸：翻页也重走一遍组装段落，徽标不再整张弹出来
   looping = false;
@@ -268,8 +299,4 @@ function replayForDeparture(onCovered: () => void): void {
       else heldAt = performance.now();
     },
   });
-  gsap.fromTo(captionEl,
-    { autoAlpha: 0, y: 8 },
-    { autoAlpha: 1, y: 0, duration: 0.34, ease: 'power2.out', delay: COVER_S * 0.4 },
-  );
 }

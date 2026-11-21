@@ -34,8 +34,8 @@ interface Rough {
 const ROUGH: Record<'cut' | 'torn' | 'deckle' | 'crimp', Rough> = {
   cut: { b: 0.55, lo: 0.16, mid: 0, hi: 0.05, f0: 0, f1: 0, step: 14 },
   crimp: { b: 1.5, lo: 0.6, mid: 0.36, hi: 0.15, f0: 0.3, f1: 0.3, step: 2.1 },
-  torn: { b: 2.5, lo: 1.5, mid: 1.15, hi: 0.6, f0: 0.9, f1: 0.8, step: 1.7 },
-  deckle: { b: 2.3, lo: 1.3, mid: 0.95, hi: 0.42, f0: 1.5, f1: 1, step: 1.9 },
+  torn: { b: 2.5, lo: 1.5, mid: 1.15, hi: 0.6, f0: 0.9, f1: 0.8, step: 7.5 },
+  deckle: { b: 2.3, lo: 1.3, mid: 0.95, hi: 0.42, f0: 1.5, f1: 1, step: 9.0 },
 }
 
 const ZIG = { pitch: 8, depth: 4.2 }

@@ -30,9 +30,6 @@ function spaRoutes(routes: string[]): Plugin {
 // 新增案例要同时在这里登记：GitHub Pages 只认静态路径，少一条就少一份目录索引
 const CASE_PATHS = [
   'projects/fit-agent',
-  'projects/contextus',
-  'projects/dsh-sight',
-  'projects/nl2sql-agent',
   'projects/calisthenics-log',
 ]
 
@@ -41,6 +38,18 @@ export default defineConfig({
   resolve: {
     alias: {
       '@': here('./src'),
+    },
+  },
+  build: {
+    rollupOptions: {
+      output: {
+        manualChunks: {
+          'vendor-react': ['react', 'react-dom'],
+          'vendor-gsap': ['gsap'],
+          'vendor-radix': ['radix-ui'],
+          'vendor-i18n': ['i18next', 'i18next-browser-languagedetector'],
+        },
+      },
     },
   },
 })

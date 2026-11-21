@@ -1,8 +1,9 @@
-import type { ComponentType } from 'react';
+import { lazy, type ComponentType } from 'react';
 import HomePage from '../features/home/HomePage';
-import PhotosPage from '../features/photos/PhotosPage';
-import ContactPage from '../features/contact/ContactPage';
-import ProjectPage from '../features/projects/ProjectPage';
+
+const PhotosPage = lazy(() => import('../features/photos/PhotosPage'));
+const ContactPage = lazy(() => import('../features/contact/ContactPage'));
+const ProjectPage = lazy(() => import('../features/projects/ProjectPage'));
 
 export type RouteKey = 'home' | 'photos' | 'contact' | 'project';
 

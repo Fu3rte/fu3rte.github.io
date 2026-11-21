@@ -170,10 +170,8 @@ export function ruleGeometry(kind: RuleName, o: RulesOpts = {}): RuleGeometry {
 
 export function rulesLayer(kind: RuleName, o: RulesOpts = {}): RulesLayer | null {
   if (kind === 'none' || kind === 'ruled-hand') return null
-  const calm = !!o.calm
   const geo = ruleGeometry(kind, o)
-  const drift = 'linear-gradient(90deg, rgb(0 0 0 / .86), rgb(0 0 0) 19%, rgb(0 0 0 / .8) 47%, rgb(0 0 0 / .96) 71%, rgb(0 0 0 / .84))'
-  const withMask = (style: CssDecls): CssDecls => (calm ? style : { ...style, maskImage: drift, WebkitMaskImage: drift })
+  const withMask = (style: CssDecls): CssDecls => style
   if (kind === 'window') {
     return {
       pitch: 0,
@@ -187,8 +185,8 @@ export function rulesLayer(kind: RuleName, o: RulesOpts = {}): RulesLayer | null
   }
   if (kind === 'ruled' || kind === 'pad' || kind === 'index') {
     const { pitch, first } = geo
-    const rule = soft(kind === 'pad' ? 'pad-rule' : 'rule-blue', kind === 'pad' ? 100 : 82)
-    const red = soft('rule-red', 88)
+    const rule = soft(kind === 'pad' ? 'pad-rule' : 'rule-blue', kind === 'pad' ? 92 : 76)
+    const red = soft('rule-red', 82)
     const layers: BgLayer[] = []
     if (geo.margin !== undefined) layers.push({ image: vline(red, geo.margin), size: '100% 100%', repeat: 'no-repeat' })
     if (kind === 'index') layers.push({ image: hline(red, 1.2), size: `100% ${up(first + 1, geo)}`, repeat: 'no-repeat' })
@@ -197,8 +195,8 @@ export function rulesLayer(kind: RuleName, o: RulesOpts = {}): RulesLayer | null
     return { pitch, geo, style: withMask({ ...layersToDecls(layers), paddingTop: upClamped(Math.max(0, kind === 'index' ? first + 2 : blueFirst - 1), geo) }) }
   }
   if (kind === 'graph') {
-    const fine = soft('check-rule', 46)
-    const bold = soft('check-rule', 72)
+    const fine = soft('check-rule', 40)
+    const bold = soft('check-rule', 64)
     return {
       pitch: 16,
       geo,
@@ -225,8 +223,8 @@ export function rulesLayer(kind: RuleName, o: RulesOpts = {}): RulesLayer | null
     }
   }
   const pitch = geo.pitch
-  const line = soft('check-rule', 62)
-  const strong = soft('check-rule', 100)
+  const line = soft('check-rule', 55)
+  const strong = soft('check-rule', 90)
   const [qty, total] = geo.cols as readonly [number, number]
   return {
     pitch,

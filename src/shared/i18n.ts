@@ -61,3 +61,7 @@ export async function initI18n(): Promise<void> {
 export function t(key: string): string {
   return i18next.t(key);
 }
+
+export function tObject<T>(key: string): T {
+  return i18next.t(key, { returnObjects: true }) as T;
+}

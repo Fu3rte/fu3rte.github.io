@@ -2,7 +2,7 @@
 
 import * as React from "react"
 
-import { dropShadow, tiltFor } from "@/lib/ink/paper/shadows"
+import { tiltFor } from "@/lib/ink/paper/shadows"
 import { tape, type TapeEnds, type TapeKind } from "@/lib/ink/paper/props"
 import { PropSvg } from "@/lib/ink/paper/prop-svg"
 import { useDensity, useInkSeed, useInkTier } from "@/lib/ink/react"
@@ -33,7 +33,6 @@ function Tape({ kind = "masking", length = 72, height = 22, angle, ends, color, 
       className={cn("pointer-events-none relative z-(--ll-z-prop) block shrink-0", className)}
       style={{
         rotate: `clamp(calc(var(--ll-tilt-max) * -2.5), ${deg}deg, calc(var(--ll-tilt-max) * 2.5))`,
-        filter: dropShadow("tape"),
         ...style,
       }}
       {...props}
