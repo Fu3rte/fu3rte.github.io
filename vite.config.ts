@@ -4,6 +4,7 @@ import path from 'node:path'
 import { defineConfig, type Plugin } from 'vite'
 import react from '@vitejs/plugin-react'
 import tailwindcss from '@tailwindcss/vite'
+import { PROJECT_IDS } from './src/shared/projects'
 
 const here = (rel: string) => fileURLToPath(new URL(rel, import.meta.url))
 
@@ -27,11 +28,7 @@ function spaRoutes(routes: string[]): Plugin {
   }
 }
 
-// 新增案例要同时在这里登记：GitHub Pages 只认静态路径，少一条就少一份目录索引
-const CASE_PATHS = [
-  'projects/fit-agent',
-  'projects/calisthenics-log',
-]
+const CASE_PATHS = PROJECT_IDS.map((id) => `projects/${id}`)
 
 export default defineConfig({
   plugins: [react(), tailwindcss(), spaRoutes(['photos', 'contact', ...CASE_PATHS])],
@@ -43,11 +40,22 @@ export default defineConfig({
   build: {
     rollupOptions: {
       output: {
-        manualChunks: {
-          'vendor-react': ['react', 'react-dom'],
-          'vendor-gsap': ['gsap'],
-          'vendor-radix': ['radix-ui'],
-          'vendor-i18n': ['i18next', 'i18next-browser-languagedetector'],
+        manualChunks(id) {
+          const norm = id.replace(/\\/g, '/')
+          if (!norm.includes('/node_modules/')) return undefined
+          if (/\/node_modules\/(react|react-dom|scheduler)\//.test(norm)) {
+            return 'vendor-react'
+          }
+          if (/\/node_modules\/gsap\//.test(norm)) {
+            return 'vendor-gsap'
+          }
+          if (/\/node_modules\/(radix-ui|@radix-ui)\//.test(norm)) {
+            return 'vendor-radix'
+          }
+          if (/\/node_modules\/i18next/.test(norm)) {
+            return 'vendor-i18n'
+          }
+          return undefined
         },
       },
     },

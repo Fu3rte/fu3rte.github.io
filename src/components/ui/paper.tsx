@@ -57,6 +57,34 @@ const FASTENER_PLACE: Record<FastenerKind, string> = {
 
 const CURL = 34
 
+function PaperHandRules({
+  paper,
+  seed,
+  inset,
+  handOffset,
+  deg,
+}: {
+  paper: "pad" | "ruled"
+  seed: string
+  inset: number
+  handOffset: number
+  deg: number
+}) {
+  const hand = useInk({ recipe: handRulesRecipe, params: { paper }, kind: "rules", seed: `${seed}|rules` })
+  return (
+    <span
+      data-slot="paper-rules"
+      aria-hidden="true"
+      ref={hand.hostRef}
+      {...(hand.node ? hand.hostProps : {})}
+      className="ll-tilt-layer pointer-events-none absolute isolate z-(--ll-z-sheet)"
+      style={{ inset, translate: `0 calc(${handOffset}px - var(${RULE_OFFSET_VAR}, ${handOffset}px))`, ...(deg ? ({ "--ll-tilt": `${deg}deg` } as React.CSSProperties) : {}) }}
+    >
+      {hand.node}
+    </span>
+  )
+}
+
 function Paper({
   className,
   style,
@@ -92,9 +120,7 @@ function Paper({
 
   const ruleName: RuleName = rules ?? S.rules
   const handRules = ruleName === "ruled-hand" && !calm
-  const hand = useInk({ recipe: handRulesRecipe, params: { paper: S.name === "pad" ? "pad" : "ruled" }, kind: "rules", seed: `${seed}|rules` })
   const layer = React.useMemo(() => rulesLayer(ruleName === "ruled-hand" ? (calm ? "ruled" : "none") : ruleName, { calm }), [ruleName, calm])
-  const handOffset = ruleGeometry("ruled", { calm }).offset
   const deg = tilt === false ? 0 : typeof tilt === "number" ? tilt : tiltFor(seed, S.tilt * (RULED.has(ruleName) ? 0.45 : 1))
 
   const vars: Record<string, string> = ready ? {} : faceLook(S.name, seed).vars
@@ -135,16 +161,13 @@ function Paper({
           />
         ) : null}
         {handRules ? (
-          <span
-            data-slot="paper-rules"
-            aria-hidden="true"
-            ref={hand.hostRef}
-            {...(hand.node ? hand.hostProps : {})}
-            className="ll-tilt-layer pointer-events-none absolute isolate z-(--ll-z-sheet)"
-            style={{ inset, translate: `0 calc(${handOffset}px - var(${RULE_OFFSET_VAR}, ${handOffset}px))`, ...(deg ? ({ "--ll-tilt": `${deg}deg` } as React.CSSProperties) : {}) }}
-          >
-            {hand.node}
-          </span>
+          <PaperHandRules
+            paper={S.name === "pad" ? "pad" : "ruled"}
+            seed={seed}
+            inset={inset}
+            handOffset={ruleGeometry("ruled", { calm }).offset}
+            deg={deg}
+          />
         ) : null}
         {children}
         {places.map((p, i) => (

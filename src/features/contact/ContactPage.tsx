@@ -1,17 +1,16 @@
 import { useEffect } from 'react';
 import { Badge } from '@/components/ui/badge';
-import { Button } from '@/components/ui/button';
 import { Clipboard, ClipboardPaper } from '@/components/ui/clipboard';
 import { Handwritten } from '@/components/ui/handwritten';
 import { Paper } from '@/components/ui/paper';
 import { Underline } from '@/components/ui/underline';
-import CopyValue from '../../shared/CopyValue';
+import { ContactCopyRows, ContactSocialButtons } from '../../shared/ContactChannels';
 import { t, useLanguage } from '../../shared/i18n';
-import { initMotion } from '../../shared/motion';
+import { initContactMotion } from '../../shared/motion';
 
 export default function ContactPage() {
   useLanguage();
-  useEffect(initMotion, []);
+  useEffect(initContactMotion, []);
 
   return (
     <main className="mx-auto max-w-6xl px-5 py-12 pb-24 sm:px-8 sm:py-16">
@@ -42,31 +41,7 @@ export default function ContactPage() {
                 </p>
 
                 <div className="mt-7 flex flex-col gap-5">
-                  <div className="flex flex-wrap items-center gap-3">
-                    <Badge tone="lemon" size="sm" seed="cp-email-tag" className="font-mono text-xs text-ink">
-                      {t('contact.channel.email')}
-                    </Badge>
-                    <a
-                      href="mailto:2575716528cqh@gmail.com"
-                      data-selectable="true"
-                      className="select-text font-hand text-xl font-bold break-all text-ink-you underline decoration-2 underline-offset-4 hover:text-link-hover"
-                    >
-                      2575716528cqh@gmail.com
-                    </a>
-                    <CopyValue value="2575716528cqh@gmail.com" seed="cp-copy-email">
-                      {t('contact.copy')}
-                    </CopyValue>
-                  </div>
-
-                  <div className="flex flex-wrap items-center gap-3">
-                    <Badge tone="grass" size="sm" seed="cp-wx-tag" className="font-mono text-xs text-ink">
-                      {t('contact.channel.wechat')}
-                    </Badge>
-                    <span data-selectable="true" className="select-text font-mono text-lg font-bold text-ink">F1nnian_</span>
-                    <CopyValue value="F1nnian_" seed="cp-copy-wx">
-                      {t('contact.copy')}
-                    </CopyValue>
-                  </div>
+                  <ContactCopyRows seedPrefix="cp" size="lg" />
                 </div>
               </ClipboardPaper>
             </Clipboard>
@@ -98,18 +73,7 @@ export default function ContactPage() {
               <span className="font-mono text-xs font-bold tracking-[0.14em] text-ink-muted uppercase">
                 FINNIAN · DONGGUAN · UTC+8
               </span>
-              <div className="flex flex-wrap gap-3 pt-1">
-                <Button asChild variant="outline" size="sm" seed="cp-gh">
-                  <a href="https://github.com/Fu3rte" target="_blank" rel="noreferrer" data-selectable="true" className="select-text">
-                    {t('contact.github')}
-                  </a>
-                </Button>
-                <Button asChild variant="outline" size="sm" seed="cp-ig">
-                  <a href="https://www.instagram.com/cq777h/" target="_blank" rel="noreferrer" data-selectable="true" className="select-text">
-                    {t('contact.instagram')}
-                  </a>
-                </Button>
-              </div>
+              <ContactSocialButtons seedPrefix="cp" />
             </Paper>
           </div>
         </div>

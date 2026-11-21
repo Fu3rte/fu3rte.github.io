@@ -3,29 +3,8 @@ import type { Ink } from '@/lib/ink/builder'
 import type { PaintKey } from '@/lib/ink/paint'
 import { clamp, type Rng } from '@/lib/ink/rng'
 import { noise1 } from '@/lib/ink/noise'
-import { TAU, area, bboxOf, centroid, densifyClosed, offsetPoly, scanSpans, seg, wobblePoly, xform } from '@/lib/ink/geom'
+import { area, bboxOf, centroid, densifyClosed, offsetPoly, scanSpans, wobblePoly } from '@/lib/ink/geom'
 import { pen as resolvePen } from '@/lib/ink/pens'
-
-export function misreg(poly: Pt[], rng: Rng, amt = 3, o: { bias?: number; tilt?: number; grow?: number } = {}): Pt[] {
-  const ang = (o.bias ?? 0.75) + rng.gauss(0, 0.5)
-  const k = amt * rng.range(0.7, 1.15)
-  const b = bboxOf(poly)
-  const bw = b[2] - b[0], bh = b[3] - b[1]
-  const keep = Math.min(1, 120 / Math.max(bw, bh, 1))
-  const sc = 1 + rng.gauss(0, 0.012) * keep + (o.grow ?? 0) / Math.max(10, Math.min(bw, bh))
-  return xform(poly, {
-    dx: Math.cos(ang) * k,
-    dy: Math.sin(ang) * k,
-    rot: clamp(rng.gauss(0, 0.014), -0.03, 0.03) * (o.tilt ?? 1) * Math.min(1, 40 / Math.max(20, Math.max(bw, bh))),
-    sx: sc,
-    sy: sc + rng.gauss(0, 0.01) * keep,
-  })
-}
-
-export const defaultMis = (poly: Pt[]): number => {
-  const b = bboxOf(poly)
-  return clamp(Math.min(b[2] - b[0], b[3] - b[1]) * 0.11, 1.6, 6)
-}
 
 export interface Offset {
   dx: number
@@ -80,33 +59,6 @@ export function flatFill(ink: Ink, poly: Pt[], color: PaintKey, alpha = 0.5, mat
 
 const solidAlpha = (alpha: number | undefined, fallback: number, passes = 1): number => clamp((alpha ?? fallback) * (passes > 1 ? 1.14 : 1.08), 0.3, 0.96)
 
-const MAX_BAND_POINTS = 72
-
-export function bandPoly(a: Pt, b: Pt, width: number, rng: Rng, chisel = 0.34, maxPts = MAX_BAND_POINTS): Pt[] {
-  const dx = b[0] - a[0], dy = b[1] - a[1]
-  const L = Math.hypot(dx, dy) || 1
-  const ux = dx / L, uy = dy / L, nx = -uy, ny = ux
-  const hw = width / 2
-  const sk = Math.min(0.45 * L, chisel * width) * (rng() < 0.5 ? 1 : -1)
-  const amp = clamp(0.035 * width + 0.0022 * L, 0.12, 0.65)
-  const p1 = rng() * TAU, p2 = rng() * TAU, p3 = rng() * TAU, p4 = rng() * TAU
-  const cnt = clamp(Math.ceil(L / 4), 3, maxPts)
-  const left: Pt[] = [], right: Pt[] = []
-  for (let i = 0; i <= cnt; i++) {
-    const t = i / cnt
-    const wl = amp * (Math.sin(5.1 * t + p1) + 0.4 * Math.sin(13.7 * t + p2))
-    const wr = amp * (Math.sin(5.1 * t + p3) + 0.4 * Math.sin(13.7 * t + p4))
-    const cx = a[0] + dx * t, cy = a[1] + dy * t
-    left.push([cx + nx * (hw + wl), cy + ny * (hw + wl)])
-    right.push([cx - nx * (hw + wr), cy - ny * (hw + wr)])
-  }
-  left[0] = [left[0][0] + ux * sk, left[0][1] + uy * sk]
-  right[0] = [right[0][0] - ux * sk, right[0][1] - uy * sk]
-  left[cnt] = [left[cnt][0] + ux * sk, left[cnt][1] + uy * sk]
-  right[cnt] = [right[cnt][0] - ux * sk, right[cnt][1] - uy * sk]
-  return left.concat(right.reverse())
-}
-
 export interface BandOpts {
   alpha?: number
   mis?: number | false
@@ -118,24 +70,8 @@ export interface BandOpts {
   material?: Material
 }
 
-
 export function bandFill(ink: Ink, poly: Pt[], color: PaintKey, o: BandOpts = {}): Offset {
   return solidFill(ink, poly, color, { alpha: solidAlpha(o.alpha, 0.85, o.passes ?? 1), material: o.material })
-}
-
-export interface ClipOpts {
-  alpha?: number
-  mis?: number | false
-  W?: number
-  angle?: number
-  overlap?: number
-  rough?: number
-  rim?: boolean
-  material?: Material
-}
-
-export function clipFill(ink: Ink, poly: Pt[], color: PaintKey, o: ClipOpts = {}): Offset {
-  return solidFill(ink, poly, color, { alpha: solidAlpha(o.alpha, 0.92), rough: Math.min(o.rough ?? 0.3, 0.3), material: o.material, inset: 0 })
 }
 
 export interface BlobOpts {
@@ -211,70 +147,6 @@ export function hatch(ink: Ink, region: Pt[] | [number, number, number, number],
   })
 }
 
-export function edgeBand(ink: Ink, x: number, y: number, w: number, h: number, side: 't' | 'r' | 'b' | 'l', o: { thick?: number; gap?: number; inset?: number; pen?: PenName | PenSpec; alpha?: number; width?: number } = {}): void {
-  const R = ink.next('edge')
-  const thick = o.thick ?? 4
-  const gap = o.gap ?? 2.6
-  const horiz = side === 'b' || side === 't'
-  const len = horiz ? w : h
-  const dirSign = side === 'b' || side === 'r' ? 1 : -1
-  const inset = o.inset ?? 2
-  let t = R.range(0, gap) + inset
-  const end = len - inset
-  let inCluster = R.int(3, 7), cl = 0
-  const lines: Line[] = []
-  while (t < end) {
-    const fade = Math.min(1, t / 9, (len - t) / 9)
-    const bell = 0.55 + 0.45 * Math.sin((Math.PI * (cl + 0.5)) / inCluster)
-    const L = thick * (0.45 + 0.55 * fade) * bell * R.range(0.65, 1.2)
-    const lean = R.range(0.55, 1.2) * L
-    let p0: Pt, p1: Pt
-    if (horiz) {
-      const by = side === 'b' ? y + h : y
-      const x0 = x + t
-      p0 = [x0 + R.gauss(0, 0.3), by - dirSign * R.range(0, 1)]
-      p1 = [x0 - lean * 0.7, by + dirSign * L]
-    } else {
-      const bx = side === 'r' ? x + w : x
-      const y0 = y + t
-      p0 = [bx - dirSign * R.range(0, 1), y0 + R.gauss(0, 0.3)]
-      p1 = [bx + dirSign * L, y0 + lean * 0.7]
-    }
-    lines.push({ pts: seg(p0[0], p0[1], p1[0], p1[1], R.gauss(0, 0.2), 3), o: { simple: true, start: 'soft', end: 'flick', speed: 1.5, wobble: 0.5, alpha: o.alpha ?? 0.82, width: o.width ?? 0.62 } })
-    cl++
-    t += gap * R.range(0.75, 1.3)
-    if (cl >= inCluster) {
-      cl = 0
-      inCluster = R.int(3, 7)
-      t += gap * R.range(0.8, 2.2)
-    }
-  }
-  ink.lines(lines, o.pen ?? 'ink.fine')
-}
-
-export function stipple(ink: Ink, x: number, y: number, w: number, h: number, count: number, o: { pen?: PenName | PenSpec; alpha?: number } = {}): void {
-  const R = ink.next('stip')
-  const lines: Line[] = []
-  for (let i = 0; i < count; i++) {
-    const px = x + R() * w, py = y + R() * h
-    lines.push({ pts: [[px, py], [px + R.range(-0.5, 0.5), py + R.range(0.2, 0.9)]], o: { simple: true, width: R.range(0.8, 1.5), start: 'pool', end: 'pool', wobble: 0, alpha: o.alpha } })
-  }
-  ink.lines(lines, o.pen ?? 'ink.fine')
-}
-
-export function contourArcs(ink: Ink, cx: number, cy: number, rx: number, ry: number, o: { n?: number; dir?: 1 | -1; pen?: PenName | PenSpec; alpha?: number } = {}): void {
-  const cnt = o.n ?? 4
-  const lines: Line[] = []
-  for (let i = 0; i < cnt; i++) {
-    const t = (i + 0.6) / (cnt + 0.2)
-    const y = cy - ry + 2 * ry * t
-    const half = rx * Math.sqrt(Math.max(0, 1 - Math.pow((y - cy) / ry, 2)))
-    const bulge = ry * 0.28 * (1 - t) + 1
-    lines.push({ pts: seg(cx - half * 0.92, y, cx + half * 0.92, y, bulge * (o.dir ?? 1), 6), o: { simple: true, width: 0.75, start: 'soft', end: 'flick', speed: 1.3, wobble: 0.5, alpha: o.alpha } })
-  }
-  ink.lines(lines, o.pen ?? 'ink.fine')
-}
-
 export function highlight(ink: Ink, x: number, y: number, w: number, h: number, o: { pen?: PenName | PenSpec; k?: number; opts?: StrokeOpts } = {}): void {
   const rng = ink.next('hl')
   const cy = y + h / 2
@@ -283,20 +155,4 @@ export function highlight(ink: Ink, x: number, y: number, w: number, h: number, 
   const mid: Pt = [(x1 + x2) / 2, (y1 + y2) / 2 + rng.gauss(0, 0.04 * h)]
   const P = resolvePen(o.pen ?? 'hi')
   ink.stroke([[x1, y1], mid, [x2, y2]], P, { width: (h * (o.k ?? 0.86)) / P.W, end: rng() < 0.5 ? 'flick' : 'pool', start: 'pool', wobble: 0.6, ...o.opts })
-}
-
-export interface PolyFillOpts {
-  alpha?: number
-  mis?: number | false
-  angle?: number
-  pw?: number
-  overlap?: number
-}
-
-export function polyFill(ink: Ink, poly: Pt[], color: PaintKey, o: PolyFillOpts = {}): Offset {
-  return solidFill(ink, poly, color, { alpha: clamp((o.alpha ?? 0.5) * 1.8, 0.3, 0.96) })
-}
-
-export function sweepFill(ink: Ink, x: number, y: number, w: number, h: number, color: PaintKey, o: { alpha?: number; pw?: number; overlap?: number; mis?: number | false } = {}): Offset {
-  return solidFill(ink, [[x, y], [x + w, y], [x + w, y + h], [x, y + h]], color, { alpha: clamp((o.alpha ?? 0.48) * 1.9, 0.3, 0.96) })
 }

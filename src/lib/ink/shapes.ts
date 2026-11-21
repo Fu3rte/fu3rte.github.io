@@ -101,18 +101,6 @@ export function underline(ink: Ink, x: number, y: number, w: number, o: ShapeOpt
   put(ink, 'ul', (r) => underlineLines(r, x, y, w, o), 'ink', o)
 }
 
-export function strikeLines(rng: Rng, x: number, y: number, w: number, o: { double?: boolean } = {}): Line[] {
-  const tilt = rng.gauss(0, 0.012) * w
-  const x1 = x - rng.range(1, 3), x2 = x + w + rng.range(0, 3)
-  const so: StrokeOpts = { start: 'soft', end: 'flick', speed: 1.25, wobble: 0.6 }
-  const out: Line[] = [{ pts: seg(x1, y + tilt / 2, x2, y - tilt / 2, rng.gauss(0, 0.003) * w, Math.max(3, Math.ceil(w / 16))), o: so }]
-  if (o.double) out.push({ pts: seg(x1 + 2, y + 2.5, x2 - 1, y + 1.5 - tilt, 0, 6), o: so })
-  return out
-}
-export function strike(ink: Ink, x: number, y: number, w: number, o: ShapeOpts & { double?: boolean } = {}): void {
-  put(ink, 'st', (r) => strikeLines(r, x, y, w, o), 'red', o)
-}
-
 export interface BoxOpts {
   corner?: number
   loose?: number
@@ -218,17 +206,6 @@ export function arrow(ink: Ink, x1: number, y1: number, x2: number, y2: number, 
   put(ink, 'arrow', (r) => arrowLines(r, x1, y1, x2, y2, o), 'ink', o)
 }
 
-export function checkLines(rng: Rng, x: number, y: number, s: number): Line[] {
-  const a: Pt = [x + s * rng.range(0, 0.1), y + s * rng.range(0.45, 0.58)]
-  const b: Pt = [x + s * rng.range(0.32, 0.42), y + s * rng.range(0.86, 0.96)]
-  const c: Pt = [x + s * rng.range(0.9, 1.02), y + s * rng.range(0, 0.1)]
-  const mid: Pt = [b[0] + (c[0] - b[0]) * 0.45 - s * 0.05, b[1] + (c[1] - b[1]) * 0.45 + s * 0.02]
-  return [{ pts: [...seg(a[0], a[1], b[0], b[1], s * 0.03, 4), mid, c], o: { start: 'pool', end: 'flick', speed: 1.1, wobble: 0.5 } }]
-}
-export function check(ink: Ink, x: number, y: number, s: number, o: ShapeOpts = {}): void {
-  put(ink, 'check', (r) => checkLines(r, x, y, s), 'greenfelt', o)
-}
-
 export function crossLines(rng: Rng, x: number, y: number, s: number): Line[] {
   const j = (): number => rng.gauss(0, 0.04 * s)
   return [
@@ -238,52 +215,6 @@ export function crossLines(rng: Rng, x: number, y: number, s: number): Line[] {
 }
 export function cross(ink: Ink, x: number, y: number, s: number, o: ShapeOpts = {}): void {
   put(ink, 'cross', (r) => crossLines(r, x, y, s), 'redfelt', o)
-}
-
-export function asteriskLines(rng: Rng, cx: number, cy: number, s: number): Line[] {
-  const out: Line[] = []
-  for (let k = 0; k < 3; k++) {
-    const a = Math.PI / 2 + (k * Math.PI) / 3 + rng.gauss(0, 0.07)
-    const l = 0.5 * s * rng.range(0.85, 1)
-    const c: Pt = [cx + rng.gauss(0, 0.03 * s), cy + rng.gauss(0, 0.03 * s)]
-    out.push({ pts: seg(c[0] - Math.cos(a) * l, c[1] - Math.sin(a) * l, c[0] + Math.cos(a) * l, c[1] + Math.sin(a) * l, rng.gauss(0, 0.3), 4), o: { end: 'flick', wobble: 0.4 } })
-  }
-  return out
-}
-export function asterisk(ink: Ink, cx: number, cy: number, s: number, o: ShapeOpts = {}): void {
-  put(ink, 'ast', (r) => asteriskLines(r, cx, cy, s), 'redfelt', o)
-}
-
-export function spiralLines(rng: Rng, cx: number, cy: number, r0: number, o: { turns?: number; steps?: number; shrink?: number } = {}): Line[] {
-  const turns = o.turns ?? 2.3
-  const steps = o.steps ?? 26
-  const a0 = rng.range(0, TAU)
-  const pts: Pt[] = []
-  for (let i = 0; i <= steps; i++) {
-    const t = i / steps
-    const r = r0 * (1 - (o.shrink ?? 0.78) * t)
-    const a = a0 + t * turns * TAU + rng.range(0, 0.2)
-    pts.push([cx + Math.cos(a) * r, cy + Math.sin(a) * r * 0.94])
-  }
-  return [{ pts, o: { end: 'pool', start: 'soft', wobble: 0.3, speed: 0.9 } }]
-}
-export function spiral(ink: Ink, cx: number, cy: number, r: number, o: ShapeOpts & { turns?: number; steps?: number; shrink?: number } = {}): void {
-  put(ink, 'spiral', (rg) => spiralLines(rg, cx, cy, r, o), 'ink', o)
-}
-
-export function starLines(rng: Rng, cx: number, cy: number, r: number): Line[] {
-  const pts: Pt[] = []
-  const a0 = -Math.PI / 2 + rng.gauss(0, 0.06)
-  for (let i = 0; i <= 5; i++) {
-    const a = a0 + ((i * 2) % 5) * (TAU / 5)
-    const rr = r * rng.range(0.9, 1.05)
-    pts.push([cx + Math.cos(a) * rr, cy + Math.sin(a) * rr])
-  }
-  pts.push([pts[0][0] + rng.gauss(0, 0.05 * r) + 0.1 * r, pts[0][1] + 0.18 * r])
-  return [{ pts, o: { poly: true, wobble: 0.5, end: 'flick' } }]
-}
-export function star(ink: Ink, cx: number, cy: number, r: number, o: ShapeOpts = {}): void {
-  put(ink, 'star', (rg) => starLines(rg, cx, cy, r), 'ink', o)
 }
 
 export function tallyLines(rng: Rng, x: number, y: number, count: number, gh: number): { lines: Line[]; width: number } {
@@ -303,11 +234,6 @@ export function tallyLines(rng: Rng, x: number, y: number, count: number, gh: nu
     gx += gw
   }
   return { lines, width: gx - x }
-}
-export function tally(ink: Ink, x: number, y: number, count: number, gh: number, o: ShapeOpts = {}): number {
-  const t = tallyLines(ink.next('tally'), x, y, count, gh)
-  ink.lines(t.lines, o.pen ?? 'ink', o.opts)
-  return t.width
 }
 
 export function bracketLines(rng: Rng, x: number, y: number, h: number, o: { kind?: 'square' | 'curly' | 'round'; dir?: 1 | -1 } = {}): Line[] {
@@ -337,69 +263,6 @@ export function bracketLines(rng: Rng, x: number, y: number, h: number, o: { kin
     pts.push([x + d * tip * (1 - Math.sin(Math.PI * t)), y + h * t])
   }
   return [{ pts, o: so }]
-}
-export function bracket(ink: Ink, x: number, y: number, h: number, o: ShapeOpts & { kind?: 'square' | 'curly' | 'round'; dir?: 1 | -1 } = {}): void {
-  put(ink, 'br', (r) => bracketLines(r, x, y, h, o), 'pencil', o)
-}
-
-export function cloudLines(rng: Rng, cx: number, cy: number, w: number, h: number, o: { bulge?: number } = {}): Line[] {
-  const rx = w / 2, ry = h / 2
-  const bumps = clamp(Math.round((Math.PI * (rx + ry)) / clamp(0.32 * Math.min(w, h), 9, 26)), 6, 40)
-  const a0 = -Math.PI / 2 + rng.gauss(0, 0.3)
-  const sizes = Array.from({ length: bumps }, () => rng.range(0.75, 1.25))
-  const tot = sizes.reduce((a, b) => a + b, 0)
-  const pts: Pt[] = []
-  let a = a0
-  const P = (ang: number): Pt => [cx + Math.cos(ang) * rx, cy + Math.sin(ang) * ry]
-  for (let i = 0; i < bumps + 1; i++) {
-    const i2 = i % bumps
-    const da = (sizes[i2] / tot) * TAU
-    const p0 = P(a), p1 = P(a + da)
-    const L = Math.hypot(p1[0] - p0[0], p1[1] - p0[1])
-    const bulge = Math.min(0.42 * L, o.bulge ?? L * 0.3) * rng.range(0.8, 1.1)
-    const nx = (p0[0] + p1[0]) / 2 - cx, ny = (p0[1] + p1[1]) / 2 - cy
-    const nl = Math.hypot(nx, ny) || 1
-    for (let k = i === 0 ? 0 : 1; k <= 6; k++) {
-      const t = k / 6, b = Math.sin(Math.PI * t) * bulge
-      pts.push([p0[0] + (p1[0] - p0[0]) * t + (nx / nl) * b, p0[1] + (p1[1] - p0[1]) * t + (ny / nl) * b])
-    }
-    a += da
-  }
-  pts.push([pts[1][0] + 1.5, pts[1][1] + 0.6])
-  return [{ pts, o: { end: 'flick', wobble: 0.5, speed: 1.05 } }]
-}
-export function cloud(ink: Ink, cx: number, cy: number, w: number, h: number, o: ShapeOpts & { bulge?: number } = {}): void {
-  put(ink, 'cloud', (r) => cloudLines(r, cx, cy, w, h, o), 'pencil', o)
-}
-
-export function scribbleLines(rng: Rng, x: number, y: number, w: number, h: number): Line[] {
-  const step = Math.max(2.2, 0.28 * h)
-  const nn = Math.max(3, Math.round(w / step))
-  const lean = rng.gauss(0.18, 0.08) * h
-  const pts: Pt[] = []
-  for (let k = 0; k <= nn; k++) {
-    const up = k % 2 === 0
-    pts.push([clamp(x + (k / nn) * w + rng.gauss(0, 0.18 * step) + (up ? -lean / 2 : lean / 2), x, x + w), up ? y + rng.range(0, 0.2) * h : y + rng.range(0.8, 1) * h])
-  }
-  return [{ pts, o: { end: 'flick', speed: 1.3, wobble: 0.6 } }]
-}
-export function scribble(ink: Ink, x: number, y: number, w: number, h: number, o: ShapeOpts = {}): void {
-  put(ink, 'scrib', (r) => scribbleLines(r, x, y, w, h), 'red', o)
-}
-
-export function burstLines(rng: Rng, cx: number, cy: number, r: number, o: { rays?: number } = {}): Line[] {
-  const k = o.rays ?? 10
-  const a0 = rng.range(0, TAU)
-  const out: Line[] = []
-  for (let i = 0; i < k; i++) {
-    const a = a0 + (i / k) * TAU + rng.gauss(0, 0.07)
-    const r0 = r * rng.range(0.42, 0.52), r1 = r * (i % 2 ? rng.range(0.78, 0.9) : rng.range(0.98, 1.1))
-    out.push({ pts: seg(cx + Math.cos(a) * r0, cy + Math.sin(a) * r0, cx + Math.cos(a) * r1, cy + Math.sin(a) * r1, rng.gauss(0, 0.25), 3), o: { end: 'flick', start: 'soft', wobble: 0.3, speed: 1.2 } })
-  }
-  return out
-}
-export function burst(ink: Ink, cx: number, cy: number, r: number, o: ShapeOpts & { rays?: number } = {}): void {
-  put(ink, 'burst', (rg) => burstLines(rg, cx, cy, r, o), 'redfelt', o)
 }
 
 export interface FocusRingOpts {

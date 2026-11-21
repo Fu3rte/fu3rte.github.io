@@ -4,6 +4,7 @@ import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import { Button } from '@/components/ui/button';
 import { Separator } from '@/components/ui/separator';
 import { Underline } from '@/components/ui/underline';
+import { useReducedMotion } from '@/hooks/use-live-motion';
 import { setLang, t, useLanguage } from '../shared/i18n';
 import { Link, useRouter } from '../shared/router';
 import { matchRoute, routes } from './routes';
@@ -64,86 +65,66 @@ export default function SiteHeader() {
   const active = matchRoute(path).key;
   const [open, setOpen] = useState(false);
   const [sheetRequested, setSheetRequested] = useState(false);
+  const [floating, setFloating] = useState(
+    () => typeof window !== 'undefined' && window.scrollY > 48,
+  );
 
-  const dockedRef = useRef<HTMLDivElement>(null);
-  const capsuleRef = useRef<HTMLDivElement>(null);
-  const floatingRef = useRef(false);
-  const setFloatingRef = useRef<((floating: boolean, immediate?: boolean) => void) | null>(null);
+  const barRef = useRef<HTMLDivElement>(null);
+  const reducedMotion = useReducedMotion(barRef);
+  const reducedMotionRef = useRef(reducedMotion);
+  reducedMotionRef.current = reducedMotion;
+
+  const floatingRef = useRef(floating);
+  const setFloatingRef = useRef<((next: boolean, immediate?: boolean) => void) | null>(null);
 
   const toggleLanguage = () => setLang(language === 'zh' ? 'en' : 'zh');
   const toggleMenu = () => {
     setSheetRequested(true);
-    setOpen(prev => !prev);
+    setOpen((prev) => !prev);
   };
 
   useEffect(() => {
-    const docked = dockedRef.current;
-    const capsule = capsuleRef.current;
-    if (!docked || !capsule) return;
+    const bar = barRef.current;
+    if (!bar) return;
 
-    const applyFloating = (floating: boolean, immediate = false) => {
-      floatingRef.current = floating;
-      const reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-      const instant = immediate || reduced;
+    const applyFloating = (next: boolean, immediate = false) => {
+      const changed = floatingRef.current !== next;
+      floatingRef.current = next;
+      setFloating(next);
 
-      docked.inert = floating;
-      docked.setAttribute('aria-hidden', floating ? 'true' : 'false');
-      capsule.inert = !floating;
-      capsule.setAttribute('aria-hidden', floating ? 'false' : 'true');
-
-      gsap.killTweensOf([docked, capsule]);
-
-      if (instant) {
-        gsap.set(docked, {
-          y: floating ? -8 : 0,
-          autoAlpha: floating ? 0 : 1,
-          force3D: true,
-        });
-        gsap.set(capsule, {
-          y: floating ? 0 : -12,
-          scale: floating ? 1 : 0.9,
-          autoAlpha: floating ? 1 : 0,
-          force3D: true,
-        });
+      gsap.killTweensOf(bar);
+      if (immediate || reducedMotionRef.current || !changed) {
+        gsap.set(bar, { clearProps: 'transform,opacity' });
         return;
       }
 
-      if (floating) {
-        gsap.to(docked, {
-          y: -8,
-          autoAlpha: 0,
-          duration: 0.24,
-          ease: 'power2.out',
-          force3D: true,
-          overwrite: 'auto',
-        });
-        gsap.to(capsule, {
-          y: 0,
-          scale: 1,
-          autoAlpha: 1,
-          duration: 0.34,
-          ease: 'back.out(1.4)',
-          force3D: true,
-          overwrite: 'auto',
-        });
+      if (next) {
+        gsap.fromTo(
+          bar,
+          { y: -10, scale: 0.92 },
+          {
+            y: 0,
+            scale: 1,
+            duration: 0.34,
+            ease: 'back.out(1.4)',
+            force3D: true,
+            overwrite: 'auto',
+            clearProps: 'transform',
+          },
+        );
       } else {
-        gsap.to(capsule, {
-          y: -12,
-          scale: 0.9,
-          autoAlpha: 0,
-          duration: 0.22,
-          ease: 'power2.out',
-          force3D: true,
-          overwrite: 'auto',
-        });
-        gsap.to(docked, {
-          y: 0,
-          autoAlpha: 1,
-          duration: 0.28,
-          ease: 'power3.out',
-          force3D: true,
-          overwrite: 'auto',
-        });
+        gsap.fromTo(
+          bar,
+          { y: -6 },
+          {
+            y: 0,
+            duration: 0.26,
+            ease: 'power3.out',
+            force3D: true,
+            overwrite: 'auto',
+            clearProps: 'transform',
+          },
+        );
       }
     };
 
@@ -160,12 +141,8 @@ export default function SiteHeader() {
     return () => {
       setFloatingRef.current = null;
       trigger.kill();
-      gsap.killTweensOf([docked, capsule]);
-      docked.inert = false;
-      docked.removeAttribute('aria-hidden');
-      capsule.inert = false;
-      capsule.removeAttribute('aria-hidden');
-      gsap.set([docked, capsule], { clearProps: 'all' });
+      gsap.killTweensOf(bar);
+      gsap.set(bar, { clearProps: 'all' });
     };
   }, []);
 
@@ -180,94 +157,41 @@ export default function SiteHeader() {
   return (
     <>
       <div className="h-14" aria-hidden="true" />
-      <header className="site-header pointer-events-none fixed inset-x-0 top-0 z-40">
-        <div ref={dockedRef} className="pointer-events-auto w-full">
-          <div className="mx-auto flex h-14 w-full items-center border-b border-pencil-mark/40 bg-paper/96 px-5 sm:px-8">
-            <div className="mx-auto flex w-full max-w-6xl items-center justify-between gap-4">
-              <Link
-                className="inline-flex shrink-0 cursor-pointer items-center gap-2 font-script text-xl font-bold tracking-tight text-ink no-underline transition-transform hover:-rotate-1"
-                to="/"
-                aria-label={t('nav.home')}
-              >
-                <StickyLogo className="size-6 shrink-0" />
-                <span className="whitespace-nowrap">{t('brand')}</span>
-              </Link>
-
-              <nav
-                className="hidden items-center gap-5 text-[16px] md:flex"
-                aria-label={t('nav.aria')}
-              >
-                {routes.map((route) => {
-                  const isCurrent = route.key === active;
-                  return (
-                    <Link
-                      key={route.key}
-                      to={route.path}
-                      aria-current={isCurrent ? 'page' : undefined}
-                      className={`cursor-pointer whitespace-nowrap font-hand font-bold no-underline transition-colors ${
-                        isCurrent ? 'text-ink' : 'text-ink-muted hover:text-ink'
-                      }`}
-                    >
-                      {isCurrent ? (
-                        <Underline kind="double" tone="marker" seed={`nav-${route.key}`}>
-                          {t(`nav.${route.key}`)}
-                        </Underline>
-                      ) : (
-                        t(`nav.${route.key}`)
-                      )}
-                    </Link>
-                  );
-                })}
-              </nav>
-
-              <div className="flex shrink-0 items-center gap-2">
-                <Button
-                  type="button"
-                  variant="outline"
-                  size="sm"
-                  seed="lang-toggle"
-                  aria-label={language === 'zh' ? 'Switch to English' : '切换到中文'}
-                  onClick={toggleLanguage}
-                  className="cursor-pointer font-mono text-xs font-bold tracking-wider"
-                >
-                  {language === 'zh' ? 'EN' : '中'}
-                </Button>
-
-                <Button
-                  type="button"
-                  variant="outline"
-                  size="icon-sm"
-                  seed="mobile-menu-trigger"
-                  onClick={toggleMenu}
-                  className="cursor-pointer md:hidden"
-                  aria-expanded={open}
-                  aria-label={t(open ? 'nav.close' : 'nav.menu')}
-                >
-                  <MenuGlyph />
-                </Button>
-              </div>
-            </div>
-          </div>
-          <div className="pointer-events-none">
-            <Separator variant="pencil" seed="header-rule" className="opacity-80" />
-          </div>
-        </div>
-
-        <div className="pointer-events-none fixed inset-x-0 top-2.5 flex justify-center">
+      <header
+        className={`site-header pointer-events-none fixed inset-x-0 z-40 flex flex-col items-center ${
+          floating ? 'top-2.5' : 'top-0'
+        }`}
+      >
+        <div
+          ref={barRef}
+          className={
+            floating
+              ? 'pointer-events-auto flex h-[38px] w-fit max-w-[calc(100vw-24px)] items-center gap-3 rounded-full border-[1.75px] border-ink bg-paper/98 px-3.5 shadow-[0_8px_20px_-8px_rgba(30,41,59,0.22),2px_2px_0_#1d242c]'
+              : 'pointer-events-auto flex h-14 w-full items-center border-b border-pencil-mark/40 bg-paper/96 px-5 sm:px-8'
+          }
+        >
           <div
-            ref={capsuleRef}
-            className="pointer-events-auto flex h-[38px] w-fit max-w-[calc(100vw-24px)] items-center gap-3 rounded-full border-[1.75px] border-ink bg-paper/98 px-3.5 shadow-[0_8px_20px_-8px_rgba(30,41,59,0.22),2px_2px_0_#1d242c]"
+            className={
+              floating
+                ? 'flex items-center gap-3'
+                : 'mx-auto flex w-full max-w-6xl items-center justify-between gap-4'
+            }
           >
             <Link
-              className="inline-flex shrink-0 cursor-pointer items-center text-ink no-underline transition-transform hover:-rotate-1"
+              className="inline-flex shrink-0 cursor-pointer items-center gap-2 font-script text-xl font-bold tracking-tight text-ink no-underline transition-transform hover:-rotate-1"
               to="/"
               aria-label={t('nav.home')}
             >
-              <StickyLogo className="size-5 shrink-0" />
+              <StickyLogo className={floating ? 'size-5 shrink-0' : 'size-6 shrink-0'} />
+              <span className={floating ? 'sr-only' : 'whitespace-nowrap'}>{t('brand')}</span>
             </Link>
 
             <nav
-              className="hidden items-center gap-3 text-[14px] md:flex"
+              className={
+                floating
+                  ? 'hidden items-center gap-3 text-[14px] md:flex'
+                  : 'hidden items-center gap-5 text-[16px] md:flex'
+              }
               aria-label={t('nav.aria')}
             >
               {routes.map((route) => {
@@ -278,23 +202,27 @@ export default function SiteHeader() {
                     to={route.path}
                     aria-current={isCurrent ? 'page' : undefined}
                     className={`cursor-pointer whitespace-nowrap font-hand font-bold no-underline transition-colors ${
-                      isCurrent
-                        ? 'border-b-2 border-marker pb-0.5 text-ink'
-                        : 'text-ink-muted hover:text-ink'
+                      isCurrent ? 'text-ink' : 'text-ink-muted hover:text-ink'
                     }`}
                   >
-                    {t(`nav.${route.key}`)}
+                    {isCurrent ? (
+                      <Underline kind="double" tone="marker" seed={`nav-${route.key}`}>
+                        {t(`nav.${route.key}`)}
+                      </Underline>
+                    ) : (
+                      t(`nav.${route.key}`)
+                    )}
                   </Link>
                 );
               })}
             </nav>
 
-            <div className="flex shrink-0 items-center gap-1.5">
+            <div className={floating ? 'flex shrink-0 items-center gap-1.5' : 'flex shrink-0 items-center gap-2'}>
               <Button
                 type="button"
                 variant="outline"
-                size="xs"
-                seed="capsule-lang-toggle"
+                size={floating ? 'xs' : 'sm'}
+                seed="lang-toggle"
                 aria-label={language === 'zh' ? 'Switch to English' : '切换到中文'}
                 onClick={toggleLanguage}
                 className="cursor-pointer font-mono text-xs font-bold tracking-wider"
@@ -305,8 +233,8 @@ export default function SiteHeader() {
               <Button
                 type="button"
                 variant="outline"
-                size="icon-xs"
-                seed="capsule-mobile-menu-trigger"
+                size={floating ? 'icon-xs' : 'icon-sm'}
+                seed="mobile-menu-trigger"
                 onClick={toggleMenu}
                 className="cursor-pointer md:hidden"
                 aria-expanded={open}
@@ -317,6 +245,12 @@ export default function SiteHeader() {
             </div>
           </div>
         </div>
+
+        {!floating ? (
+          <div className="pointer-events-none w-full">
+            <Separator variant="pencil" seed="header-rule" className="opacity-80" />
+          </div>
+        ) : null}
       </header>
 
       {sheetRequested ? (

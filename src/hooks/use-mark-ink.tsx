@@ -155,6 +155,54 @@ function detectDir(el: Element): "ltr" | "rtl" | null {
   return d === "rtl" || d === "ltr" ? d : null
 }
 
+let sharedResizeObserver: ResizeObserver | null = null
+const resizeWatchers = new WeakMap<Element, Set<() => void>>()
+
+function observeResize(el: Element, cb: () => void): () => void {
+  if (typeof ResizeObserver === "undefined") return () => {}
+  sharedResizeObserver ??= new ResizeObserver((entries) => {
+    for (const e of entries) resizeWatchers.get(e.target)?.forEach((f) => f())
+  })
+  let set = resizeWatchers.get(el)
+  if (!set) {
+    resizeWatchers.set(el, (set = new Set()))
+    sharedResizeObserver.observe(el)
+  }
+  set.add(cb)
+  return () => {
+    set.delete(cb)
+    if (!set.size) {
+      resizeWatchers.delete(el)
+      sharedResizeObserver?.unobserve(el)
+    }
+  }
+}
+
+const fontWatchers = new Set<() => void>()
+let fontListenerBound = false
+
+function notifyFontWatchers(): void {
+  for (const cb of fontWatchers) cb()
+}
+
+function observeFonts(cb: () => void): () => void {
+  const fonts = typeof document !== "undefined" ? document.fonts : undefined
+  if (!fonts) return () => {}
+  fontWatchers.add(cb)
+  if (!fontListenerBound) {
+    fontListenerBound = true
+    fonts.addEventListener?.("loadingdone", notifyFontWatchers)
+    void fonts.ready?.then(notifyFontWatchers)
+  }
+  return () => {
+    fontWatchers.delete(cb)
+    if (!fontWatchers.size && fontListenerBound) {
+      fontListenerBound = false
+      fonts.removeEventListener?.("loadingdone", notifyFontWatchers)
+    }
+  }
+}
+
 export interface MarkPhaseState {
   phase: MarkPhase
   phaseRef: React.RefCallback<HTMLElement>
@@ -226,24 +274,16 @@ export function useMarkInk<P extends LineParams>(o: UseMarkInkOptions<P>): UseMa
       const d = detectDir(el)
       if (d) setHostDir(d)
       if (!hasProvider) ensureInkDefs()
-      const stops: Array<() => void> = []
-      if (typeof ResizeObserver !== "undefined") {
-        const ro = new ResizeObserver(update)
-        ro.observe(el)
-        const parent = boxParent(el)
-        if (parent !== el) ro.observe(parent)
-        stops.push(() => ro.disconnect())
-      }
+      const stops: Array<() => void> = [
+        observeResize(el, update),
+        observeFonts(update),
+      ]
+      const parent = boxParent(el)
+      if (parent !== el) stops.push(observeResize(parent, update))
       if (typeof MutationObserver !== "undefined") {
         const mo = new MutationObserver(update)
         mo.observe(el, { childList: true, characterData: true, subtree: true })
         stops.push(() => mo.disconnect())
-      }
-      const fonts = typeof document !== "undefined" ? document.fonts : undefined
-      if (fonts) {
-        fonts.addEventListener?.("loadingdone", update)
-        void fonts.ready?.then(update)
-        stops.push(() => fonts.removeEventListener?.("loadingdone", update))
       }
       return () => {
         for (const s of stops) s()

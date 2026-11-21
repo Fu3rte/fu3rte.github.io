@@ -6,6 +6,7 @@ import { Button } from '@/components/ui/button';
 import { Handwritten } from '@/components/ui/handwritten';
 import { Paper } from '@/components/ui/paper';
 import { Underline } from '@/components/ui/underline';
+import { useReducedMotion } from '@/hooks/use-live-motion';
 import { t, tObject, useLanguage } from '../../shared/i18n';
 
 type SwatchItem = {
@@ -152,13 +153,13 @@ export default function SketchHero() {
   const [stampIndex, setStampIndex] = useState(0);
   const [activeSwatch, setActiveSwatch] = useState<number>(0);
   const stampRef = useRef<HTMLButtonElement | null>(null);
+  const reducedMotion = useReducedMotion(stampRef);
   const dateLabel = formatLocalDate();
 
   const handleStamp = () => {
     setStampIndex((prev) => (prev + 1) % STAMP_EMBLEMS.length);
     const el = stampRef.current;
-    if (!el) return;
-    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+    if (!el || reducedMotion) return;
     gsap.fromTo(
       el,
       { scale: 1.25, rotate: -14 },

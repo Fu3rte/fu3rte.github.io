@@ -10,8 +10,9 @@ import { Underline } from '@/components/ui/underline';
 import { useReducedMotion } from '@/hooks/use-live-motion';
 import type { TapeKind } from '@/lib/ink/paper/props';
 import { t, tObject, useLanguage } from '../../shared/i18n';
-import { initMotion } from '../../shared/motion';
+import { initPhotosMotion } from '../../shared/motion';
 import { Link } from '../../shared/router';
+import FlippablePolaroid, { type PhotoDetail } from './FlippablePolaroid';
 import photo01 from './assets/photo-01.webp';
 import photo02 from './assets/photo-02.webp';
 import photo03 from './assets/photo-03.webp';
@@ -22,12 +23,6 @@ import photo07 from './assets/photo-07.webp';
 import photo08 from './assets/photo-08.webp';
 import photo09 from './assets/photo-09.webp';
 import photo10 from './assets/photo-10.webp';
-
-type PhotoDetail = {
-  place: string;
-  mood: string;
-  note: string;
-};
 
 type GalleryItem = {
   src: string;
@@ -51,7 +46,7 @@ const GALLERY_ITEMS: readonly GalleryItem[] = [
 
 export default function PhotosPage() {
   useLanguage();
-  useEffect(initMotion, []);
+  useEffect(initPhotosMotion, []);
 
   const reducedMotion = useReducedMotion();
   const [selectedIndex, setSelectedIndex] = useState<number | null>(null);
@@ -261,96 +256,20 @@ export default function PhotosPage() {
                 className="flex w-full max-w-[380px] flex-col items-center gap-4"
               >
                 <div ref={lightboxCardRef} className="w-full">
-                  <div className="polaroid-flip-scene w-full">
-                    <div
-                      onClick={() => setLightboxFlipped((prev) => !prev)}
-                      className={`polaroid-flip-inner cursor-pointer ${
-                        lightboxFlipped ? 'is-flipped' : ''
-                      } ${reducedMotion ? 'transition-none!' : ''}`}
-                    >
-                      <div className={`polaroid-face relative w-full ${lightboxFlipped ? 'pointer-events-none' : ''}`}>
-                        <Polaroid
-                          as="div"
-                          tape="top"
-                          tapeKind={selectedItem.tapeKind}
-                          tilt={false}
-                          seed={`lightbox-polaroid-${selectedNum}`}
-                          className="w-full shadow-xl"
-                        >
-                          <PolaroidImage date={`#${selectedNum}`}>
-                            <img
-                              src={selectedItem.src}
-                              alt={`${t('photos.alt')} ${selectedNum}`}
-                              width={760}
-                              height={760}
-                              loading="eager"
-                              decoding="async"
-                              draggable={false}
-                            />
-                          </PolaroidImage>
-                          <PolaroidCaption className="text-[1.8rem]">
-                            {selectedCaption}
-                          </PolaroidCaption>
-                        </Polaroid>
-                      </div>
-
-                      <div
-                        aria-hidden={!lightboxFlipped}
-                        className={`polaroid-face-back flex flex-col justify-between border-2 border-ink/80 bg-card p-5 text-ink shadow-xl sm:p-6 ${
-                          lightboxFlipped ? '' : 'pointer-events-none'
-                        }`}
-                      >
-                        <div className="flex flex-wrap items-center justify-between gap-2 border-b border-dashed border-pencil-mark/60 pb-3">
-                          <span className="font-mono text-xs font-bold tracking-wider text-ink-muted">
-                            #{selectedNum} / 10
-                          </span>
-                          {selectedDetail.place ? (
-                            <span className="inline-block -rotate-2 rounded-xs border-[1.5px] border-dashed border-marker/85 bg-marker/10 px-2.5 py-0.5 font-mono text-xs font-bold tracking-wider text-orange-text uppercase">
-                              {selectedDetail.place}
-                            </span>
-                          ) : null}
-                        </div>
-
-                        <div className="my-auto flex min-h-0 flex-col gap-2.5 py-4">
-                          {selectedDetail.mood ? (
-                            <span className="font-mono text-xs font-semibold tracking-wide text-ink-you">
-                              {selectedDetail.mood}
-                            </span>
-                          ) : null}
-                          <p className="font-script text-[1.35rem] leading-relaxed font-semibold text-ink sm:text-[1.55rem]">
-                            {selectedDetail.note || selectedCaption}
-                          </p>
-                        </div>
-
-                        <div className="flex items-end justify-between gap-3 border-t border-dashed border-pencil-mark/45 pt-3">
-                          <span className="truncate font-mono text-xs text-ink-muted">
-                            {selectedCaption}
-                          </span>
-                          <svg
-                            aria-hidden="true"
-                            viewBox="0 0 76 22"
-                            className="h-5 w-16 shrink-0 text-ink-you"
-                            fill="none"
-                          >
-                            <path
-                              d="M3 14C7 6 11 6 14 13C17 19 21 5 26 11C30 16 34 7 39 12C43 16 48 9 54 11C60 13 66 8 73 10"
-                              stroke="currentColor"
-                              strokeWidth="1.8"
-                              strokeLinecap="round"
-                              strokeLinejoin="round"
-                            />
-                            <path
-                              d="M12 18C28 16.5 48 16 68 17"
-                              stroke="var(--ll-marker)"
-                              strokeWidth="1.4"
-                              strokeLinecap="round"
-                              opacity="0.75"
-                            />
-                          </svg>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
+                  <FlippablePolaroid
+                    src={selectedItem.src}
+                    alt={`${t('photos.alt')} ${selectedNum}`}
+                    frameNum={selectedNum}
+                    caption={selectedCaption}
+                    detail={selectedDetail}
+                    tapeKind={selectedItem.tapeKind}
+                    seed={`lightbox-polaroid-${selectedNum}`}
+                    flipped={lightboxFlipped}
+                    reducedMotion={reducedMotion}
+                    loading="eager"
+                    variant="lightbox"
+                    onFlipToggle={() => setLightboxFlipped((prev) => !prev)}
+                  />
                 </div>
 
                 <div className="flex w-full flex-wrap items-center justify-between gap-2 rounded-md border-2 border-ink bg-paper px-3 py-2 shadow-lg">

@@ -2,7 +2,9 @@ import { useEffect, useRef, useState } from 'react';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { Paper } from '@/components/ui/paper';
+import { useReducedMotion } from '@/hooks/use-live-motion';
 import { t, useLanguage } from '../../shared/i18n';
+import SectionHeading from './SectionHeading';
 import { PROJECTS } from './projects';
 
 const SKILLS = [
@@ -64,9 +66,9 @@ export default function StackBench({ activeSkill, onSelect }: Props) {
   const actionsRef = useRef<BenchActions | null>(null);
   const ensureInitRef = useRef<(() => void) | null>(null);
   const pendingHopRef = useRef(false);
+  const hasHoppedRef = useRef(false);
 
-  const reduced =
-    typeof window !== 'undefined' && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  const reduced = useReducedMotion(stage);
   const related = activeSkill ? PROJECTS.filter((project) => project.tech.includes(activeSkill)) : [];
 
   useEffect(() => {
@@ -78,7 +80,9 @@ export default function StackBench({ activeSkill, onSelect }: Props) {
     const paper = paperRef.current;
     if (!paper || reduced) return;
     const onEnter = () => {
+      if (hasHoppedRef.current) return;
       if (actionsRef.current) {
+        hasHoppedRef.current = true;
         actionsRef.current.hopAll?.();
       } else {
         pendingHopRef.current = true;
@@ -333,8 +337,9 @@ export default function StackBench({ activeSkill, onSelect }: Props) {
         if (floatingRef.current) {
           actionsRef.current.setFloating(true);
         }
-        if (pendingHopRef.current) {
+        if (pendingHopRef.current && !hasHoppedRef.current) {
           pendingHopRef.current = false;
+          hasHoppedRef.current = true;
           actionsRef.current.hopAll?.();
         }
 
@@ -467,6 +472,10 @@ export default function StackBench({ activeSkill, onSelect }: Props) {
 
         const observer = new IntersectionObserver((entries) => {
           visible = entries[0]?.isIntersecting ?? false;
+          if (visible && !hasHoppedRef.current) {
+            hasHoppedRef.current = true;
+            actionsRef.current?.hopAll?.();
+          }
           updateLoop();
         });
         observer.observe(host);
@@ -555,107 +564,118 @@ export default function StackBench({ activeSkill, onSelect }: Props) {
   }, [reduced]);
 
   return (
-    <Paper
-      ref={paperRef}
-      stock="paper"
-      tape="corner"
-      tapeKind="clear"
-      tilt={0.35}
-      seed="lab-sticker-tray"
-      data-st="paper-drop"
-      data-st-lab="stack"
-      className="flex flex-col gap-4 p-5 pt-8 sm:p-7"
-    >
-      <div className="flex flex-wrap items-center justify-between gap-3">
-        <h3 className="font-script text-2xl font-bold text-ink">{t('lab.stackTitle')}</h3>
-        <div className="flex flex-wrap items-center gap-2">
-          <Button
-            type="button"
-            variant="outline"
-            size="xs"
-            seed="stack-shake-btn"
-            className="cursor-pointer"
-            onClick={() => {
-              ensureInitRef.current?.();
-              actionsRef.current?.scatter();
-            }}
-          >
-            {t('lab.stackShake')}
-          </Button>
-          <Button
-            type="button"
-            variant={floating ? 'secondary' : 'outline'}
-            size="xs"
-            seed="stack-float-btn"
-            className="cursor-pointer"
-            aria-pressed={floating}
-            onClick={() => {
-              ensureInitRef.current?.();
-              setFloating((prev) => !prev);
-            }}
-          >
-            {t(floating ? 'lab.stackDrop' : 'lab.stackFloat')}
-          </Button>
-        </div>
-      </div>
+    <section id="lab" className="section mx-auto max-w-6xl px-5 py-16 sm:px-8 sm:py-24">
+      <SectionHeading
+        index="03"
+        eyebrow={t('lab.eyebrow')}
+        title={t('lab.title')}
+        intro={t('lab.intro')}
+        badgeTone="bubblegum"
+        underlineTone="green"
+      />
 
-      <div
-        className="stack-stage a3-drafting-tray rounded-lg border-2 border-ink"
-        ref={stage}
-        data-motion={reduced ? 'static' : 'physics'}
+      <Paper
+        ref={paperRef}
+        stock="paper"
+        tape="corner"
+        tapeKind="clear"
+        tilt={0.35}
+        seed="lab-sticker-tray"
+        data-st="paper-drop"
+        data-st-lab="stack"
+        className="flex flex-col gap-4 p-5 pt-8 sm:p-7"
       >
-        <svg
-          className="pointer-events-none absolute inset-0 z-10 size-full overflow-visible"
-          aria-hidden="true"
+        <div className="flex flex-wrap items-center justify-between gap-3">
+          <h3 className="font-script text-2xl font-bold text-ink">{t('lab.stackTitle')}</h3>
+          <div className="flex flex-wrap items-center gap-2">
+            <Button
+              type="button"
+              variant="outline"
+              size="xs"
+              seed="stack-shake-btn"
+              className="cursor-pointer"
+              onClick={() => {
+                ensureInitRef.current?.();
+                actionsRef.current?.scatter();
+              }}
+            >
+              {t('lab.stackShake')}
+            </Button>
+            <Button
+              type="button"
+              variant={floating ? 'secondary' : 'outline'}
+              size="xs"
+              seed="stack-float-btn"
+              className="cursor-pointer"
+              aria-pressed={floating}
+              onClick={() => {
+                ensureInitRef.current?.();
+                setFloating((prev) => !prev);
+              }}
+            >
+              {t(floating ? 'lab.stackDrop' : 'lab.stackFloat')}
+            </Button>
+          </div>
+        </div>
+
+        <div
+          className="stack-stage a3-drafting-tray rounded-lg border-2 border-ink"
+          ref={stage}
+          data-motion={reduced ? 'static' : 'physics'}
         >
-          <line
-            ref={rubberLineRef}
-            stroke="#ee6c3b"
-            strokeWidth="2.5"
-            strokeDasharray="6 5"
-            strokeLinecap="round"
-            visibility="hidden"
-          />
-          <circle ref={rubberDotStartRef} r="4" fill="#ee6c3b" stroke="#1d242c" strokeWidth="1.5" visibility="hidden" />
-          <circle ref={rubberDotEndRef} r="4.5" fill="#fff18f" stroke="#1d242c" strokeWidth="1.5" visibility="hidden" />
-        </svg>
-
-        {SKILLS.map((skill, index) => (
-          <button
-            type="button"
-            className="stack-chip"
-            key={skill}
-            style={
-              {
-                '--chip-bg': STICKER_COLORS[index % STICKER_COLORS.length],
-                borderRadius: CHIP_RADII[index % CHIP_RADII.length],
-              } as React.CSSProperties
-            }
-            aria-pressed={activeSkill === skill}
-            onClick={() => {
-              if (movedRef.current > 8) return;
-              onSelect(activeSkill === skill ? null : skill);
-              actionsRef.current?.bounceChip(index);
-            }}
+          <svg
+            className="pointer-events-none absolute inset-0 z-10 size-full overflow-visible"
+            aria-hidden="true"
           >
-            <span className="stack-chip-dot" aria-hidden="true" />
-            <span>{skill}</span>
-          </button>
-        ))}
-      </div>
+            <line
+              ref={rubberLineRef}
+              stroke="#ee6c3b"
+              strokeWidth="2.5"
+              strokeDasharray="6 5"
+              strokeLinecap="round"
+              visibility="hidden"
+            />
+            <circle ref={rubberDotStartRef} r="4" fill="#ee6c3b" stroke="#1d242c" strokeWidth="1.5" visibility="hidden" />
+            <circle ref={rubberDotEndRef} r="4.5" fill="#fff18f" stroke="#1d242c" strokeWidth="1.5" visibility="hidden" />
+          </svg>
 
-      <div className="flex min-h-7 flex-wrap items-center gap-2 text-sm text-ink-soft" aria-live="polite">
-        {activeSkill ? (
-          <>
-            <Badge tone="lemon" size="sm" seed="stack-selected-badge" className="font-mono text-xs text-ink">
-              {activeSkill}
-            </Badge>
-            <span>
-              {related.length > 0 ? related.map((project) => project.name).join(' · ') : t('lab.noMatch')}
-            </span>
-          </>
-        ) : null}
-      </div>
-    </Paper>
+          {SKILLS.map((skill, index) => (
+            <button
+              type="button"
+              className="stack-chip"
+              key={skill}
+              style={
+                {
+                  '--chip-bg': STICKER_COLORS[index % STICKER_COLORS.length],
+                  borderRadius: CHIP_RADII[index % CHIP_RADII.length],
+                } as React.CSSProperties
+              }
+              aria-pressed={activeSkill === skill}
+              onClick={() => {
+                if (movedRef.current > 8) return;
+                onSelect(activeSkill === skill ? null : skill);
+                actionsRef.current?.bounceChip(index);
+              }}
+            >
+              <span className="stack-chip-dot" aria-hidden="true" />
+              <span>{skill}</span>
+            </button>
+          ))}
+        </div>
+
+        <div className="flex min-h-7 flex-wrap items-center gap-2 text-sm text-ink-soft" aria-live="polite">
+          {activeSkill ? (
+            <>
+              <Badge tone="lemon" size="sm" seed="stack-selected-badge" className="font-mono text-xs text-ink">
+                {activeSkill}
+              </Badge>
+              <span>
+                {related.length > 0 ? related.map((project) => project.name).join(' · ') : t('lab.noMatch')}
+              </span>
+            </>
+          ) : null}
+        </div>
+      </Paper>
+    </section>
   );
 }

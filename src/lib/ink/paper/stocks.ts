@@ -74,10 +74,10 @@ export function stockOf(name: string | undefined): StockDef {
 }
 
 export const TOOTH_TILES: Record<Tooth, readonly (readonly [tile: string, w: number, h: number])[]> = {
-  cold: [['fibre', 240, 240], ['relief', 192, 192], ['cloud', 720, 720]],
-  fine: [['fibre', 240, 240], ['slip', 128, 128], ['cloud', 720, 720]],
-  kraft: [['fibre', 240, 240], ['kraft', 192, 96], ['cloud', 720, 720]],
-  none: [['cloud', 720, 720]],
+  cold: [['relief', 192, 192]],
+  fine: [['slip', 128, 128]],
+  kraft: [['kraft', 192, 96]],
+  none: [],
 }
 
 export type CssDecls = Record<string, string>

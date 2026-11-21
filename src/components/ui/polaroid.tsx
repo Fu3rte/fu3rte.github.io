@@ -3,7 +3,7 @@
 import * as React from "react"
 
 import { Paper, type PaperProps } from "@/components/ui/paper"
-import { useInk, useMergedRef } from "@/lib/ink/react"
+import { useInk } from "@/lib/ink/react"
 import { polaroidPhotoRecipe, type PolaroidScene } from "@/lib/ink/recipes/polaroid-ink"
 import { cn } from "@/lib/utils"
 
@@ -23,14 +23,20 @@ type PolaroidImageProps = React.ComponentProps<"div"> & {
   seed?: string | number
 }
 
+function PolaroidSceneLayer({ scene, seed }: { scene: PolaroidScene; seed?: string | number }) {
+  const { hostRef, hostProps, node } = useInk({ recipe: polaroidPhotoRecipe, params: { scene }, kind: "photo", seed, still: true })
+  return (
+    <span ref={hostRef} {...(node ? hostProps : {})} aria-hidden="true" className="pointer-events-none absolute inset-0">
+      {node}
+    </span>
+  )
+}
+
 function PolaroidImage({ className, children, scene, date, develop, label, seed, ref, ...props }: PolaroidImageProps) {
-  const { hostRef, hostProps, node } = useInk({ recipe: polaroidPhotoRecipe, params: { scene: scene ?? "hills" }, kind: "photo", seed, still: true })
-  const merged = useMergedRef<HTMLDivElement>(scene ? hostRef : undefined, ref)
   return (
     <div
       data-slot="polaroid-image"
-      ref={merged}
-      {...(scene && node ? hostProps : {})}
+      ref={ref}
       role={scene && label ? "img" : undefined}
       aria-label={scene && label ? label : undefined}
       className={cn(
@@ -40,7 +46,7 @@ function PolaroidImage({ className, children, scene, date, develop, label, seed,
       )}
       {...props}
     >
-      {scene ? node : null}
+      {scene ? <PolaroidSceneLayer scene={scene} seed={seed} /> : null}
       {children}
       {date ? (
         <span aria-hidden="true" className="pointer-events-none absolute end-2.5 bottom-2 z-(--ll-z-ink) font-mono text-[11px] tracking-wider text-tangerine [text-shadow:0_0_2px_rgb(var(--ll-shade)/0.7),0_0_6px_rgb(var(--ll-shade)/0.45)] calm:[text-shadow:none]">

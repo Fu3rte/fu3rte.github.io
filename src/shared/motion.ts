@@ -1,5 +1,6 @@
 import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
+import i18next from 'i18next';
 import { onLoaderDone } from './loader';
 
 gsap.registerPlugin(ScrollTrigger);
@@ -265,7 +266,7 @@ function setupLabWake(): void {
   }
 }
 
-function setupPhotoMotion(): void {
+function setupPhotoPreviewMotion(): void {
   for (const deck of document.querySelectorAll<HTMLElement>('[data-st="photo-deck"]')) {
     gsap.from(deck, {
       opacity: 0,
@@ -298,7 +299,9 @@ function setupPhotoMotion(): void {
       );
     }
   }
+}
 
+function setupPhotoGalleryMotion(): void {
   const polaroids = document.querySelectorAll<HTMLElement>('[data-st="polaroid-tile"]');
   if (polaroids.length > 0) {
     gsap.set(polaroids, { opacity: 0 });
@@ -411,10 +414,15 @@ function setupRemainingReveals(): void {
   }
 }
 
-export function initMotion(): () => void {
+function mountMotion(runPageSetup: () => void): () => void {
+  let mounted = true;
   // 换语言会改写文案长度、整页位移，滚动锚点必须重算
-  const refresh = (): void => { ScrollTrigger.refresh(); };
-  document.addEventListener('langchange', refresh);
+  const refresh = (): void => {
+    requestAnimationFrame(() => {
+      if (mounted) ScrollTrigger.refresh();
+    });
+  };
+  i18next.on('languageChanged', refresh);
 
   const media = gsap.matchMedia();
   media.add('(prefers-reduced-motion: no-preference)', () => {
@@ -425,13 +433,9 @@ export function initMotion(): () => void {
       run = gsap.context(() => {
         bar = createProgressBar();
         playIntro();
-        setupHeroParallax();
         setupSectionHeadings();
         setupPaperAndStickies();
-        setupWorksMotion();
-        setupLabWake();
-        setupPhotoMotion();
-        setupCaseStudyMotion();
+        runPageSetup();
         setupRemainingReveals();
         ScrollTrigger.sort();
         ScrollTrigger.refresh();
@@ -444,13 +448,54 @@ export function initMotion(): () => void {
     };
   });
 
-  let mounted = true;
   document.fonts.ready.then(() => {
-    if (mounted) refresh();
+    if (mounted) ScrollTrigger.refresh();
   });
   return () => {
     mounted = false;
-    document.removeEventListener('langchange', refresh);
+    i18next.off('languageChanged', refresh);
     media.revert();
   };
+}
+
+export function initHomeMotion(): () => void {
+  return mountMotion(() => {
+    setupHeroParallax();
+    setupWorksMotion();
+    setupLabWake();
+    setupPhotoPreviewMotion();
+  });
+}
+
+export function initPhotosMotion(): () => void {
+  return mountMotion(() => {
+    setupPhotoGalleryMotion();
+  });
+}
+
+export function initCaseMotion(): () => void {
+  return mountMotion(() => {
+    setupCaseStudyMotion();
+  });
+}
+
+export function initContactMotion(): () => void {
+  return mountMotion(() => {});
+}
+
+export function initMotion(): () => void {
+  return mountMotion(() => {
+    if (document.getElementById('home')) {
+      setupHeroParallax();
+      setupWorksMotion();
+      setupLabWake();
+      setupPhotoPreviewMotion();
+    }
+    if (document.getElementById('photos')) {
+      setupPhotoGalleryMotion();
+    }
+    if (document.querySelector('[data-st="case-block"]')) {
+      setupCaseStudyMotion();
+    }
+  });
 }

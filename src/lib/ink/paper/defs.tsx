@@ -2,7 +2,7 @@ import * as React from "react"
 
 import { svgPatternDefs, type PaperTileName } from "@/lib/ink/textures"
 
-export const PAPER_DEF_TILES: readonly PaperTileName[] = ["fibre", "relief", "slip", "kraft", "cloud"]
+export const PAPER_DEF_TILES: readonly PaperTileName[] = ["relief", "slip"]
 
 export function PaperDefs({ tiles = PAPER_DEF_TILES }: { tiles?: readonly PaperTileName[] }) {
   const html = React.useMemo(() => svgPatternDefs({ tiles }), [tiles])

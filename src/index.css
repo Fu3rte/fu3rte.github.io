@@ -1,7 +1,6 @@
 @import "tailwindcss";
 @import "tw-animate-css";
 @import "@fontsource/ibm-plex-mono/latin-400.css";
-@import "@fontsource/ibm-plex-mono/latin-500.css";
 @import "./fonts.css";
 
 @custom-variant dark (&:is(.dark *));
@@ -30,19 +29,6 @@
     --color-border: var(--border);
     --color-input: var(--input);
     --color-ring: var(--ring);
-    --color-chart-1: var(--chart-1);
-    --color-chart-2: var(--chart-2);
-    --color-chart-3: var(--chart-3);
-    --color-chart-4: var(--chart-4);
-    --color-chart-5: var(--chart-5);
-    --color-sidebar: var(--sidebar);
-    --color-sidebar-foreground: var(--sidebar-foreground);
-    --color-sidebar-primary: var(--sidebar-primary);
-    --color-sidebar-primary-foreground: var(--sidebar-primary-foreground);
-    --color-sidebar-accent: var(--sidebar-accent);
-    --color-sidebar-accent-foreground: var(--sidebar-accent-foreground);
-    --color-sidebar-border: var(--sidebar-border);
-    --color-sidebar-ring: var(--sidebar-ring);
     --color-desk: var(--ll-desk);
     --color-desk-deep: var(--ll-desk-deep);
     --color-paper: var(--ll-paper);
@@ -128,24 +114,6 @@
     --animate-boil: ll-boil var(--ll-dur-boil) steps(3) infinite;
     --font-sans: var(--font-hand);
     --font-mono: "IBM Plex Mono", ui-monospace, "SF Mono", Menlo, monospace;
-    --ll-code-punct: var(--ll-code-punct);
-    --ll-code-variable: var(--ll-code-variable);
-    --ll-code-attr: var(--ll-code-attr);
-    --ll-code-tag: var(--ll-code-tag);
-    --ll-code-type: var(--ll-code-type);
-    --ll-code-function: var(--ll-code-function);
-    --ll-code-string: var(--ll-code-string);
-    --ll-code-number: var(--ll-code-number);
-    --ll-code-literal: var(--ll-code-literal);
-    --ll-code-keyword: var(--ll-code-keyword);
-    --ll-code-comment: var(--ll-code-comment);
-    --ll-syn-comment: var(--ll-syn-comment);
-    --ll-syn-number: var(--ll-syn-number);
-    --ll-syn-name: var(--ll-syn-name);
-    --ll-syn-string: var(--ll-syn-string);
-    --ll-syn-keyword: var(--ll-syn-keyword);
-    --ll-diff-del: var(--ll-diff-del);
-    --ll-diff-add: var(--ll-diff-add);
     --ll-stamp-fill-green: var(--ll-stamp-fill-green);
     --ll-stamp-fill-red: var(--ll-stamp-fill-red);
     --ll-stamp-fill: var(--ll-stamp-fill);
@@ -159,19 +127,6 @@
     --ll-line-soft: var(--ll-line-soft);
     --ll-line: var(--ll-line);
     --color-ll-umber: var(--ll-umber);
-    --sidebar-ring: var(--sidebar-ring);
-    --sidebar-border: var(--sidebar-border);
-    --sidebar-accent-foreground: var(--sidebar-accent-foreground);
-    --sidebar-accent: var(--sidebar-accent);
-    --sidebar-primary-foreground: var(--sidebar-primary-foreground);
-    --sidebar-primary: var(--sidebar-primary);
-    --sidebar-foreground: var(--sidebar-foreground);
-    --sidebar: var(--sidebar);
-    --chart-5: var(--chart-5);
-    --chart-4: var(--chart-4);
-    --chart-3: var(--chart-3);
-    --chart-2: var(--chart-2);
-    --chart-1: var(--chart-1);
     --ring: var(--ring);
     --input: var(--input);
     --border: var(--border);
@@ -422,19 +377,6 @@
     --border: var(--ll-pencil-mark);
     --input: var(--ll-pencil-mark);
     --ring: var(--ll-focus);
-    --chart-1: var(--ll-marker);
-    --chart-2: var(--ll-ink-you);
-    --chart-3: var(--ll-green);
-    --chart-4: var(--ll-hi-deep);
-    --chart-5: var(--ll-grape);
-    --sidebar: var(--ll-pad);
-    --sidebar-foreground: var(--ll-ink);
-    --sidebar-primary: var(--ll-marker);
-    --sidebar-primary-foreground: var(--ll-ink);
-    --sidebar-accent: color-mix(in srgb, var(--ll-hi) 42%, var(--ll-pad));
-    --sidebar-accent-foreground: var(--ll-ink);
-    --sidebar-border: var(--ll-pad-rule);
-    --sidebar-ring: var(--ll-focus);
     --ll-umber: rgb(var(--ll-shade));
     --ll-line: var(--ll-pencil-mark);
     --ll-line-soft: color-mix(in srgb, var(--ll-pencil-mark) 55%, transparent);
@@ -448,25 +390,7 @@
     --ll-stamp-fill: color-mix(in srgb, var(--ll-marker) 50%, transparent);
     --ll-stamp-fill-red: color-mix(in srgb, var(--ll-red) 28%, transparent);
     --ll-stamp-fill-green: color-mix(in srgb, var(--ll-green) 24%, transparent);
-    --ll-diff-add: color-mix(in srgb, var(--ll-green) 16%, transparent);
-    --ll-diff-del: color-mix(in srgb, var(--ll-red) 14%, transparent);
-    --ll-syn-keyword: color-mix(in srgb, var(--ll-red), var(--ll-ink) 14%);
-    --ll-syn-string: color-mix(in srgb, var(--ll-green), var(--ll-ink) 14%);
-    --ll-syn-name: var(--ll-ink-you);
-    --ll-syn-number: color-mix(in srgb, var(--ll-orange-text), var(--ll-ink) 10%);
-    --ll-syn-comment: var(--ll-pencil-text);
     --radius: 3px;
-    --ll-code-comment: var(--ll-syn-comment);
-    --ll-code-keyword: var(--ll-syn-keyword);
-    --ll-code-literal: var(--ll-syn-number);
-    --ll-code-number: var(--ll-syn-number);
-    --ll-code-string: var(--ll-syn-string);
-    --ll-code-function: var(--ll-syn-name);
-    --ll-code-type: var(--ll-syn-name);
-    --ll-code-tag: var(--ll-syn-keyword);
-    --ll-code-attr: var(--ll-syn-number);
-    --ll-code-variable: var(--ll-ink);
-    --ll-code-punct: var(--ll-ink-muted);
     color-scheme: light;
     --ll-shade: 30 41 59;
     --ll-wobble: 1;
@@ -559,19 +483,6 @@
     --border: var(--ll-pencil-mark);
     --input: var(--ll-pencil-mark);
     --ring: var(--ll-focus);
-    --chart-1: var(--ll-marker);
-    --chart-2: var(--ll-ink-you);
-    --chart-3: var(--ll-green);
-    --chart-4: var(--ll-hi-deep);
-    --chart-5: var(--ll-grape);
-    --sidebar: var(--ll-pad);
-    --sidebar-foreground: var(--ll-ink);
-    --sidebar-primary: var(--ll-marker);
-    --sidebar-primary-foreground: var(--ll-ink);
-    --sidebar-accent: color-mix(in srgb, var(--ll-hi) 42%, var(--ll-pad));
-    --sidebar-accent-foreground: var(--ll-ink);
-    --sidebar-border: var(--ll-pad-rule);
-    --sidebar-ring: var(--ll-focus);
     --ll-umber: rgb(var(--ll-shade));
     --ll-line: var(--ll-pencil-mark);
     --ll-line-soft: color-mix(in srgb, var(--ll-pencil-mark) 55%, transparent);
@@ -585,13 +496,6 @@
     --ll-stamp-fill: color-mix(in srgb, var(--ll-marker) 50%, transparent);
     --ll-stamp-fill-red: color-mix(in srgb, var(--ll-red) 28%, transparent);
     --ll-stamp-fill-green: color-mix(in srgb, var(--ll-green) 24%, transparent);
-    --ll-diff-add: color-mix(in srgb, var(--ll-green) 16%, transparent);
-    --ll-diff-del: color-mix(in srgb, var(--ll-red) 14%, transparent);
-    --ll-syn-keyword: color-mix(in srgb, var(--ll-red), var(--ll-ink) 14%);
-    --ll-syn-string: color-mix(in srgb, var(--ll-green), var(--ll-ink) 14%);
-    --ll-syn-name: var(--ll-ink-you);
-    --ll-syn-number: color-mix(in srgb, var(--ll-orange-text), var(--ll-ink) 10%);
-    --ll-syn-comment: var(--ll-pencil-text);
 }
   :root, [data-theme], [data-ll-scope] {
     --ll-shadow-hair: 0 1px 1.5px rgb(var(--ll-shade) / calc(0.16 * var(--ll-shadow-k)));
@@ -1223,49 +1127,5 @@
     forced-color-adjust: none;
     background-color: Mark;
     color: MarkText;
-    }
-}
-
-@supports (appearance: base-select) {
-  :is([data-slot="native-select"], [data-slot="calendar-dropdown"] select):not([multiple]), :is([data-slot="native-select"], [data-slot="calendar-dropdown"] select):not([multiple])::picker(select) {
-    appearance: base-select;
-    }
-  :is([data-slot="native-select"], [data-slot="calendar-dropdown"] select):not([multiple]) {
-    border: 0;
-    color: inherit;
-    font: inherit;
-    }
-  :is([data-slot="native-select"], [data-slot="calendar-dropdown"] select)::picker-icon {
-    display: none;
-    }
-  :is([data-slot="native-select"], [data-slot="calendar-dropdown"] select)::picker(select) {
-    margin-block: 6px;
-    padding: 5px;
-    border: 1.5px solid var(--ll-ink);
-    border-radius: 12px;
-    background: var(--ll-slip);
-    color: var(--ll-ink);
-    font-family: var(--font-hand);
-    box-shadow: 0 1px 0 rgb(30 41 59 / 0.06),
-      0 16px 32px -12px rgb(30 41 59 / 0.25);
-    max-block-size: min(22rem, 70vh);
-    }
-  :is([data-slot="native-select"], [data-slot="calendar-dropdown"] select) option {
-    padding: 7px 12px;
-    border-radius: 8px;
-    background: transparent;
-    color: var(--ll-ink);
-    font-size: 16px;
-    line-height: 1.35;
-    }
-  :is([data-slot="native-select"], [data-slot="calendar-dropdown"] select) option:is(:hover, :focus-visible) {
-    background: color-mix(in srgb, var(--ll-hi) 78%, transparent);
-    outline: none;
-    }
-  :is([data-slot="native-select"], [data-slot="calendar-dropdown"] select) option:checked {
-    font-weight: 700;
-    }
-  :is([data-slot="native-select"], [data-slot="calendar-dropdown"] select) option::checkmark {
-    color: var(--ll-ink-you);
     }
 }

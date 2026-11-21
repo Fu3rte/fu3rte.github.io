@@ -6,7 +6,7 @@ import { fileURLToPath } from 'node:url';
 
 const root = dirname(dirname(fileURLToPath(import.meta.url)));
 const srcDir = join(root, 'src');
-const inputFont = join(srcDir, 'assets', 'fonts', 'RuiMeiJiaHand.ttf');
+const inputFont = join(root, 'scripts', 'assets', 'RuiMeiJiaHand.ttf');
 const outputFont = join(srcDir, 'assets', 'fonts', 'RuiMeiJiaHand-subset.woff2');
 
 const CJK_RE = /[\u2000-\u206F\u3000-\u303F\u4E00-\u9FFF\uFF00-\uFFEF]/g;

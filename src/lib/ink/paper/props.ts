@@ -3,7 +3,7 @@ import type { InkResult } from '@/lib/ink/builder'
 import { n, type PaintKey } from '@/lib/ink/paint'
 import { clamp, type Rng } from '@/lib/ink/rng'
 import { noise1 } from '@/lib/ink/noise'
-import { TAU, polyPath, resample, roundRectPoly } from '@/lib/ink/geom'
+import { polyPath } from '@/lib/ink/geom'
 import type { Pt, Tier } from '@/lib/ink/types'
 
 const tok = (name: string) => `var(--ll-${name})`
@@ -154,13 +154,12 @@ export function tape(seed: string | number, o: TapeOpts = {}): InkResult {
       s += pathTag(dark, { stroke: tok('orange-text'), sw: 0.45, op: 0.2 }) + pathTag(light, { stroke: tok('photo'), sw: 0.5, op: 0.42 })
     }
     const nc = 1 + Math.floor(r.fork('crinkle')() * 2.4)
-    let lit = '', dark = ''
+    let dark = ''
     for (let i = 0; i < nc; i++) {
       const cr = r.fork('c' + i)
       const x = cr.range(0.15, 0.85) * w
       const sl = cr.range(-0.5, 0.5) * h
       const cw = cr.range(1.6, 4.6)
-      lit += `M${num(x - sl / 2)} -1L${num(x + sl / 2)} ${h + 1}`
       dark += `M${num(x - sl / 2 + cw * 0.85)} -1L${num(x + sl / 2 + cw * 0.85)} ${h + 1}`
       s += pathTag(`M${num(x - sl / 2)} -1L${num(x + sl / 2)} ${h + 1}`, { stroke: tok('photo'), sw: cw, op: kind === 'clear' ? 0.5 : 0.2, cap: 'butt' })
     }
@@ -322,114 +321,6 @@ function densifyRound(v: Pt[], rad: number): Pt[] {
   return out
 }
 
-export interface StitchOpts extends PropOpts {
-  inset?: number
-  radius?: number
-  color?: 'marker' | 'red' | 'ink-you' | 'green' | Accent
-  stitch?: number
-  gap?: number
-}
-
-export function stitches(seed: string | number, w: number, h: number, o: StitchOpts = {}): InkResult {
-  const ink = make(seed, o)
-  const r = ink.next('stitch')
-  const inset = o.inset ?? 8
-  const rad = Math.min(o.radius ?? 6, (Math.min(w, h) - 2 * inset) / 2)
-  const outline = roundRectPoly(inset, inset, w - 2 * inset, h - 2 * inset, Math.max(0, rad))
-  const closed = [...outline, outline[0]]
-  const rs = resample(closed, 0.8)
-  const len = o.stitch ?? 7
-  const gap = o.gap ?? 4
-  let d = ''
-  let u = r.range(0, 3)
-  const at = (sArc: number): Pt => {
-    const step = rs.L / (rs.X.length - 1)
-    const f = Math.min(rs.X.length - 2, Math.max(0, Math.floor(sArc / step)))
-    const t = Math.min(1, Math.max(0, sArc / step - f))
-    return [rs.X[f] + (rs.X[f + 1] - rs.X[f]) * t, rs.Y[f] + (rs.Y[f + 1] - rs.Y[f]) * t]
-  }
-  while (u < rs.L - len) {
-    const L = len * r.range(0.92, 1.05)
-    const off = r.gauss(0, 0.3)
-    const pts: Pt[] = []
-    for (let k = 0; k <= 3; k++) {
-      const P0 = at(u + (L * k) / 3)
-      const P1 = at(Math.min(rs.L - 0.2, u + (L * k) / 3 + 0.6))
-      const tx = P1[0] - P0[0], ty = P1[1] - P0[1]
-      const l = Math.hypot(tx, ty) || 1
-      pts.push([P0[0] - (ty / l) * off + r.gauss(0, 0.06), P0[1] + (tx / l) * off + r.gauss(0, 0.06)])
-    }
-    d += poly(pts)
-    u += len + gap + r.gauss(0, 0.5)
-  }
-  const col = (o.color ?? 'marker') as PaintKey
-  const id = `ll-st${ink.seed.toString(36)}`
-  const line = (stroke: string, sw: number, op: number, tf: string) =>
-    `<use href="#${id}" fill="none" stroke="${stroke}" stroke-width="${sw}" stroke-opacity="${op}" stroke-linecap="round" stroke-linejoin="round"${tf ? ` transform="${tf}"` : ''}/>`
-  ink.raw(
-    `<defs><path id="${id}" d="${d}"/></defs>` +
-      line(tok('ink'), 2.1, 0.16, 'translate(.4 .8)') +
-      line(tok(col), 1.8, 1, '') +
-      line(tok('photo'), 0.55, 0.4, 'translate(-.3 -.35)'),
-    'top',
-  )
-  ink.grow([0, 0, w, h])
-  return ink.toSvg({ w, h, pad: 2 })
-}
-
-export interface RubberBandOpts extends PropOpts {
-  color?: Accent
-}
-
-export function rubberBand(seed: string | number, w: number, h: number, o: RubberBandOpts = {}): InkResult {
-  const ink = make(seed, o)
-  const r = ink.next('band')
-  const g = w * 0.74
-  const bow = () => r.gauss(0, 0.6)
-  const run = (a: number, b: number) =>
-    `M${num(a + bow())} -4C${num(a)} ${num(h * 0.3)} ${num(b)} ${num(h * 0.36)} ${num(b + bow())} ${num(h * 0.5)}S${num(a)} ${num(h * 0.7)} ${num(a + bow())} ${num(h + 4)}`
-  const d1 = run((w - g) / 2, (w + g) / 2)
-  const d2 = run((w + g) / 2, (w - g) / 2)
-  const sw = clamp(w * 0.22, 3.5, 7)
-  const col = tok(o.color ?? 'tangerine')
-  ink.raw(
-    pathTag(d1 + d2, { stroke: tok('ink'), sw: sw + 1, op: 0.16, transform: 'translate(.8 1.6)' }) +
-      pathTag(d1, { stroke: col, sw, op: 0.94 }) +
-      pathTag(d2, { stroke: col, sw, op: 0.94 }) +
-      pathTag(d1 + d2, { stroke: tok('ink'), sw: sw * 0.22, op: 0.2, transform: 'translate(.7 .8)' }) +
-      pathTag(d1 + d2, { stroke: tok('photo'), sw: sw * 0.2, op: 0.5, transform: `translate(${num(-sw * 0.2)} ${num(-sw * 0.22)})` }),
-    'top',
-  )
-  ink.grow([-2, -4, w + 2, h + 4])
-  return ink.toSvg({ w, h, pad: 6 })
-}
-
-export interface CoffeeRingOpts extends PropOpts {
-  radius?: number
-}
-
-export function coffeeRing(seed: string | number, o: CoffeeRingOpts = {}): InkResult {
-  const ink = make(seed, o)
-  const R0 = o.radius ?? 48
-  const r = ink.next('ring')
-  const p1 = r.range(0, TAU), p2 = r.range(0, TAU)
-  const gapC = r.range(0, TAU), gapW = r.range(0.35, 0.8)
-  const pt = (a: number, R: number): Pt => {
-    const rr = R * (1 + 0.008 * Math.sin(2 * a + p1) + 0.005 * Math.sin(3 * a + p2))
-    return [R0 + Math.cos(a) * rr, R0 + Math.sin(a) * rr * 0.98]
-  }
-  const arc = (R: number, a0: number, a1: number): Pt[] => {
-    const steps = Math.max(8, Math.ceil(((a1 - a0) * R) / 3))
-    return Array.from({ length: steps + 1 }, (_, i) => pt(a0 + ((a1 - a0) * i) / steps, R))
-  }
-  let s = pathTag(circle(R0, R0, R0 * 0.965), { fill: tok('kraft'), op: 0.05 })
-  s += pathTag(circle(R0, R0, R0 - 2), { stroke: tok('kraft'), sw: 4, op: 0.16 })
-  s += pathTag(poly(arc(R0 - 1, gapC + gapW, gapC + TAU - gapW)), { stroke: tok('orange-text'), sw: 1.4, op: 0.3 })
-  ink.raw(`<g style="mix-blend-mode:var(--ll-blend)">${s}</g>`, 'top')
-  ink.grow([0, 0, R0 * 2, R0 * 2])
-  return ink.toSvg({ w: R0 * 2, h: R0 * 2, pad: 3 })
-}
-
 export interface CurlOpts extends PropOpts {
   color?: string
 }
@@ -448,39 +339,6 @@ export function curlMarkup(r: Rng, id: string, c: number, color = 'sticky-yellow
   s += pathTag(poly([a, m, b]), { stroke: tok('ink'), sw: 0.6, op: 0.24 })
   s += pathTag(poly([a, b]), { stroke: tok('photo'), sw: 0.9, op: 0.75 })
   return s
-}
-
-export function stickyCurl(seed: string | number, c: number, o: CurlOpts = {}): InkResult {
-  const ink = make(seed, o)
-  ink.raw(curlMarkup(ink.next('curl'), `ll-cu${ink.seed.toString(36)}`, c, o.color), 'top')
-  ink.grow([0, 0, c, c])
-  return ink.toSvg({ w: c, h: c, pad: 3 })
-}
-
-export interface RulerOpts extends PropOpts {
-  height?: number
-}
-
-export function ruler(seed: string | number, length: number, o: RulerOpts = {}): InkResult {
-  const ink = make(seed, o)
-  const h = o.height ?? 30
-  const r = ink.next('ruler')
-  const body = poly([[0.6, 0.5 + r.gauss(0, 0.15)], [length * 0.5, 0.2 + r.gauss(0, 0.2)], [length - 0.6, 0.5 + r.gauss(0, 0.15)], [length - 0.4, h - 0.5], [length * 0.5, h - 0.2 + r.gauss(0, 0.2)], [0.5, h - 0.6]], true)
-  let d = ''
-  for (let i = 0, x = 6; x < length - 5; i++, x += 6) {
-    const long = i % 5 === 0
-    d += `M${num(x + r.gauss(0, 0.08))} 0.8v${num((long ? h * 0.4 : h * 0.22) + r.gauss(0, 0.4))}`
-  }
-  ink.raw(
-    pathTag(body, { fill: tok('kraft'), op: 0.96 }) +
-      pathTag(`M1 ${num(h * 0.82)}H${num(length - 1)}`, { stroke: tok('orange-text'), sw: 0.6, op: 0.18 }) +
-      pathTag(`M1 1.1H${num(length - 1)}`, { stroke: tok('photo'), sw: 1, op: 0.65 }) +
-      pathTag(d, { stroke: tok('ink'), sw: 0.9, op: 0.78 }) +
-      pathTag(body, { stroke: tok('ink'), sw: 0.7, op: 0.32 }),
-    'top',
-  )
-  ink.grow([0, 0, length, h])
-  return ink.toSvg({ w: length, h, pad: 3 })
 }
 
 export type FastenerKind = 'clip' | 'pin' | 'staple' | 'binder-clip'

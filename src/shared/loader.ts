@@ -1,5 +1,6 @@
 import gsap from 'gsap';
 import type { AnimationItem } from 'lottie-web/build/player/lottie_light';
+import { motionIsOff } from '@/hooks/use-live-motion';
 
 const SOURCE = '/lottie/brook-load.json';
 // brook-load.json 的组装段落在 0-66 帧：描边逐笔勾出五官、随后落成实心，66-222 帧是首尾同值的无缝循环
@@ -37,6 +38,7 @@ let anim: AnimationItem | null = null;
 let phase: Phase = 'waiting';
 let looping = false;
 let reduced = false;
+let scrollLocked = false;
 let mode: Mode = 'long';
 // 组装段落起笔与落成的时刻：驻留从落成那一拍起算，绘制时长不受请求快慢影响
 let drawAt = 0;
@@ -53,7 +55,7 @@ export function bootLoader(): void {
   const mark = document.getElementById('brook-mark')!;
   overlayEl = overlay;
   markEl = mark;
-  reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  reduced = motionIsOff();
 
   if (reduced) {
     // 降低动效偏好下连动画素材都不必下载，覆盖层只等正文就位
@@ -149,11 +151,15 @@ function blockScroll(event: Event): void {
 
 // 覆盖层压场期间滚动一律拒收：滚轮一推进页面，正文的 ScrollTrigger 锚点就在无人看见的那一拍被消耗光
 function lockScroll(): void {
+  if (scrollLocked) return;
+  scrollLocked = true;
   window.addEventListener('wheel', blockScroll, { passive: false });
   window.addEventListener('touchmove', blockScroll, { passive: false });
 }
 
 function unlockScroll(): void {
+  if (!scrollLocked) return;
+  scrollLocked = false;
   window.removeEventListener('wheel', blockScroll);
   window.removeEventListener('touchmove', blockScroll);
 }
@@ -187,7 +193,11 @@ function settled(): boolean {
 }
 
 function forceRelease(): void {
-  if (phase !== 'waiting') return;
+  if (phase !== 'waiting') {
+    if (phase === 'released') unlockScroll();
+    return;
+  }
+  unlockScroll();
   // 超时放行也要把组装画完，否则徽标停在半张脸上
   startLoop();
   release();
@@ -248,7 +258,9 @@ export function onLoaderDone(callback: () => void): () => void {
 
 function onPageRestore(event: PageTransitionEvent): void {
   // bfcache 回来的正文已就位，覆盖层停在哪个状态都直接收走
-  if (!event.persisted || phase !== 'waiting') return;
+  if (!event.persisted) return;
+  unlockScroll();
+  if (phase !== 'waiting') return;
   gsap.ticker.remove(tick);
   announce();
   finish();
@@ -256,7 +268,9 @@ function onPageRestore(event: PageTransitionEvent): void {
 
 // 路由切换复用同一份骨架：盖满屏的那一拍换正文，驻留之后按短节奏擦除
 export function withTransition(swap: () => void): void {
+  reduced = motionIsOff();
   if (reduced) {
+    unlockScroll();
     swap();
     return;
   }

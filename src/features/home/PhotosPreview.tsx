@@ -3,11 +3,11 @@ import gsap from 'gsap';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { Paper } from '@/components/ui/paper';
-import { Polaroid, PolaroidCaption, PolaroidImage } from '@/components/ui/polaroid';
 import { useReducedMotion } from '@/hooks/use-live-motion';
 import type { TapeKind } from '@/lib/ink/paper/props';
 import { t, tObject, useLanguage } from '../../shared/i18n';
 import { Link } from '../../shared/router';
+import FlippablePolaroid, { type PhotoDetail } from '../photos/FlippablePolaroid';
 import photo01 from '../photos/assets/photo-01.webp';
 import photo02 from '../photos/assets/photo-02.webp';
 import photo03 from '../photos/assets/photo-03.webp';
@@ -15,12 +15,6 @@ import photo06 from '../photos/assets/photo-06.webp';
 import photo08 from '../photos/assets/photo-08.webp';
 import photo10 from '../photos/assets/photo-10.webp';
 import SectionHeading from './SectionHeading';
-
-type PhotoDetail = {
-  place: string;
-  mood: string;
-  note: string;
-};
 
 type PreviewCardItem = {
   src: string;
@@ -331,32 +325,6 @@ export default function PhotosPreview() {
             const detail = details[item.noteIdx] ?? { place: '', mood: '', note: '' };
             const isCardFlipped = isFront && flipped;
 
-            const frontPolaroid = (
-              <Polaroid
-                as="div"
-                tape="top"
-                tapeKind={item.tapeKind}
-                tilt={false}
-                seed={`home-polaroid-${frameNum}`}
-                className="w-full"
-              >
-                <PolaroidImage date={`#${frameNum}`}>
-                  <img
-                    src={item.src}
-                    alt={`${t('photos.alt')} ${frameNum}`}
-                    width={760}
-                    height={760}
-                    loading="lazy"
-                    decoding="async"
-                    draggable={false}
-                  />
-                </PolaroidImage>
-                <PolaroidCaption className="text-[1.4rem] sm:text-[1.6rem]">
-                  {caption}
-                </PolaroidCaption>
-              </Polaroid>
-            );
-
             return (
               <div
                 key={item.noteIdx}
@@ -410,77 +378,19 @@ export default function PhotosPreview() {
                     else cardInnerRefs.current.delete(i);
                   }}
                 >
-                  {isFront ? (
-                    <div className="polaroid-flip-scene w-full">
-                      <div
-                        className={`polaroid-flip-inner ${isCardFlipped ? 'is-flipped' : ''} ${
-                          reducedMotion ? 'transition-none!' : ''
-                        }`}
-                      >
-                        <div className={`polaroid-face relative w-full ${isCardFlipped ? 'pointer-events-none' : ''}`}>
-                          {frontPolaroid}
-                        </div>
-
-                        <div
-                          aria-hidden={!isCardFlipped}
-                          className={`polaroid-face-back flex flex-col justify-between border-2 border-ink/80 bg-card p-5 text-ink shadow-md ${
-                            isCardFlipped ? '' : 'pointer-events-none'
-                          }`}
-                        >
-                          <div className="flex flex-wrap items-center justify-between gap-2 border-b border-dashed border-pencil-mark/60 pb-2">
-                            <span className="font-mono text-xs font-bold tracking-wider text-ink-muted">
-                              #{frameNum} / 10
-                            </span>
-                            {detail.place ? (
-                              <span className="inline-block -rotate-2 rounded-xs border-[1.5px] border-dashed border-marker/85 bg-marker/10 px-2 py-0.5 font-mono text-[10px] font-bold tracking-wider text-orange-text uppercase">
-                                {detail.place}
-                              </span>
-                            ) : null}
-                          </div>
-
-                          <div className="my-auto flex min-h-0 flex-col gap-1.5 py-2.5">
-                            {detail.mood ? (
-                              <span className="font-mono text-[11px] font-semibold tracking-wide text-ink-you">
-                                {detail.mood}
-                              </span>
-                            ) : null}
-                            <p className="font-script text-[1.08rem] leading-snug font-semibold text-ink sm:text-[1.25rem]">
-                              {detail.note || caption}
-                            </p>
-                          </div>
-
-                          <div className="flex items-end justify-between gap-2 border-t border-dashed border-pencil-mark/45 pt-2">
-                            <span className="truncate font-mono text-[11px] text-ink-muted">
-                              {caption}
-                            </span>
-                            <svg
-                              aria-hidden="true"
-                              viewBox="0 0 76 22"
-                              className="h-5 w-14 shrink-0 text-ink-you"
-                              fill="none"
-                            >
-                              <path
-                                d="M3 14C7 6 11 6 14 13C17 19 21 5 26 11C30 16 34 7 39 12C43 16 48 9 54 11C60 13 66 8 73 10"
-                                stroke="currentColor"
-                                strokeWidth="1.8"
-                                strokeLinecap="round"
-                                strokeLinejoin="round"
-                              />
-                              <path
-                                d="M12 18C28 16.5 48 16 68 17"
-                                stroke="var(--ll-marker)"
-                                strokeWidth="1.4"
-                                strokeLinecap="round"
-                                opacity="0.75"
-                              />
-                            </svg>
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-                  ) : (
-                    frontPolaroid
-                  )}
+                  <FlippablePolaroid
+                    src={item.src}
+                    alt={`${t('photos.alt')} ${frameNum}`}
+                    frameNum={frameNum}
+                    caption={caption}
+                    detail={detail}
+                    tapeKind={item.tapeKind}
+                    seed={`home-polaroid-${frameNum}`}
+                    flippable={isFront}
+                    flipped={isCardFlipped}
+                    reducedMotion={reducedMotion}
+                    variant="deck"
+                  />
                 </div>
               </div>
             );

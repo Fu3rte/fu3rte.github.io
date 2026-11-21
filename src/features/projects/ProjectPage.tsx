@@ -6,7 +6,7 @@ import { Paper } from '@/components/ui/paper';
 import { Separator } from '@/components/ui/separator';
 import { Underline } from '@/components/ui/underline';
 import { t, useLanguage } from '../../shared/i18n';
-import { initMotion } from '../../shared/motion';
+import { initCaseMotion } from '../../shared/motion';
 import { Link, useRouter } from '../../shared/router';
 import { CASE_BLOCK_KEYS, PROJECTS, pick } from '../home/projects';
 import ProjectCover from './ProjectCover';
@@ -17,7 +17,7 @@ function slugOf(path: string): string {
 
 export default function ProjectPage() {
   useLanguage();
-  useEffect(initMotion, []);
+  useEffect(initCaseMotion, []);
 
   const { path } = useRouter();
   const current = PROJECTS.findIndex((project) => project.id === slugOf(path));
